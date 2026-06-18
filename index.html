@@ -1143,6 +1143,26 @@
             let viewerImages = [];
             let viewerIndex = 0;
 
+            /* ---------- 安全转义工具 ---------- */
+            function escapeHtml(str) {
+                if (str == null) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function escapeJs(str) {
+                if (str == null) return '';
+                return String(str)
+                    .replace(/\\/g, '\\\\')
+                    .replace(/'/g, "\\'")
+                    .replace(/\n/g, '\\n')
+                    .replace(/\r/g, '\\r');
+            }
+
             /* ---------- 工具 ---------- */
             function checkAndRemoveModalOpen() {
                 const anyActive = document.querySelector(
@@ -1153,22 +1173,35 @@
 
             /* ---------- 渲染：主卡片（截图风格） ---------- */
             function createModCard(file, index) {
-                const tagsHtml = file.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-                const icon = typeIcons[file.type] || typeIcons.default;
+                const safe = {
+                    name: escapeHtml(file.name || '未命名模组'),
+                    desc: escapeHtml(file.desc || '暂无描述'),
+                    author: escapeHtml(file.author || 'A Future star'),
+                    version: escapeHtml(file.version || 'v1.0'),
+                    size: escapeHtml(file.size || '未知'),
+                    date: escapeHtml(file.date || ''),
+                    link: escapeHtml(file.link || '#'),
+                    tags: Array.isArray(file.tags) ? file.tags : [],
+                    images: Array.isArray(file.images) ? file.images : [],
+                    type: file.type || 'default'
+                };
+
+                const tagsHtml = safe.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+                const icon = typeIcons[safe.type] || typeIcons.default;
 
                 let imageHtml = '';
-                if (file.images && file.images.length > 0) {
-                    const thumbs = file.images.slice(1, 4);
-                    const moreCount = file.images.length > 4 ? file.images.length - 4 : 0;
+                if (safe.images.length > 0) {
+                    const thumbs = safe.images.slice(1, 4);
+                    const moreCount = safe.images.length > 4 ? safe.images.length - 4 : 0;
                     const thumbsHtml = thumbs.length ? `
                         <div class="card-image-gallery" onclick="event.stopPropagation()">
-                            ${thumbs.map((img, i) => `<img src="${img}" loading="lazy" onclick="openImgViewer(${index}, ${i+1})" alt="">`).join('')}
+                            ${thumbs.map((img, i) => `<img src="${escapeHtml(img)}" loading="lazy" onclick="openImgViewer(${index}, ${i+1})" alt="">`).join('')}
                             ${moreCount ? `<span style="color:#fff;font-size:0.7rem;padding:4px 6px;background:rgba(0,0,0,0.4);border-radius:4px;white-space:nowrap;">+${moreCount}</span>` : ''}
                         </div>
                     ` : '';
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
-                            <img src="${file.images[0]}" alt="${file.name}" loading="lazy">
+                            <img src="${escapeHtml(safe.images[0])}" alt="${safe.name}" loading="lazy">
                             ${thumbsHtml}
                         </div>
                     `;
@@ -1184,21 +1217,21 @@
                     <div class="file-card">
                         ${imageHtml}
                         <div class="card-body">
-                            <div class="card-title">${file.name}</div>
+                            <div class="card-title">${safe.name}</div>
                             <div class="card-subtitle">
-                                <span>👤 ${file.author || 'A Future star'}</span>
-                                <span>⏱ ${file.version || 'v1.0'}</span>
+                                <span>👤 ${safe.author}</span>
+                                <span>⏱ ${safe.version}</span>
                             </div>
                             <div class="card-tags">${tagsHtml}</div>
-                            <div class="card-desc">${file.desc}</div>
+                            <div class="card-desc">${safe.desc}</div>
                             <div class="card-meta-boxes">
-                                <div class="meta-box">💾 ${file.size}</div>
-                                <div class="meta-box">📅 ${file.date}</div>
+                                <div class="meta-box">💾 ${safe.size}</div>
+                                <div class="meta-box">📅 ${safe.date}</div>
                             </div>
                         </div>
                         <div class="card-actions">
                             <button class="btn btn-detail" onclick="openModDetail(${index})">ⓘ 详情</button>
-                            <a href="${file.link}" target="_blank" class="btn btn-download">⬇ 下载</a>
+                            <a href="${safe.link}" target="_blank" class="btn btn-download">⬇ 下载</a>
                         </div>
                     </div>
                 `;
@@ -1206,25 +1239,35 @@
 
             /* ---------- 渲染：推荐卡片（无结果） ---------- */
             function createCompactCard(file, index) {
-                const icon = typeIcons[file.type] || typeIcons.default;
-                const img = (file.images && file.images.length > 0)
-                    ? `<div class="sug-img-wrap"><img src="${file.images[0]}" loading="lazy" alt=""></div>`
+                const safe = {
+                    name: escapeHtml((file.name || '').replace(/<br>/gi, ' ')),
+                    author: escapeHtml((file.author || 'UP').slice(0,6)),
+                    version: escapeHtml(file.version || 'v1.0'),
+                    compat: escapeHtml(file.compat || '1.5.x+'),
+                    heat: escapeHtml(file.heat || '热'),
+                    link: escapeHtml(file.link || '#'),
+                    type: file.type || 'default',
+                    images: Array.isArray(file.images) ? file.images : []
+                };
+                const icon = typeIcons[safe.type] || typeIcons.default;
+                const img = safe.images.length > 0
+                    ? `<div class="sug-img-wrap"><img src="${escapeHtml(safe.images[0])}" loading="lazy" alt=""></div>`
                     : `<div class="sug-img-wrap"><div class="sug-icon">${icon}</div></div>`;
                 return `
                     <div class="suggestion-card">
                         ${img}
                         <div class="sug-body">
-                            <div class="sug-name">${file.name.replace(/<br>/g, ' ')}</div>
+                            <div class="sug-name">${safe.name}</div>
                             <div class="sug-meta">
-                                <span class="sug-badge">${file.version || 'v1.0'}</span>
-                                <span class="sug-badge">${file.compat || '1.5.x+'}</span>
+                                <span class="sug-badge">${safe.version}</span>
+                                <span class="sug-badge">${safe.compat}</span>
                             </div>
                             <div class="sug-extra">
-                                <span>👤${(file.author || 'UP').slice(0,6)}</span>
-                                <span>🔥${file.heat || '热'}</span>
+                                <span>👤${safe.author}</span>
+                                <span>🔥${safe.heat}</span>
                             </div>
                         </div>
-                        <a href="${file.link}" target="_blank" class="sug-btn">⬇️ 下载</a>
+                        <a href="${safe.link}" target="_blank" class="sug-btn">⬇️ 下载</a>
                     </div>
                 `;
             }
@@ -1253,7 +1296,7 @@
 
                 files.forEach((file, index) => {
                     const matchCategory = currentCategory === 'all' || file.category === currentCategory;
-                    const searchText = (file.name + ' ' + file.desc + ' ' + file.tags.join(' ')).toLowerCase();
+                    const searchText = ((file.name || '') + ' ' + (file.desc || '') + ' ' + (Array.isArray(file.tags) ? file.tags.join(' ') : '')).toLowerCase();
                     const matchSearch = searchText.includes(lowerFilter);
                     if (matchCategory && matchSearch) {
                         visibleCount++;
@@ -1331,25 +1374,25 @@
                 const file = files[index];
                 if (!file) return;
                 const box = document.getElementById('modDetailBox');
-                const tags = file.tags.map(t => `<span>${t}</span>`).join('');
-                const gallery = (file.images && file.images.length) ?
-                    `<div class="detail-section"><h4>🖼️ 预览图</h4><div class="mod-detail-gallery">${file.images.map((img,i)=>`<img src="${img}" onclick="openImgViewer(${index},${i})">`).join('')}</div></div>` : '';
+                const tags = (Array.isArray(file.tags) ? file.tags : []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
+                const gallery = (Array.isArray(file.images) && file.images.length) ?
+                    `<div class="detail-section"><h4>🖼️ 预览图</h4><div class="mod-detail-gallery">${file.images.map((img,i)=>`<img src="${escapeHtml(img)}" onclick="openImgViewer(${index},${i})">`).join('')}</div></div>` : '';
                 box.innerHTML = `
                     <div class="mod-detail-header">
-                        ${file.images && file.images[0] ? `<img src="${file.images[0]}" alt="">` : '<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:4rem;">📦</div>'}
+                        ${Array.isArray(file.images) && file.images[0] ? `<img src="${escapeHtml(file.images[0])}" alt="">` : '<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:4rem;">📦</div>'}
                         <div class="header-overlay">
-                            <h2>${file.name}</h2>
+                            <h2>${escapeHtml(file.name || '未命名模组')}</h2>
                             <div class="header-tags">${tags}</div>
                         </div>
                     </div>
                     <div class="mod-detail-body">
-                        <div class="detail-section"><h4>📝 简介</h4><p>${file.desc}</p></div>
-                        <div class="detail-section"><h4>📌 信息</h4><p>版本：${file.version||'v1.0'} &nbsp;|&nbsp; 作者：${file.author||'A Future star'} &nbsp;|&nbsp; 兼容：${file.compat||'1.6.00.3+'} &nbsp;|&nbsp; 大小：${file.size} &nbsp;|&nbsp; 更新：${file.date}</p></div>
+                        <div class="detail-section"><h4>📝 简介</h4><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
+                        <div class="detail-section"><h4>📌 信息</h4><p>版本：${escapeHtml(file.version||'v1.0')} &nbsp;|&nbsp; 作者：${escapeHtml(file.author||'A Future star')} &nbsp;|&nbsp; 兼容：${escapeHtml(file.compat||'1.6.00.3+')} &nbsp;|&nbsp; 大小：${escapeHtml(file.size||'未知')} &nbsp;|&nbsp; 更新：${escapeHtml(file.date||'')}</p></div>
                         ${gallery}
                     </div>
                     <div class="mod-detail-footer">
                         <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">关闭</button>
-                        <a href="${file.link}" target="_blank" class="detail-btn detail-btn-primary">⬇️ 前往下载</a>
+                        <a href="${escapeHtml(file.link || '#')}" target="_blank" class="detail-btn detail-btn-primary">⬇️ 前往下载</a>
                     </div>
                 `;
                 document.getElementById('modDetailOverlay').classList.add('active');
@@ -1364,7 +1407,7 @@
             /* ---------- 图片查看器 ---------- */
             window.openImgViewer = function(fileIdx, imgIdx) {
                 const file = files[fileIdx];
-                if (!file || !file.images) return;
+                if (!file || !Array.isArray(file.images)) return;
                 viewerImages = file.images;
                 viewerIndex = imgIdx || 0;
                 updateImgViewer();
@@ -1396,7 +1439,7 @@
                 const grid = document.getElementById('sponsorImagesGrid');
                 grid.innerHTML = sponsorImageList.map(url => `
                     <div class="sponsor-image-item">
-                        <img src="${url}" alt="赞助码">
+                        <img src="${escapeHtml(url)}" alt="赞助码">
                         <span class="img-label">感谢支持</span>
                     </div>
                 `).join('');
@@ -1424,3 +1467,4 @@
     </script>
 </body>
 </html>
+
