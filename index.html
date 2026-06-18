@@ -6,21 +6,17 @@
     <link rel="dns-prefetch" href="https://testingcf.jsdelivr.net">
     <link rel="preconnect" href="https://testingcf.jsdelivr.net" crossorigin>
     <title>SFS汉化模组下载中心</title>
-
     <style>
         /* ============================================
-                   0. 全局基础样式
-                   ============================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+           全局基础 | 黑白简约
+           ============================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
                 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            background: #ffffff;
+            color: #111;
             min-height: 100vh;
             padding: 20px;
         }
@@ -33,405 +29,348 @@
             min-height: calc(100vh - 40px);
         }
 
+        /* 弹窗打开时彻底屏蔽底层交互（修复搜索框仍可用BUG） */
+        body.modal-open .container {
+            pointer-events: none;
+            user-select: none;
+        }
+
         /* ============================================
-                   1. 头部区域
-                   ============================================ */
+           头部
+           ============================================ */
         .header {
             text-align: center;
             padding: 40px 20px;
-            color: #1a1a1a;
+            color: #111;
         }
-
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
-
         .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            color: #666;
             margin-bottom: 10px;
         }
-
         .declaration {
             line-height: 1.6;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            color: #777;
         }
 
         /* ============================================
-                   2. 搜索框
-                   ============================================ */
+           搜索框
+           ============================================ */
         .search-box {
             max-width: 600px;
             margin: 0 auto 25px;
             position: relative;
         }
-
         .search-box input {
             width: 100%;
-            padding: 15px 50px 15px 20px;
-            border: none;
+            padding: 14px 48px 14px 20px;
+            border: 1px solid #ddd;
             border-radius: 50px;
             font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: #fafafa;
             outline: none;
-            transition: box-shadow 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            color: #111;
         }
-
         .search-box input:focus {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-color: #000;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+            background: #fff;
         }
-
         .search-box .search-icon {
             position: absolute;
-            right: 20px;
+            right: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: #333;
-            font-size: 1.2rem;
+            color: #999;
+            font-size: 1.1rem;
         }
 
         /* ============================================
-                   3. 分类导航
-                   ============================================ */
+           分类导航
+           ============================================ */
         .category-nav {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 30px;
         }
-
         .category-btn {
-            padding: 9px 24px;
+            padding: 8px 20px;
             border-radius: 30px;
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            color: #333;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            color: #444;
             cursor: pointer;
-            transition: all 0.25s ease;
-            font-size: 0.95rem;
+            transition: all 0.2s;
+            font-size: 0.9rem;
         }
-
+        .category-btn:hover {
+            border-color: #000;
+            color: #000;
+        }
         .category-btn.active {
-            background: #2563eb;
+            background: #000;
             color: #fff;
-            border-color: #2563eb;
-        }
-
-        .category-btn:hover:not(.active) {
-            background: #e2e8f0;
+            border-color: #000;
         }
 
         /* ============================================
-                   4. 统计信息栏
-                   ============================================ */
+           统计栏
+           ============================================ */
         .stats {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             margin-bottom: 30px;
-            color: #333;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            color: #666;
         }
-
         .stats span {
-            background: rgba(0, 0, 0, 0.08);
-            padding: 8px 16px;
+            background: #f5f5f5;
+            padding: 6px 14px;
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            border: 1px solid #eee;
         }
 
         /* ============================================
-                   5. 模组卡片网格
-                   ============================================ */
+           卡片网格（新布局）
+           ============================================ */
         .file-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
             margin-bottom: 40px;
         }
 
         .file-card {
-            background: white;
+            background: #fff;
+            border: 1px solid #eaeaea;
             border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .file-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        /* ---- 5a. 卡片头部图标 ---- */
-        .file-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-        .file-icon.pdf {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .file-icon.zip {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .file-icon.doc {
-            background: #dbeafe;
-            color: #2563eb;
-        }
-        .file-icon.img {
-            background: #d1fae5;
-            color: #059669;
-        }
-        .file-icon.video {
-            background: #fce7f3;
-            color: #db2777;
-        }
-        .file-icon.code {
-            background: #e0e7ff;
-            color: #4f46e5;
-        }
-        .file-icon.default {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-
-        /* ---- 5b. 卡片文字信息 ---- */
-        .file-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 8px;
-            word-break: break-all;
-        }
-
-        .file-desc {
-            color: #6b7280;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 12px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            flex: 1 0 auto;
-        }
-
-        /* ---- 5c. 标签 ---- */
-        .tag {
-            display: inline-block;
-            padding: 3px 10px;
-            background: #f3f4f6;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: #6b7280;
-            margin-right: 5px;
-            margin-bottom: 5px;
-        }
-        .tags {
-            margin-bottom: 12px;
-        }
-
-        /* ---- 5d. 版本 / 作者 / 热度 / 兼容 ---- */
-        .file-version {
-            display: inline-block;
-            padding: 3px 10px;
-            background: linear-gradient(135deg, #dbeafe, #e0e7ff);
-            color: #1d4ed8;
-            border-radius: 8px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .file-extra {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 8px 0 8px;
-            padding: 8px 10px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 0.82rem;
-            color: #4b5563;
-        }
-
-        .file-author {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .file-compat {
-            font-size: 0.75rem;
-            color: #059669;
-            background: #d1fae5;
-            padding: 2px 8px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-
-        /* ---- 5e. 大小 / 日期 ---- */
-        .file-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-top: 10px;
-            border-top: 1px solid #f3f4f6;
-            font-size: 0.85rem;
-            color: #9ca3af;
-        }
-
-        .file-size {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .file-date {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* ---- 5f. 下载按钮 ---- */
-        .download-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: #d1d5db;
-            color: #1f2937;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: opacity 0.3s, transform 0.2s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .download-btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-        .download-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* ---- 5g. 卡片内图片预览 ---- */
-        .mod-preview-img {
-            width: calc(100% + 50px);
-            height: 160px;
-            object-fit: cover;
-            border-radius: 12px 12px 0 0;
-            margin: -25px -25px 15px -25px;
-            display: block;
-            background: #f3f4f6;
-        }
-
-        .mod-preview-img.no-image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #9ca3af;
-            font-size: 3rem;
-        }
-
-        .mod-img-gallery {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-        .mod-img-gallery::-webkit-scrollbar {
-            height: 4px;
-        }
-        .mod-img-gallery::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 2px;
-        }
-        .mod-img-gallery img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-        .mod-img-gallery img:hover {
-            border-color: #2563eb;
-            transform: scale(1.05);
-        }
-
-        /* ============================================
-                   6. 无结果区域（搜索无结果时展示）
-                   ============================================ */
-        .no-results {
-            text-align: center;
-            color: #333;
-            padding: 40px 20px 60px;
-            font-size: 1.1rem;
-            display: none;
-        }
-        .no-results.show {
-            display: block;
-        }
-
-        .suggestion-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-            margin-top: 24px;
-            text-align: left;
-        }
-
-        .suggestion-card {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.2s, box-shadow 0.2s;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             height: 100%;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+        }
+        .file-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+            border-color: #d0d0d0;
+        }
+
+        /* ---- 图片区 ---- */
+        .card-image-wrap {
+            height: 180px;
+            background: #f5f5f5;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .card-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+        .file-card:hover .card-image-wrap img {
+            transform: scale(1.03);
+        }
+        .card-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bbb;
+            font-size: 3rem;
+        }
+
+        /* 图片内小画廊（底部黑渐变条） */
+        .card-image-gallery {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 6px;
+            padding: 8px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.5));
+            overflow-x: auto;
+        }
+        .card-image-gallery img {
+            width: 44px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid rgba(255,255,255,0.8);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+        .card-image-gallery img:hover {
+            transform: scale(1.1);
+            border-color: #fff;
+        }
+
+        /* ---- 内容区 ---- */
+        .card-body {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #111;
+            line-height: 1.3;
+            word-break: break-all;
+        }
+
+        .card-subtitle {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: -4px;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .card-tags .tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background: #f2f2f2;
+            color: #555;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: #555;
+            line-height: 1.5;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 3.8em;
+        }
+
+        /* ---- 大小/日期 并排框 ---- */
+        .card-meta-boxes {
+            display: flex;
+            gap: 10px;
+            margin-top: auto; /* 推到底部 */
+            padding-top: 4px;
+        }
+        .meta-box {
+            flex: 1;
+            background: #f7f7f7;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        /* ---- 底部按钮 ---- */
+        .card-actions {
+            padding: 0 16px 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .card-actions .btn {
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .card-actions .btn:hover {
+            border-color: #000;
+        }
+        .card-actions .btn-download {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+        .card-actions .btn-download:hover {
+            background: #333;
+            border-color: #333;
+        }
+
+        /* ============================================
+           无结果 / 推荐卡片
+           ============================================ */
+        .no-results {
+            text-align: center;
+            color: #666;
+            padding: 40px 20px 60px;
+            font-size: 1.1rem;
+            display: none;
+        }
+        .no-results.show { display: block; }
+
+        .suggestion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+            text-align: left;
+        }
+        .suggestion-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .suggestion-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
         }
-
         .suggestion-card .sug-img-wrap {
-            height: 80px;
-            margin: -12px -12px 10px -12px;
-            width: calc(100% + 24px);
-            background: #f3f4f6;
+            height: 90px;
+            background: #f5f5f5;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            position: relative;
-            border-radius: 12px 12px 0 0;
         }
         .suggestion-card .sug-img-wrap img {
             width: 100%;
@@ -440,14 +379,20 @@
             display: block;
         }
         .suggestion-card .sug-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
+            color: #bbb;
         }
-
+        .suggestion-card .sug-body {
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
         .suggestion-card .sug-name {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #111;
             line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -455,192 +400,146 @@
             overflow: hidden;
             min-height: 2.4em;
         }
-
         .suggestion-card .sug-meta {
             display: flex;
-            flex-wrap: wrap;
             gap: 4px;
-            margin-bottom: 6px;
+            flex-wrap: wrap;
         }
-
-        .suggestion-card .sug-version,
-        .suggestion-card .sug-compat {
-            font-size: 0.7rem;
+        .suggestion-card .sug-badge {
+            font-size: 0.65rem;
             padding: 2px 6px;
-            border-radius: 6px;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            background: #fafafa;
+            color: #555;
             font-weight: 600;
         }
-        .suggestion-card .sug-version {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-        .suggestion-card .sug-compat {
-            background: #d1fae5;
-            color: #059669;
-        }
-
         .suggestion-card .sug-extra {
-            font-size: 0.75rem;
-            color: #4b5563;
-            margin-bottom: 8px;
+            font-size: 0.7rem;
+            color: #999;
             display: flex;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 2px;
         }
-
         .suggestion-card .sug-btn {
             display: block;
-            width: 100%;
-            padding: 8px;
-            background: #2563eb;
-            color: #fff;
             text-align: center;
+            padding: 8px;
+            background: #000;
+            color: #fff;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 0 0 10px 10px;
             font-size: 0.8rem;
-            transition: all 0.2s;
+            font-weight: 600;
             margin-top: auto;
-            border: none;
-            cursor: pointer;
+            transition: background 0.2s;
         }
-        .suggestion-card .sug-btn:hover {
-            background: #1d4ed8;
-        }
+        .suggestion-card .sug-btn:hover { background: #333; }
 
         /* ============================================
-                   7. 页脚（三栏布局）
-                   ============================================ */
+           页脚
+           ============================================ */
         .footer {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-            color: #444;
+            color: #555;
             padding: 40px 30px;
             font-size: 0.9rem;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
+            background: #fafafa;
+            border: 1px solid #eee;
             border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             margin-top: auto;
         }
-
         .footer-col h4 {
             font-size: 1rem;
-            color: #1a1a1a;
+            color: #111;
             margin-bottom: 12px;
-            font-weight: 600;
+            font-weight: 700;
         }
-
         .footer-col p {
             line-height: 1.7;
-            color: #555;
+            color: #666;
             font-size: 0.88rem;
         }
 
         /* ============================================
-                   8. 教程区域
-                   ============================================ */
+           教程区域
+           ============================================ */
         .tutorial-section {
-            background: white;
-            border-radius: 12px;
-            padding: 20px 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            background: #fff;
+            border: 1px solid #eaeaea;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 30px;
         }
-
         .tutorial-header {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 18px;
             padding-bottom: 12px;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 2px solid #111;
         }
-
         .tutorial-header h2 {
-            font-size: 1.25rem;
-            color: #1f2937;
+            font-size: 1.2rem;
+            color: #111;
             margin: 0;
+            font-weight: 700;
         }
-
-        .tutorial-header .tutorial-icon {
-            font-size: 1.5rem;
-        }
-
         .tutorial-tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 18px;
             flex-wrap: wrap;
         }
-
         .tutorial-tab {
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 20px;
-            border: 1.5px solid #e5e7eb;
-            background: #f9fafb;
-            color: #4b5563;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             font-size: 0.85rem;
             font-weight: 600;
         }
         .tutorial-tab:hover {
-            border-color: #2563eb;
-            color: #2563eb;
+            border-color: #000;
+            color: #000;
         }
         .tutorial-tab.active {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
+            background: #000;
+            color: #fff;
+            border-color: #000;
         }
-
-        .tutorial-content {
-            display: none;
-        }
+        .tutorial-content { display: none; }
         .tutorial-content.active {
             display: block;
             animation: fadeIn 0.4s ease;
         }
-
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-
-        .step-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
+        .step-list { list-style: none; padding: 0; margin: 0; }
         .step-item {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 14px;
-            padding: 12px;
-            background: #f8fafc;
+            padding: 14px;
+            background: #fafafa;
             border-radius: 10px;
-            border-left: 3px solid #2563eb;
+            border-left: 3px solid #000;
             transition: transform 0.2s;
         }
         .step-item:hover {
-            transform: translateX(5px);
-            background: #f1f5f9;
+            transform: translateX(4px);
+            background: #f5f5f5;
         }
-
         .step-number {
             width: 26px;
             height: 26px;
-            background: #2563eb;
+            background: #000;
             color: white;
             border-radius: 50%;
             display: flex;
@@ -650,43 +549,39 @@
             font-size: 0.85rem;
             flex-shrink: 0;
         }
-
         .step-content h4 {
-            color: #1f2937;
+            color: #111;
             margin: 0 0 6px 0;
             font-size: 1rem;
+            font-weight: 700;
         }
-
         .step-content p {
-            color: #6b7280;
+            color: #555;
             margin: 0;
             line-height: 1.5;
             font-size: 0.9rem;
         }
-
-        .step-content .code-block {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 10px 12px;
-            border-radius: 6px;
+        .code-block {
+            background: #1a1a1a;
+            color: #eee;
+            padding: 10px 14px;
+            border-radius: 8px;
             font-family: 'Courier New', monospace;
             font-size: 0.8rem;
             margin-top: 8px;
             overflow-x: auto;
             word-break: break-all;
         }
-
-        .step-content .highlight {
-            background: #fef3c7;
+        .highlight {
+            background: #eee;
             padding: 2px 6px;
             border-radius: 4px;
-            color: #92400e;
+            color: #111;
             font-weight: 600;
         }
-
         .warning-box {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
+            background: #fafafa;
+            border: 1px solid #ddd;
             border-radius: 10px;
             padding: 12px 14px;
             margin: 14px 0;
@@ -694,19 +589,10 @@
             gap: 10px;
             align-items: flex-start;
         }
-        .warning-box .warning-icon {
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        .warning-box p {
-            margin: 0;
-            color: #991b1b;
-            line-height: 1.6;
-        }
-
+        .warning-box p { margin: 0; color: #333; line-height: 1.6; }
         .tip-box {
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
+            background: #fafafa;
+            border: 1px solid #ddd;
             border-radius: 10px;
             padding: 12px 14px;
             margin: 14px 0;
@@ -714,27 +600,17 @@
             gap: 10px;
             align-items: flex-start;
         }
-        .tip-box .tip-icon {
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        .tip-box p {
-            margin: 0;
-            color: #065f46;
-            line-height: 1.6;
-        }
+        .tip-box p { margin: 0; color: #333; line-height: 1.6; }
 
         /* ============================================
-                   9. 弹窗通用样式
-                   ============================================ */
-        .modal-overlay {
+           弹窗通用 | 黑白
+           ============================================ */
+        .modal-overlay, .mod-detail-overlay, .sponsor-modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -742,95 +618,66 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
+            padding: 20px;
         }
-        .modal-overlay.active {
+        .modal-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
-
         .modal-box {
             background: white;
-            border-radius: 20px;
-            padding: 35px 30px;
+            border-radius: 16px;
+            padding: 32px 28px;
             max-width: 420px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transform: scale(0.8);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .modal-overlay.active .modal-box {
-            transform: scale(1);
-        }
-
-        .modal-icon {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-        }
-        .modal-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 12px;
-        }
-        .modal-text {
-            color: #6b7280;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .modal-buttons {
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-icon { font-size: 3rem; margin-bottom: 12px; }
+        .modal-title { font-size: 1.3rem; font-weight: 700; color: #111; margin-bottom: 10px; }
+        .modal-text { color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 8px; }
+        .modal-checkbox {
             display: flex;
-            gap: 12px;
+            align-items: center;
             justify-content: center;
+            gap: 6px;
+            margin: 12px 0 20px;
+            font-size: 0.85rem;
+            color: #666;
+            cursor: pointer;
         }
-
+        .modal-checkbox input { cursor: pointer; }
+        .modal-buttons { display: flex; gap: 12px; justify-content: center; }
         .modal-btn {
-            padding: 12px 28px;
-            border-radius: 12px;
+            padding: 10px 24px;
+            border-radius: 10px;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            border: none;
+            border: 1px solid #000;
             transition: all 0.2s;
             flex: 1;
             max-width: 140px;
         }
-        .modal-btn-confirm {
-            background: #d1d5db;
-            color: #1f2937;
-        }
-        .modal-btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        .modal-btn-cancel {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-        .modal-btn-cancel:hover {
-            background: #e5e7eb;
-        }
-        .modal-btn:active {
-            transform: scale(0.96);
-        }
+        .modal-btn-confirm { background: #000; color: #fff; }
+        .modal-btn-confirm:hover { background: #333; }
+        .modal-btn-cancel { background: #fff; color: #333; border-color: #ddd; }
+        .modal-btn-cancel:hover { border-color: #000; color: #000; }
 
-        body.modal-open {
-            overflow: hidden;
-        }
+        body.modal-open { overflow: hidden; }
 
         /* ============================================
-                   10. 图片大图查看器
-                   ============================================ */
+           图片大图查看器
+           ============================================ */
         .img-viewer-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -839,32 +686,15 @@
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
         }
-        .img-viewer-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .img-viewer-box {
-            position: relative;
-            max-width: 90vw;
-            max-height: 90vh;
-        }
-        .img-viewer-box img {
-            max-width: 90vw;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
+        .img-viewer-overlay.active { opacity: 1; visibility: visible; }
+        .img-viewer-box { position: relative; max-width: 90vw; max-height: 90vh; }
+        .img-viewer-box img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; display: block; }
         .img-viewer-close {
             position: absolute;
-            top: -40px;
-            right: 0;
-            width: 36px;
-            height: 36px;
+            top: -44px; right: 0;
+            width: 36px; height: 36px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.15);
             color: white;
             border: none;
             font-size: 1.2rem;
@@ -874,18 +704,14 @@
             justify-content: center;
             transition: background 0.2s;
         }
-        .img-viewer-close:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
+        .img-viewer-close:hover { background: rgba(255,255,255,0.3); }
         .img-viewer-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.15);
             color: white;
             border: none;
             font-size: 1.3rem;
@@ -895,146 +721,88 @@
             justify-content: center;
             transition: background 0.2s;
         }
-        .img-viewer-nav:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-        .img-viewer-prev {
-            left: -60px;
-        }
-        .img-viewer-next {
-            right: -60px;
-        }
-
+        .img-viewer-nav:hover { background: rgba(255,255,255,0.3); }
+        .img-viewer-prev { left: -60px; }
+        .img-viewer-next { right: -60px; }
         .img-viewer-counter {
             position: absolute;
-            bottom: -35px;
+            bottom: -40px;
             left: 50%;
             transform: translateX(-50%);
             color: white;
             font-size: 0.9rem;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 4px 14px;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 16px;
             border-radius: 20px;
+            backdrop-filter: blur(4px);
         }
 
         /* ============================================
-                   11. 模组详情弹窗
-                   ============================================ */
-        .mod-detail-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 15000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            padding: 20px;
-        }
-        .mod-detail-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
+           模组详情弹窗
+           ============================================ */
         .mod-detail-box {
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
             max-width: 700px;
             width: 100%;
             max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transform: scale(0.8);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .mod-detail-overlay.active .mod-detail-box {
-            transform: scale(1);
-        }
-
+        .mod-detail-overlay.active .mod-detail-box { transform: scale(1); }
         .mod-detail-header {
             position: relative;
-            height: 200px;
+            height: 220px;
             overflow: hidden;
+            background: #f5f5f5;
         }
-        .mod-detail-header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .mod-detail-header img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .mod-detail-header .header-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 30px 25px 15px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            bottom: 0; left: 0; right: 0;
+            padding: 30px 24px 16px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
             color: white;
         }
-        .mod-detail-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        .mod-detail-header .header-tags {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .mod-detail-header h2 { font-size: 1.4rem; margin-bottom: 6px; font-weight: 700; }
+        .mod-detail-header .header-tags { display: flex; gap: 6px; flex-wrap: wrap; }
         .mod-detail-header .header-tags span {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 2px 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
             border-radius: 12px;
             font-size: 0.75rem;
+            backdrop-filter: blur(4px);
         }
-
-        .mod-detail-body {
-            padding: 20px 25px;
-        }
-        .mod-detail-body .detail-section {
-            margin-bottom: 20px;
-        }
+        .mod-detail-body { padding: 24px; }
+        .mod-detail-body .detail-section { margin-bottom: 20px; }
         .mod-detail-body .detail-section h4 {
             font-size: 1rem;
-            color: #1f2937;
+            color: #111;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
+            font-weight: 700;
         }
-        .mod-detail-body .detail-section p {
-            color: #6b7280;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
+        .mod-detail-body .detail-section p { color: #555; line-height: 1.6; font-size: 0.95rem; }
         .mod-detail-gallery {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
         }
         .mod-detail-gallery img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
+            width: 100%; height: 120px; object-fit: cover;
+            border-radius: 10px; cursor: pointer; transition: transform 0.2s;
         }
-        .mod-detail-gallery img:hover {
-            transform: scale(1.03);
-        }
-
+        .mod-detail-gallery img:hover { transform: scale(1.02); }
         .mod-detail-footer {
-            padding: 0 25px 25px;
+            padding: 0 24px 24px;
             display: flex;
             gap: 12px;
         }
-        .mod-detail-footer .detail-btn {
+        .detail-btn {
             flex: 1;
             padding: 12px;
             border-radius: 10px;
@@ -1046,50 +814,33 @@
             text-align: center;
             text-decoration: none;
         }
-        .mod-detail-footer .detail-btn-primary {
-            background: #2563eb;
-            color: white;
-        }
-        .mod-detail-footer .detail-btn-primary:hover {
-            background: #1d4ed8;
-        }
-        .mod-detail-footer .detail-btn-secondary {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-        .mod-detail-footer .detail-btn-secondary:hover {
-            background: #e5e7eb;
-        }
+        .detail-btn-secondary { background: #f5f5f5; color: #555; border: 1px solid #e0e0e0; }
+        .detail-btn-secondary:hover { background: #eee; }
+        .detail-btn-primary { background: #000; color: #fff; }
+        .detail-btn-primary:hover { background: #333; }
 
         /* ============================================
-                   12. 赞助弹窗 & 悬浮按钮
-                   ============================================ */
+           赞助弹窗 & 悬浮按钮
+           ============================================ */
         .sponsor-float-btn {
             position: fixed;
             right: 20px;
             bottom: 80px;
-            width: 56px;
-            height: 56px;
+            width: 56px; height: 56px;
             border-radius: 50%;
-            background: #2563eb;
+            background: #000;
             color: white;
             border: none;
             font-size: 1.6rem;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .sponsor-float-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
-        }
-        .sponsor-float-btn:active {
-            transform: scale(0.95);
-        }
+        .sponsor-float-btn:hover { transform: scale(1.1); background: #222; }
         .sponsor-float-btn .btn-text {
             font-size: 0.75rem;
             position: absolute;
@@ -1097,240 +848,104 @@
             white-space: nowrap;
             color: #333;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255,255,255,0.95);
             padding: 2px 8px;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
         }
-
-        .sponsor-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .sponsor-modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
         .sponsor-modal-box {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 28px;
             max-width: 500px;
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            transform: scale(0.8);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            transform: scale(0.95);
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .sponsor-modal-overlay.active .sponsor-modal-box {
-            transform: scale(1);
-        }
-
-        .sponsor-modal-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .sponsor-modal-header .modal-icon {
-            font-size: 3rem;
-            margin-bottom: 8px;
-        }
-        .sponsor-modal-header h3 {
-            font-size: 1.3rem;
-            color: #1f2937;
-        }
-        .sponsor-modal-header p {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-
+        .sponsor-modal-overlay.active .sponsor-modal-box { transform: scale(1); }
+        .sponsor-modal-header { text-align: center; margin-bottom: 20px; }
+        .sponsor-modal-header .modal-icon { font-size: 2.8rem; margin-bottom: 6px; }
+        .sponsor-modal-header h3 { font-size: 1.2rem; color: #111; font-weight: 700; }
+        .sponsor-modal-header p { color: #666; font-size: 0.9rem; margin-top: 4px; }
         .sponsor-images-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             margin-bottom: 20px;
         }
-
         .sponsor-image-item {
             position: relative;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #e5e7eb;
-            background: #f9fafb;
+            border: 1px solid #eee;
+            background: #fafafa;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 10px;
         }
-        .sponsor-image-item img {
-            max-width: 100%;
-            max-height: 220px;
-            object-fit: contain;
-            display: block;
-            border-radius: 8px;
-        }
+        .sponsor-image-item img { max-width: 100%; max-height: 220px; object-fit: contain; display: block; border-radius: 8px; }
         .sponsor-image-item .img-label {
             position: absolute;
-            bottom: 6px;
-            left: 50%;
+            bottom: 6px; left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0,0,0,0.7);
             color: white;
             font-size: 0.75rem;
             padding: 2px 10px;
             border-radius: 10px;
         }
-
-        .sponsor-modal-footer {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
+        .sponsor-modal-footer { display: flex; gap: 12px; justify-content: center; }
         .sponsor-modal-footer .modal-btn {
             padding: 10px 24px;
             border-radius: 10px;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            border: none;
+            border: 1px solid #000;
             transition: all 0.2s;
             flex: 1;
         }
-        .sponsor-modal-footer .modal-btn-confirm {
-            background: #2563eb;
-            color: white;
-        }
-        .sponsor-modal-footer .modal-btn-confirm:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
-        }
-        .sponsor-modal-footer .modal-btn-cancel {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-        .sponsor-modal-footer .modal-btn-cancel:hover {
-            background: #e5e7eb;
-        }
+        .sponsor-modal-footer .modal-btn-confirm { background: #000; color: white; }
+        .sponsor-modal-footer .modal-btn-confirm:hover { background: #333; }
+        .sponsor-modal-footer .modal-btn-cancel { background: #fff; color: #333; border-color: #ddd; }
+        .sponsor-modal-footer .modal-btn-cancel:hover { border-color: #000; color: #000; }
 
         /* ============================================
-                   13. 响应式适配
-                   ============================================ */
+           响应式
+           ============================================ */
         @media (max-width: 1100px) {
-            .suggestion-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .suggestion-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
         @media (max-width: 768px) {
-            .file-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 25px;
-                padding: 30px 20px;
-            }
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            .stats {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-            .category-nav {
-                gap: 8px;
-            }
-            .category-btn {
-                padding: 7px 16px;
-                font-size: 0.88rem;
-            }
-            .mod-detail-gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .img-viewer-prev {
-                left: 10px;
-            }
-            .img-viewer-next {
-                right: 10px;
-            }
-            .mod-preview-img {
-                height: 120px;
-            }
-            .sponsor-float-btn {
-                right: 15px;
-                bottom: 70px;
-                width: 50px;
-                height: 50px;
-                font-size: 1.4rem;
-            }
-            .sponsor-images-grid {
-                grid-template-columns: 1fr;
-            }
-            .tutorial-section {
-                padding: 16px 12px;
-                border-radius: 10px;
-            }
-            .step-item {
-                flex-direction: column;
-                gap: 8px;
-                padding: 12px;
-                margin-bottom: 12px;
-            }
-            .step-number {
-                width: 22px;
-                height: 22px;
-                font-size: 0.75rem;
-            }
-            .step-content h4 {
-                font-size: 0.95rem;
-            }
-            .step-content p {
-                font-size: 0.85rem;
-            }
-            .tutorial-tabs {
-                gap: 6px;
-            }
-            .tutorial-tab {
-                padding: 6px 12px;
-                font-size: 0.8rem;
-            }
-            .tutorial-header h2 {
-                font-size: 1.1rem;
-            }
-            .code-block {
-                font-size: 0.75rem !important;
-                padding: 8px 10px !important;
-            }
+            .file-grid { grid-template-columns: 1fr; }
+            .footer { grid-template-columns: 1fr; text-align: center; gap: 24px; padding: 30px 20px; }
+            .header h1 { font-size: 1.7rem; }
+            .stats { flex-direction: column; align-items: center; gap: 8px; }
+            .mod-detail-gallery { grid-template-columns: repeat(2, 1fr); }
+            .img-viewer-prev { left: 10px; }
+            .img-viewer-next { right: 10px; }
+            .card-image-wrap { height: 160px; }
+            .sponsor-float-btn { right: 15px; bottom: 70px; width: 50px; height: 50px; font-size: 1.4rem; }
+            .sponsor-images-grid { grid-template-columns: 1fr; }
+            .tutorial-section { padding: 18px 14px; }
+            .step-item { flex-direction: column; gap: 8px; }
+            .code-block { font-size: 0.75rem !important; padding: 8px 10px !important; }
         }
-
         @media (max-width: 640px) {
-            .suggestion-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .suggestion-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
 
     <!-- ============================================
-    PAGE: 进入弹窗
-    ============================================ -->
+         开屏弹窗（含"不再提示"）
+         ============================================ -->
     <div class="modal-overlay" id="entryModal">
         <div class="modal-box">
             <div class="modal-icon">＼(>o<)ノ</div>
@@ -1341,6 +956,10 @@
                 点击确认进入下载中心。<br>
                 upQQ交流反馈群923038827
             </div>
+            <label class="modal-checkbox">
+                <input type="checkbox" id="dontShowAgain">
+                不再提示
+            </label>
             <div class="modal-buttons">
                 <button class="modal-btn modal-btn-confirm" onclick="closeModal()">进入</button>
                 <button class="modal-btn modal-btn-cancel" onclick="window.close()">退出</button>
@@ -1349,11 +968,11 @@
     </div>
 
     <!-- ============================================
-    PAGE: 主容器
-    ============================================ -->
+         主容器
+         ============================================ -->
     <div class="container">
 
-        <!-- ========== 头部 ========== -->
+        <!-- 头部 -->
         <div class="header">
             <h1>汉化模组下载中心</h1>
             <p>搜索并下载你需要的模组资源</p>
@@ -1363,13 +982,12 @@
             </div>
         </div>
 
-        <!-- ========== 搜索框 ========== -->
+        <!-- 搜索框 -->
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="搜索文件名、简介或标签...">
-            <span class="search-icon">🔍</span>
         </div>
 
-        <!-- ========== 分类导航 ========== -->
+        <!-- 分类导航 -->
         <div class="category-nav">
             <button class="category-btn active" data-category="all">全部</button>
             <button class="category-btn" data-category="engine">发动机</button>
@@ -1379,21 +997,19 @@
             <button class="category-btn" data-category="tutorial">📖 教程</button>
         </div>
 
-        <!-- ========== 统计栏 ========== -->
+        <!-- 统计栏 -->
         <div class="stats">
             <span>📁 共 <strong id="totalCount">0</strong> 个文件</span>
             <span>今日下载 <strong>114514</strong> 次</span>
             <span>在线用户 <strong>9178</strong> 人</span>
         </div>
 
-        <!-- ========== 教程区 ========== -->
+        <!-- 教程区 -->
         <div class="tutorial-section" id="tutorialSection" style="display:none;">
             <div class="tutorial-header">
-                <span class="tutorial-icon">📖</span>
+                <span style="font-size:1.4rem;">📖</span>
                 <h2>模组安装教程</h2>
             </div>
-
-            <!-- 教程标签页 -->
             <div class="tutorial-tabs">
                 <button class="tutorial-tab active" data-tutorial="android">📱 Android</button>
                 <button class="tutorial-tab" data-tutorial="ios">🍎 iOS</button>
@@ -1401,188 +1017,56 @@
                 <button class="tutorial-tab" data-tutorial="common">⚙️ 常见问题</button>
             </div>
 
-            <!-- Android 教程 -->
             <div class="tutorial-content active" id="tutorial-android">
                 <ul class="step-list">
-                    <li class="step-item">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h4>下载模组文件</h4>
-                            <p>在本站找到需要的模组，点击<span class="highlight">"⬇️ 下载"</span>按钮，将ZIP文件下载到手机。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h4>解压模组文件</h4>
-                            <p>使用文件管理器（如MT管理器、ES文件浏览器等）找到下载的ZIP文件，解压后会得到pack文件或文件夹</p>
-                            <div class="code-block">模组文件夹：Parts / Textures Packs</div>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h4>定位游戏目录</h4>
-                            <p>找到SFS游戏数据目录，路径通常为：</p>
-                            <div class="code-block">/storage/emulated/0/Android/media/com.StefMorojna.SpaceflightSimulator/Mods/Custom_Assets/Parts/</div>
-                            <p>某些手机系统路径在data内</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h4>复制模组文件</h4>
-                            <p>将解压后的模组文件夹复制到游戏目录下的对应位置：</p>
-                            <div class="code-block">• pack模组 → Parts/ <br>• 涂装模组 → Textures Packs/</div>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">5</div>
-                        <div class="step-content">
-                            <h4>启动游戏验证</h4>
-                            <p>重新启动SFS 在主页面等待一会 待模组加载器内显示该模组即为加载成功(注意下方的报错信息)</p>
-                        </div>
-                    </li>
+                    <li class="step-item"><div class="step-number">1</div><div class="step-content"><h4>下载模组文件</h4><p>在本站找到需要的模组，点击<span class="highlight">"⬇️ 下载"</span>按钮，将ZIP文件下载到手机。</p></div></li>
+                    <li class="step-item"><div class="step-number">2</div><div class="step-content"><h4>解压模组文件</h4><p>使用文件管理器找到下载的ZIP文件，解压后会得到pack文件或文件夹。</p><div class="code-block">模组文件夹：Parts / Textures Packs</div></div></li>
+                    <li class="step-item"><div class="step-number">3</div><div class="step-content"><h4>定位游戏目录</h4><p>找到SFS游戏数据目录，路径通常为：</p><div class="code-block">/storage/emulated/0/Android/media/com.StefMorojna.SpaceflightSimulator/Mods/Custom_Assets/Parts/</div><p>某些手机系统路径在data内</p></div></li>
+                    <li class="step-item"><div class="step-number">4</div><div class="step-content"><h4>复制模组文件</h4><p>将解压后的模组文件夹复制到游戏目录下的对应位置：</p><div class="code-block">• pack模组 → Parts/ <br>• 涂装模组 → Textures Packs/</div></div></li>
+                    <li class="step-item"><div class="step-number">5</div><div class="step-content"><h4>启动游戏验证</h4><p>重新启动SFS，在主页面等待一会，待模组加载器内显示该模组即为加载成功（注意下方的报错信息）。</p></div></li>
                 </ul>
-                <div class="tip-box">
-                    <span class="tip-icon">💡</span>
-                    <p><strong>小技巧：</strong>如果游戏加载模组速度过慢 可以尝试断网重启或开启VPN 交流群923038827</p>
-                </div>
+                <div class="tip-box"><span style="font-size:1.2rem;">💡</span><p><strong>小技巧：</strong>如果游戏加载模组速度过慢，可以尝试断网重启或开启VPN。交流群923038827</p></div>
             </div>
 
-            <!-- iOS 教程 -->
             <div class="tutorial-content" id="tutorial-ios">
                 <ul class="step-list">
-                    <li class="step-item">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h4>下载并解压文件</h4>
-                            <p>下载模组ZIP文件后，解压。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h4>定位游戏目录</h4>
-                            <p>iOS游戏数据路径为：</p>
-                            <div class="code-block">我的设备\Spaceflight Simulator/</div>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h4>放置模组文件</h4>
-                            <p>将解压后的模组移动到游戏目录的Parts或Textures Packs文件夹中，操作方式与Android类似。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h4>验证与排错</h4>
-                            <p>重启游戏检查模组是否生效。iOS系统对文件权限要求严格，如遇问题请检查文件读写权限。</p>
-                        </div>
-                    </li>
+                    <li class="step-item"><div class="step-number">1</div><div class="step-content"><h4>下载并解压文件</h4><p>下载模组ZIP文件后，解压。</p></div></li>
+                    <li class="step-item"><div class="step-number">2</div><div class="step-content"><h4>定位游戏目录</h4><p>iOS游戏数据路径为：</p><div class="code-block">我的设备\Spaceflight Simulator/</div></div></li>
+                    <li class="step-item"><div class="step-number">3</div><div class="step-content"><h4>放置模组文件</h4><p>将解压后的模组移动到游戏目录的Parts或Textures Packs文件夹中。</p></div></li>
+                    <li class="step-item"><div class="step-number">4</div><div class="step-content"><h4>验证与排错</h4><p>重启游戏检查模组是否生效。iOS系统对文件权限要求严格，如遇问题请检查文件读写权限。</p></div></li>
                 </ul>
             </div>
 
-            <!-- PC 教程 -->
             <div class="tutorial-content" id="tutorial-pc">
-                <div class="warning-box">
-                    <span class="warning-icon">⚠️</span>
-                    <p><strong>重要提示：</strong>Steam版SFS的模组安装路径与手机版不同，请注意区分。</p>
-                </div>
+                <div class="warning-box"><span style="font-size:1.2rem;">⚠️</span><p><strong>重要提示：</strong>Steam版SFS的模组安装路径与手机版不同，请注意区分。</p></div>
                 <ul class="step-list">
-                    <li class="step-item">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h4>下载模组文件</h4>
-                            <p>从本站下载需要的模组ZIP文件，解压到电脑任意位置。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h4>找到游戏安装目录</h4>
-                            <p>Steam版SFS的存档和模组路径通常为：</p>
-                            <div class="code-block">你的steam安装位置\SteamLibrary\steamapps\common\Spaceflight Simulator\Spaceflight Simulator Game</div>
-                            <p>或在Steam库中右键游戏 → 管理 → 浏览本地文件。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h4>放置模组文件</h4>
-                            <p>在游戏目录下创建或找到以下文件夹，将模组文件放入：</p>
-                            <div class="code-block">• 部件 → Spaceflight Simulator\Parts\<br>• 涂装 → Spaceflight Simulator\Textures Packs\</div>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h4>启动游戏</h4>
-                            <p>通过Steam启动游戏，进入游戏检查新部件是否正常显示。</p>
-                        </div>
-                    </li>
+                    <li class="step-item"><div class="step-number">1</div><div class="step-content"><h4>下载模组文件</h4><p>从本站下载需要的模组ZIP文件，解压到电脑任意位置。</p></div></li>
+                    <li class="step-item"><div class="step-number">2</div><div class="step-content"><h4>找到游戏安装目录</h4><p>Steam版SFS的存档和模组路径通常为：</p><div class="code-block">你的steam安装位置\SteamLibrary\steamapps\common\Spaceflight Simulator\Spaceflight Simulator Game</div><p>或在Steam库中右键游戏 → 管理 → 浏览本地文件。</p></div></li>
+                    <li class="step-item"><div class="step-number">3</div><div class="step-content"><h4>放置模组文件</h4><p>在游戏目录下创建或找到以下文件夹，将模组文件放入：</p><div class="code-block">• 部件 → Spaceflight Simulator\Parts\<br>• 涂装 → Spaceflight Simulator\Textures Packs\</div></div></li>
+                    <li class="step-item"><div class="step-number">4</div><div class="step-content"><h4>启动游戏</h4><p>通过Steam启动游戏，进入游戏检查新部件是否正常显示。</p></div></li>
                 </ul>
-                <div class="tip-box">
-                    <span class="tip-icon">💡</span>
-                    <p><strong>小技巧：</strong>PC版是本地加载 加载模组速度极快</p>
-                </div>
+                <div class="tip-box"><span style="font-size:1.2rem;">💡</span><p><strong>小技巧：</strong>PC版是本地加载，加载模组速度极快。</p></div>
             </div>
 
-            <!-- 常见问题 -->
             <div class="tutorial-content" id="tutorial-common">
                 <ul class="step-list">
-                    <li class="step-item">
-                        <div class="step-number">?</div>
-                        <div class="step-content">
-                            <h4>部件名称显示为空白</h4>
-                            <p>这是汉化模组的常见问题，说明汉化文件未正确加载或编码格式不匹配。<br><span class="highlight">解决方法：</span>确保下载的是对应游戏版本的汉化包；尝试重新安装汉化模组。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">?</div>
-                        <div class="step-content">
-                            <h4>模组部件不显示或显示异常</h4>
-                            <p>可能原因：贴图文件缺失；模型文件损坏；与其他模组冲突。<br><span class="highlight">解决方法：</span>检查模组文件是否完整；关闭其他模组测试；查看游戏日志获取详细错误信息。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">?</div>
-                        <div class="step-content">
-                            <h4>如何卸载模组？</h4>
-                            <p>找到游戏目录中对应的模组文件/文件夹，直接删除即可。<br><span class="highlight">建议：</span>安装新模组前截图记录原有文件，方便卸载时恢复。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">?</div>
-                        <div class="step-content">
-                            <h4>多个模组能否同时安装？</h4>
-                            <p>可以，但需要注意模组之间可能存在冲突。<br><span class="highlight">建议：</span>一次只安装一个新模组，测试正常后再安装下一个；避免同时安装功能重复的模组。</p>
-                        </div>
-                    </li>
-                    <li class="step-item">
-                        <div class="step-number">?</div>
-                        <div class="step-content">
-                            <h4>存档会受模组影响吗？</h4>
-                            <p>使用模组部件建造的火箭存档，在卸载模组后可能无法正常加载（部件会消失）。<br><span class="highlight">建议：</span>使用模组前备份存档；重要作品建议导出蓝图保存。</p>
-                        </div>
-                    </li>
+                    <li class="step-item"><div class="step-number" style="font-size:0.75rem;">?</div><div class="step-content"><h4>部件名称显示为空白</h4><p>这是汉化模组的常见问题，说明汉化文件未正确加载或编码格式不匹配。<br><span class="highlight">解决方法：</span>确保下载的是对应游戏版本的汉化包；尝试重新安装汉化模组。</p></div></li>
+                    <li class="step-item"><div class="step-number" style="font-size:0.75rem;">?</div><div class="step-content"><h4>模组部件不显示或显示异常</h4><p>可能原因：贴图文件缺失；模型文件损坏；与其他模组冲突。<br><span class="highlight">解决方法：</span>检查模组文件是否完整；关闭其他模组测试；查看游戏日志获取详细错误信息。</p></div></li>
+                    <li class="step-item"><div class="step-number" style="font-size:0.75rem;">?</div><div class="step-content"><h4>如何卸载模组？</h4><p>找到游戏目录中对应的模组文件/文件夹，直接删除即可。<br><span class="highlight">建议：</span>安装新模组前截图记录原有文件，方便卸载时恢复。</p></div></li>
+                    <li class="step-item"><div class="step-number" style="font-size:0.75rem;">?</div><div class="step-content"><h4>多个模组能否同时安装？</h4><p>可以，但需要注意模组之间可能存在冲突。<br><span class="highlight">建议：</span>一次只安装一个新模组，测试正常后再安装下一个；避免同时安装功能重复的模组。</p></div></li>
+                    <li class="step-item"><div class="step-number" style="font-size:0.75rem;">?</div><div class="step-content"><h4>存档会受模组影响吗？</h4><p>使用模组部件建造的火箭存档，在卸载模组后可能无法正常加载（部件会消失）。<br><span class="highlight">建议：</span>使用模组前备份存档；重要作品建议导出蓝图保存。</p></div></li>
                 </ul>
-                <div class="tip-box">
-                    <span class="tip-icon">💡</span>
-                    <p><strong>反馈交流：</strong>如遇其他问题，欢迎加入QQ群 <span class="highlight">923038827</span> 交流讨论，或向模组作者反馈bug。</p>
-                </div>
+                <div class="tip-box"><span style="font-size:1.2rem;">💡</span><p><strong>反馈交流：</strong>如遇其他问题，欢迎加入QQ群 <span class="highlight">923038827</span> 交流讨论，或向模组作者反馈bug。</p></div>
             </div>
         </div>
 
-        <!-- ========== 模组卡片网格 ========== -->
+        <!-- 模组卡片网格 -->
         <div class="file-grid" id="fileGrid"></div>
 
-        <!-- ========== 无结果提示（由JS填充） ========== -->
+        <!-- 无结果提示 -->
         <div class="no-results" id="noResults"></div>
 
-        <!-- ========== 页脚（三栏） ========== -->
+        <!-- 页脚 -->
         <div class="footer">
             <div class="footer-col">
                 <h4>📦 关于下载</h4>
@@ -1597,13 +1081,11 @@
                 <p>QQ群：923038827<br>UP主：A Future star<br>欢迎反馈汉化问题与模组兼容性情况</p>
             </div>
         </div>
-
     </div>
-    <!-- END .container -->
 
     <!-- ============================================
-    PAGE: 图片大图查看器
-    ============================================ -->
+         图片大图查看器
+         ============================================ -->
     <div class="img-viewer-overlay" id="imgViewerOverlay" onclick="if(event.target===this)closeImgViewer()">
         <div class="img-viewer-box">
             <button class="img-viewer-close" onclick="closeImgViewer()">✕</button>
@@ -1615,15 +1097,15 @@
     </div>
 
     <!-- ============================================
-    PAGE: 模组详情弹窗
-    ============================================ -->
+         模组详情弹窗
+         ============================================ -->
     <div class="mod-detail-overlay" id="modDetailOverlay" onclick="if(event.target===this)closeModDetail()">
         <div class="mod-detail-box" id="modDetailBox"></div>
     </div>
 
     <!-- ============================================
-    PAGE: 赞助弹窗
-    ============================================ -->
+         赞助弹窗
+         ============================================ -->
     <div class="sponsor-modal-overlay" id="sponsorModalOverlay" onclick="if(event.target===this)closeSponsorModal()">
         <div class="sponsor-modal-box">
             <div class="sponsor-modal-header">
@@ -1638,139 +1120,121 @@
         </div>
     </div>
 
-    <!-- ============================================
-    PAGE: 赞助悬浮按钮
-    ============================================ -->
+    <!-- 赞助悬浮按钮 -->
     <button class="sponsor-float-btn" id="sponsorFloatBtn" title="赞助支持">
-        ❤️
+        ￥
         <span class="btn-text">赞助</span>
     </button>
 
     <!-- ============================================
-    JAVASCRIPT: 主逻辑
-    ============================================ -->
+         JavaScript
+         ============================================ -->
     <script>
         (function() {
             'use strict';
 
-            /* ==========================================
-                     0. 模组数据
-                     ========================================== */
             let files = [];
-
-            /* ==========================================
-                     1. 常量与状态
-                     ========================================== */
             const typeIcons = {
-                pdf: '📄',
-                zip: '📦',
-                doc: '📝',
-                img: '🖼️',
-                video: '🎬',
-                code: '💻',
-                default: '📎'
+                pdf: '📄', zip: '📦', doc: '📝', img: '🖼️',
+                video: '🎬', code: '💻', default: '📎'
             };
-
             let currentCategory = 'all';
             let searchKeyword = '';
             let viewerImages = [];
             let viewerIndex = 0;
 
-            /* ==========================================
-                     2. 工具函数
-                     ========================================== */
+            /* ---------- 工具 ---------- */
             function checkAndRemoveModalOpen() {
                 const anyActive = document.querySelector(
                     '.modal-overlay.active, .img-viewer-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active'
-                    );
+                );
                 if (!anyActive) document.body.classList.remove('modal-open');
             }
 
-            /* ==========================================
-                     3. 渲染函数
-                     ========================================== */
-
-            // ---- 3a. 生成完整卡片 ----
+            /* ---------- 渲染：主卡片（截图风格） ---------- */
             function createModCard(file, index) {
                 const tagsHtml = file.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-                const versionHtml = `<div class="file-version">📌 ${file.version || 'v1.0 汉化版'}</div>`;
-                const compatHtml = `<div class="file-compat">兼容: ${file.compat || '1.6.00.3+'}</div>`;
                 const icon = typeIcons[file.type] || typeIcons.default;
 
-                let imgHtml = '';
-                let galleryHtml = '';
-
+                let imageHtml = '';
                 if (file.images && file.images.length > 0) {
-                    imgHtml =
-                        `<img src="${file.images[0]}" class="mod-preview-img" alt="${file.name}" loading="lazy" onclick="openModDetail(${index})">`;
-                    if (file.images.length > 1) {
-                        galleryHtml = `<div class="mod-img-gallery">` +
-                            file.images.slice(1, 4).map((img, i) =>
-                                `<img src="${img}" loading="lazy" onclick="openImgViewer(${index}, ${i+1})" alt="预览">`
-                            ).join('') +
-                            (file.images.length > 4 ? `<span style="display:flex;align-items:center;color:#9ca3af;font-size:0.8rem;padding:0 5px;">+${file.images.length - 4}</span>` :
-                                '') +
-                            `</div>`;
-                    }
+                    const thumbs = file.images.slice(1, 4);
+                    const moreCount = file.images.length > 4 ? file.images.length - 4 : 0;
+                    const thumbsHtml = thumbs.length ? `
+                        <div class="card-image-gallery" onclick="event.stopPropagation()">
+                            ${thumbs.map((img, i) => `<img src="${img}" loading="lazy" onclick="openImgViewer(${index}, ${i+1})" alt="">`).join('')}
+                            ${moreCount ? `<span style="color:#fff;font-size:0.7rem;padding:4px 6px;background:rgba(0,0,0,0.4);border-radius:4px;white-space:nowrap;">+${moreCount}</span>` : ''}
+                        </div>
+                    ` : '';
+                    imageHtml = `
+                        <div class="card-image-wrap" onclick="openModDetail(${index})">
+                            <img src="${file.images[0]}" alt="${file.name}" loading="lazy">
+                            ${thumbsHtml}
+                        </div>
+                    `;
                 } else {
-                    imgHtml =
-                        `<div class="mod-preview-img no-image" style="background:linear-gradient(135deg,#e0e7ff,#dbeafe);" onclick="openModDetail(${index})">${icon}</div>`;
+                    imageHtml = `
+                        <div class="card-image-wrap card-image-placeholder" onclick="openModDetail(${index})">
+                            <span>${icon}</span>
+                        </div>
+                    `;
                 }
 
                 return `
-                        <div class="file-card">
-                            ${imgHtml}
-                            <div class="file-name">${file.name}</div>
-                            <div class="tags">${tagsHtml}</div>
-                            ${galleryHtml}
-                            <div class="file-desc">${file.desc}</div>
-                            ${versionHtml}
-                            <div class="file-extra">
-                                <span class="file-author">👤 ${file.author || 'A Future star'}</span>
+                    <div class="file-card">
+                        ${imageHtml}
+                        <div class="card-body">
+                            <div class="card-title">${file.name}</div>
+                            <div class="card-subtitle">
+                                <span>👤 ${file.author || 'A Future star'}</span>
+                                <span>⏱ ${file.version || 'v1.0'}</span>
                             </div>
-                            ${compatHtml}
-                            <div class="file-meta">
-                                <span class="file-size">💾 ${file.size}</span>
-                                <span class="file-date">📅 ${file.date}</span>
-                            </div>
-                            <div style="display:flex;gap:8px;">
-                                <button onclick="openModDetail(${index})" class="download-btn" style="flex:1;background:#f3f4f6;color:#6b7280;">📷 详情</button>
-                                <a href="${file.link}" target="_blank" class="download-btn" style="flex:2;">⬇️ 下载</a>
+                            <div class="card-tags">${tagsHtml}</div>
+                            <div class="card-desc">${file.desc}</div>
+                            <div class="card-meta-boxes">
+                                <div class="meta-box">💾 ${file.size}</div>
+                                <div class="meta-box">📅 ${file.date}</div>
                             </div>
                         </div>
-                    `;
+                        <div class="card-actions">
+                            <button class="btn btn-detail" onclick="openModDetail(${index})">ⓘ 详情</button>
+                            <a href="${file.link}" target="_blank" class="btn btn-download">⬇ 下载</a>
+                        </div>
+                    </div>
+                `;
             }
 
-            // ---- 3b. 生成紧凑推荐卡片（无结果时使用） ----
+            /* ---------- 渲染：推荐卡片（无结果） ---------- */
             function createCompactCard(file, index) {
                 const icon = typeIcons[file.type] || typeIcons.default;
-                const img = (file.images && file.images.length > 0) ?
-                    `<div class="sug-img-wrap"><img src="${file.images[0]}" loading="lazy" alt=""></div>` :
-                    `<div class="sug-img-wrap" style="background:linear-gradient(135deg,#e0e7ff,#dbeafe);"><div class="sug-icon">${icon}</div></div>`;
+                const img = (file.images && file.images.length > 0)
+                    ? `<div class="sug-img-wrap"><img src="${file.images[0]}" loading="lazy" alt=""></div>`
+                    : `<div class="sug-img-wrap"><div class="sug-icon">${icon}</div></div>`;
                 return `
-                        <div class="suggestion-card">
-                            ${img}
+                    <div class="suggestion-card">
+                        ${img}
+                        <div class="sug-body">
                             <div class="sug-name">${file.name.replace(/<br>/g, ' ')}</div>
                             <div class="sug-meta">
-                                <span class="sug-version">${file.version || 'v1.0'}</span>
-                                <span class="sug-compat">${file.compat || '1.5.x+'}</span>
+                                <span class="sug-badge">${file.version || 'v1.0'}</span>
+                                <span class="sug-badge">${file.compat || '1.5.x+'}</span>
                             </div>
                             <div class="sug-extra">
                                 <span>👤${(file.author || 'UP').slice(0,6)}</span>
-                                <span class="file-hot">🔥${file.heat || '热'}</span>
+                                <span>🔥${file.heat || '热'}</span>
                             </div>
-                            <a href="${file.link}" target="_blank" class="sug-btn">⬇️ 下载</a>
                         </div>
-                    `;
+                        <a href="${file.link}" target="_blank" class="sug-btn">⬇️ 下载</a>
+                    </div>
+                `;
             }
 
-            // ---- 3c. 主渲染 ----
+            /* ---------- 主渲染 ---------- */
             function renderFiles() {
                 const grid = document.getElementById('fileGrid');
                 const noResults = document.getElementById('noResults');
                 const tutorialSection = document.getElementById('tutorialSection');
 
-                // 教程分类特殊处理
                 if (currentCategory === 'tutorial') {
                     grid.style.display = 'none';
                     noResults.classList.remove('show');
@@ -1802,37 +1266,29 @@
                 if (visibleCount === 0) {
                     grid.style.display = 'none';
                     noResults.classList.add('show');
-                    const suggestions = files.filter(f => currentCategory === 'all' || f.category === currentCategory)
-                        .slice(0, 5);
-                    let html = `
-                            <div style="text-align:center;margin-bottom:30px;">
-                                <div style="font-size:3rem;margin-bottom:10px;">😕</div>
-                                <div style="font-size:1.2rem;color:#1f2937;font-weight:600;">没有找到匹配的文件</div>
-                                <div style="color:#6b7280;margin-top:8px;">请尝试其他关键词，或浏览以下热门推荐</div>
-                            </div>
-                            <div class="suggestion-grid">
-                                ${suggestions.map((file, idx) => createCompactCard(file, idx)).join('')}
-                            </div>
-                        `;
-                    noResults.innerHTML = html;
+                    const suggestions = files.filter(f => currentCategory === 'all' || f.category === currentCategory).slice(0, 5);
+                    noResults.innerHTML = `
+                        <div style="text-align:center;margin-bottom:30px;">
+                            <div style="font-size:3rem;margin-bottom:10px;">😕</div>
+                            <div style="font-size:1.2rem;color:#111;font-weight:700;">没有找到匹配的文件</div>
+                            <div style="color:#666;margin-top:8px;">请尝试其他关键词，或浏览以下热门推荐</div>
+                        </div>
+                        <div class="suggestion-grid">
+                            ${suggestions.map((file, idx) => createCompactCard(file, idx)).join('')}
+                        </div>
+                    `;
                 } else {
                     noResults.classList.remove('show');
-                    noResults.innerHTML = '';
                     grid.style.display = 'grid';
                 }
             }
 
-            /* ==========================================
-                     4. 事件绑定
-                     ========================================== */
-
-            // ---- 4a. 搜索 ----
+            /* ---------- 事件绑定 ---------- */
             document.getElementById('searchInput').addEventListener('input', function(e) {
                 searchKeyword = e.target.value;
                 renderFiles();
             });
 
-            // ---- 4b. 分类按钮 ----
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
@@ -1842,7 +1298,6 @@
                 });
             });
 
-            // ---- 4c. 教程 Tab 切换 ----
             document.querySelectorAll('.tutorial-tab').forEach(tab => {
                 tab.addEventListener('click', function() {
                     document.querySelectorAll('.tutorial-tab').forEach(t => t.classList.remove('active'));
@@ -1852,49 +1307,52 @@
                 });
             });
 
-            // ---- 4d. 进入弹窗 ----
+            /* ---------- 开屏弹窗（不再提示） ---------- */
             function showModal() {
+                if (localStorage.getItem('hideEntryModal') === 'true') return;
                 const modal = document.getElementById('entryModal');
                 document.body.classList.add('modal-open');
                 setTimeout(() => modal.classList.add('active'), 100);
             }
 
             window.closeModal = function() {
+                const checkbox = document.getElementById('dontShowAgain');
+                if (checkbox && checkbox.checked) {
+                    localStorage.setItem('hideEntryModal', 'true');
+                }
                 document.getElementById('entryModal').classList.remove('active');
                 checkAndRemoveModalOpen();
             };
 
             window.addEventListener('DOMContentLoaded', showModal);
 
-            // ---- 4e. 模组详情弹窗 ----
+            /* ---------- 模组详情 ---------- */
             window.openModDetail = function(index) {
                 const file = files[index];
                 if (!file) return;
                 const box = document.getElementById('modDetailBox');
                 const tags = file.tags.map(t => `<span>${t}</span>`).join('');
                 const gallery = (file.images && file.images.length) ?
-                    `<div class="detail-section"><h4>🖼️ 预览图</h4><div class="mod-detail-gallery">${file.images.map((img,i)=>`<img src="${img}" onclick="openImgViewer(${index},${i})">`).join('')}</div></div>` :
-                    '';
+                    `<div class="detail-section"><h4>🖼️ 预览图</h4><div class="mod-detail-gallery">${file.images.map((img,i)=>`<img src="${img}" onclick="openImgViewer(${index},${i})">`).join('')}</div></div>` : '';
                 box.innerHTML = `
-                        <div class="mod-detail-header">
-                            ${file.images && file.images[0] ? `<img src="${file.images[0]}" alt="">` : '<div style="height:100%;background:linear-gradient(135deg,#e0e7ff,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:4rem;">📦</div>'}
-                            <div class="header-overlay">
-                                <h2>${file.name}</h2>
-                                <div class="header-tags">${tags}</div>
-                            </div>
+                    <div class="mod-detail-header">
+                        ${file.images && file.images[0] ? `<img src="${file.images[0]}" alt="">` : '<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:4rem;">📦</div>'}
+                        <div class="header-overlay">
+                            <h2>${file.name}</h2>
+                            <div class="header-tags">${tags}</div>
                         </div>
-                        <div class="mod-detail-body">
-                            <div class="detail-section"><h4>📝 简介</h4><p>${file.desc}</p></div>
-                            <div class="detail-section"><h4>📌 信息</h4><p>版本：${file.version||'v1.0'} &nbsp;|&nbsp; 作者：${file.author||'A Future star'} &nbsp;|&nbsp; 兼容：${file.compat||'1.5.x - 1.6.x'} &nbsp;|&nbsp; 大小：${file.size} &nbsp;|&nbsp; 更新：${file.date}</p></div>
-                            ${gallery}
-                        </div>
-                        <div class="mod-detail-footer">
-                            <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">关闭</button>
-                            <a href="${file.link}" target="_blank" class="detail-btn detail-btn-primary">⬇️ 前往下载</a>
-                        </div>
-                    `;
-                const overlay = document.getElementById('modDetailOverlay');
-                overlay.classList.add('active');
+                    </div>
+                    <div class="mod-detail-body">
+                        <div class="detail-section"><h4>📝 简介</h4><p>${file.desc}</p></div>
+                        <div class="detail-section"><h4>📌 信息</h4><p>版本：${file.version||'v1.0'} &nbsp;|&nbsp; 作者：${file.author||'A Future star'} &nbsp;|&nbsp; 兼容：${file.compat||'1.6.00.3+'} &nbsp;|&nbsp; 大小：${file.size} &nbsp;|&nbsp; 更新：${file.date}</p></div>
+                        ${gallery}
+                    </div>
+                    <div class="mod-detail-footer">
+                        <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">关闭</button>
+                        <a href="${file.link}" target="_blank" class="detail-btn detail-btn-primary">⬇️ 前往下载</a>
+                    </div>
+                `;
+                document.getElementById('modDetailOverlay').classList.add('active');
                 document.body.classList.add('modal-open');
             };
 
@@ -1903,15 +1361,14 @@
                 checkAndRemoveModalOpen();
             };
 
-            // ---- 4f. 图片查看器 ----
+            /* ---------- 图片查看器 ---------- */
             window.openImgViewer = function(fileIdx, imgIdx) {
                 const file = files[fileIdx];
                 if (!file || !file.images) return;
                 viewerImages = file.images;
                 viewerIndex = imgIdx || 0;
                 updateImgViewer();
-                const overlay = document.getElementById('imgViewerOverlay');
-                overlay.classList.add('active');
+                document.getElementById('imgViewerOverlay').classList.add('active');
                 document.body.classList.add('modal-open');
             };
 
@@ -1930,7 +1387,7 @@
                 checkAndRemoveModalOpen();
             };
 
-            // ---- 4g. 赞助弹窗 ----
+            /* ---------- 赞助 ---------- */
             const sponsorImageList = [
                 "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/5.png"
             ];
@@ -1938,11 +1395,11 @@
             function openSponsorModal() {
                 const grid = document.getElementById('sponsorImagesGrid');
                 grid.innerHTML = sponsorImageList.map(url => `
-                        <div class="sponsor-image-item">
-                            <img src="${url}" alt="赞助码">
-                            <span class="img-label">感谢支持</span>
-                        </div>
-                    `).join('');
+                    <div class="sponsor-image-item">
+                        <img src="${url}" alt="赞助码">
+                        <span class="img-label">感谢支持</span>
+                    </div>
+                `).join('');
                 document.getElementById('sponsorModalOverlay').classList.add('active');
                 document.body.classList.add('modal-open');
             }
@@ -1955,9 +1412,7 @@
             document.getElementById('sponsorFloatBtn').addEventListener('click', openSponsorModal);
             window.closeSponsorModal = closeSponsorModal;
 
-            /* ==========================================
-                     5. 初始化
-                     ========================================== */
+            /* ---------- 初始化 ---------- */
             fetch('data/data.json')
                 .then(response => response.json())
                 .then(data => {
