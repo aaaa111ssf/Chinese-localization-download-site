@@ -572,7 +572,9 @@
             "隔热罩"
         ],
         "category": "function",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/34.png"
+        ],
         "version": "v1.0",
         "author": "Lurin",
         "heat": "8.3万",
