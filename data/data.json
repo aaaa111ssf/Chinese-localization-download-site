@@ -490,8 +490,11 @@
             "设备"
         ],
         "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/32.png"
+        ],
         "version": "v1.0.3",
-        "author": "EUP",
+        "author": "QMSP",
         "heat": "16.4万",
         "compat": "1.6.00.3+"
     },
