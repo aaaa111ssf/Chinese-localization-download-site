@@ -724,7 +724,9 @@
             "部件"
         ],
         "category": "function",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/45.png"
+        ],
         "version": "v1.0",
         "author": "Neptune",
         "heat": "6.5万",
@@ -817,7 +819,9 @@
             "部件"
         ],
         "category": "function",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/46.png"
+        ],
         "version": "v1.0",
         "author": "Maria",
         "heat": "8.2万",
@@ -853,7 +857,9 @@
             "卫星"
         ],
         "category": "function",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/47.png"
+        ],
         "version": "v1.0",
         "author": "CubeSat",
         "heat": "7.6万",
@@ -870,7 +876,9 @@
             "引擎"
         ],
         "category": "engine",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/48.png"
+        ],
         "version": "v1.0",
         "author": "NearFar",
         "heat": "12.8万",
