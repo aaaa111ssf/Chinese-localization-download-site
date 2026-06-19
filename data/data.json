@@ -1030,7 +1030,9 @@
             "涂装"
         ],
         "category": "skin",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/58.png"
+        ],
         "version": "v1.0",
         "author": "TYavaJ",
         "heat": "18.9万",
