@@ -530,8 +530,11 @@
             "发动机"
         ],
         "category": "engine",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/33.png"
+        ],
         "version": "v1.0",
-        "author": "Hobbit",
+        "author": "Hopiter",
         "heat": "19.8万",
         "compat": "1.6.00.3+"
     },
