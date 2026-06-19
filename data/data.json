@@ -462,15 +462,18 @@
         "size": "2MB",
         "date": "2026-6-10",
         "desc": "适用于上级的发动机",
-        "link": "https://wwaqu.lanzoub.com/i5Mlh3pjjcva",
+        "link": "https://wwaqu.lanzoub.com/i9xpw3sc5lxi",
         "tags": [
             "发动机",
             "现实",
             "汉化"
         ],
         "category": "engine",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/31.png"
+        ],
         "version": "v1.6",
-        "author": "RL10Team",
+        "author": "Lemniscate Biscuit",
         "heat": "13.1万",
         "compat": "1.6.00.3+"
     },
