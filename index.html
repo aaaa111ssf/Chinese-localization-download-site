@@ -185,15 +185,6 @@
         .file-card:hover .card-image-wrap img.loaded {
             transform: scale(1.03);
         }
-        .card-image-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #bbb;
-            font-size: 3rem;
-        }
 
         /* 懒加载淡入 */
         img[data-src] {
@@ -202,6 +193,30 @@
         img.loaded {
             opacity: 1;
         }
+
+        /* 图片加载失败/无图片时的回退占位 */
+        .card-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+        }
+        .card-image-fallback {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            height: 100%;
+            color: #bbb;
+            user-select: none;
+            padding: 20px;
+            text-align: center;
+        }
+        .fallback-icon { font-size: 2.4rem; line-height: 1; }
+        .fallback-text { font-size: 0.75rem; color: #ccc; font-weight: 500; }
 
         /* 图片内小画廊（底部黑渐变条） */
         .card-image-gallery {
@@ -1172,6 +1187,28 @@
                     .replace(/\r/g, '\\r');
             }
 
+            /* ---------- 数据安全与图片校验 ---------- */
+            function getValidImages(file) {
+                if (!file || file.images == null) return [];
+                const arr = Array.isArray(file.images) ? file.images : [file.images];
+                return arr.filter(url => typeof url === 'string' && url.trim().length > 0);
+            }
+
+            /* ---------- 图片加载失败回退 ---------- */
+            window.handleImgError = function(img) {
+                img.onerror = null;
+                const wrap = img.parentElement;
+                if (!wrap) return;
+                wrap.classList.add('card-image-placeholder');
+                const icon = img.dataset.icon || '📦';
+                wrap.innerHTML = `
+                    <div class="card-image-fallback">
+                        <span class="fallback-icon">${icon}</span>
+                        <span class="fallback-text">暂无预览</span>
+                    </div>
+                `;
+            };
+
             /* ---------- 工具 ---------- */
             function checkAndRemoveModalOpen() {
                 const anyActive = document.querySelector(
@@ -1220,6 +1257,8 @@
 
             /* ---------- 渲染：主卡片（截图风格） ---------- */
             function createModCard(file, index) {
+                const validImages = getValidImages(file);
+
                 const safe = {
                     name: escapeHtml(file.name || '未命名模组'),
                     desc: escapeHtml(file.desc || '暂无描述'),
@@ -1229,7 +1268,6 @@
                     date: escapeHtml(file.date || ''),
                     link: escapeHtml(file.link || '#'),
                     tags: Array.isArray(file.tags) ? file.tags : [],
-                    images: Array.isArray(file.images) ? file.images : [],
                     type: file.type || 'default'
                 };
 
@@ -1237,25 +1275,28 @@
                 const icon = typeIcons[safe.type] || typeIcons.default;
 
                 let imageHtml = '';
-                if (safe.images.length > 0) {
-                    const thumbs = safe.images.slice(1, 4);
-                    const moreCount = safe.images.length > 4 ? safe.images.length - 4 : 0;
+                if (validImages.length > 0) {
+                    const thumbs = validImages.slice(1, 4);
+                    const moreCount = validImages.length > 4 ? validImages.length - 4 : 0;
                     const thumbsHtml = thumbs.length ? `
                         <div class="card-image-gallery" onclick="event.stopPropagation()">
-                            ${thumbs.map((img, i) => `<img data-src="${escapeHtml(img)}" onclick="openImgViewer(${index}, ${i+1})" alt="" class="lazy-img">`).join('')}
+                            ${thumbs.map((img, i) => `<img data-src="${escapeHtml(img)}" onclick="openImgViewer(${index}, ${i+1})" alt="" class="lazy-img" onerror="this.style.display='none'; this.onerror=null;">`).join('')}
                             ${moreCount ? `<span style="color:#fff;font-size:0.7rem;padding:4px 6px;background:rgba(0,0,0,0.4);border-radius:4px;white-space:nowrap;">+${moreCount}</span>` : ''}
                         </div>
                     ` : '';
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
-                            <img data-src="${escapeHtml(safe.images[0])}" alt="${safe.name}" class="lazy-img">
+                            <img data-src="${escapeHtml(validImages[0])}" alt="${safe.name}" class="lazy-img" data-icon="${icon}" onerror="handleImgError(this)">
                             ${thumbsHtml}
                         </div>
                     `;
                 } else {
                     imageHtml = `
                         <div class="card-image-wrap card-image-placeholder" onclick="openModDetail(${index})">
-                            <span>${icon}</span>
+                            <div class="card-image-fallback">
+                                <span class="fallback-icon">${icon}</span>
+                                <span class="fallback-text">暂无预览</span>
+                            </div>
                         </div>
                     `;
                 }
@@ -1286,6 +1327,7 @@
 
             /* ---------- 渲染：推荐卡片（无结果） ---------- */
             function createCompactCard(file, index) {
+                const validImages = getValidImages(file);
                 const safe = {
                     name: escapeHtml((file.name || '').replace(/<br>/gi, ' ')),
                     author: escapeHtml((file.author || 'UP').slice(0,6)),
@@ -1293,13 +1335,12 @@
                     compat: escapeHtml(file.compat || '1.5.x+'),
                     heat: escapeHtml(file.heat || '热'),
                     link: escapeHtml(file.link || '#'),
-                    type: file.type || 'default',
-                    images: Array.isArray(file.images) ? file.images : []
+                    type: file.type || 'default'
                 };
                 const icon = typeIcons[safe.type] || typeIcons.default;
-                const img = safe.images.length > 0
-                    ? `<div class="sug-img-wrap"><img data-src="${escapeHtml(safe.images[0])}" class="lazy-img" alt=""></div>`
-                    : `<div class="sug-img-wrap"><div class="sug-icon">${icon}</div></div>`;
+                const img = validImages.length > 0
+                    ? `<div class="sug-img-wrap"><img data-src="${escapeHtml(validImages[0])}" data-icon="${icon}" class="lazy-img" alt="" onerror="handleImgError(this)"></div>`
+                    : `<div class="sug-img-wrap card-image-placeholder"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
                 return `
                     <div class="suggestion-card">
                         ${img}
@@ -1422,13 +1463,21 @@
             window.openModDetail = function(index) {
                 const file = files[index];
                 if (!file) return;
+                const validImages = getValidImages(file);
                 const box = document.getElementById('modDetailBox');
                 const tags = (Array.isArray(file.tags) ? file.tags : []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
-                const gallery = (Array.isArray(file.images) && file.images.length) ?
-                    `<div class="detail-section"><h4>🖼️ 预览图</h4><div class="mod-detail-gallery">${file.images.map((img,i)=>`<img data-src="${escapeHtml(img)}" class="lazy-img" onclick="openImgViewer(${index},${i})">`).join('')}</div></div>` : '';
+                const icon = typeIcons[file.type] || typeIcons.default;
+
+                const firstImage = validImages.length > 0 
+                    ? `<img data-src="${escapeHtml(validImages[0])}" alt="" class="lazy-img" data-icon="${icon}" onerror="handleImgError(this)">`
+                    : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
+
+                const gallery = validImages.length > 0 ?
+                    `<div class="detail-section"><h4>🖼️ 预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" data-icon="${icon}" class="lazy-img" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)">`).join('')}</div></div>` : '';
+
                 box.innerHTML = `
                     <div class="mod-detail-header">
-                        ${Array.isArray(file.images) && file.images[0] ? `<img data-src="${escapeHtml(file.images[0])}" alt="" class="lazy-img">` : '<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:4rem;">📦</div>'}
+                        ${firstImage}
                         <div class="header-overlay">
                             <h2>${escapeHtml(file.name || '未命名模组')}</h2>
                             <div class="header-tags">${tags}</div>
@@ -1457,20 +1506,27 @@
             /* ---------- 图片查看器 ---------- */
             window.openImgViewer = function(fileIdx, imgIdx) {
                 const file = files[fileIdx];
-                if (!file || !Array.isArray(file.images)) return;
-                viewerImages = file.images;
-                viewerIndex = imgIdx || 0;
+                if (!file) return;
+                const validImages = getValidImages(file);
+                if (!validImages.length) return;
+                viewerImages = validImages;
+                viewerIndex = Math.max(0, Math.min(imgIdx || 0, validImages.length - 1));
                 updateImgViewer();
                 document.getElementById('imgViewerOverlay').classList.add('active');
                 document.body.classList.add('modal-open');
             };
 
             function updateImgViewer() {
+                if (viewerImages.length === 0) {
+                    closeImgViewer();
+                    return;
+                }
                 document.getElementById('imgViewerImg').src = viewerImages[viewerIndex];
                 document.getElementById('imgViewerCounter').textContent = `${viewerIndex + 1} / ${viewerImages.length}`;
             }
 
             window.changeImg = function(dir) {
+                if (viewerImages.length === 0) return;
                 viewerIndex = (viewerIndex + dir + viewerImages.length) % viewerImages.length;
                 updateImgViewer();
             };
