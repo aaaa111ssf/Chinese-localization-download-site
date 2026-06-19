@@ -532,13 +532,16 @@
         "size": "12.1MB",
         "date": "2026-6-10",
         "desc": "添加了各种武器",
-        "link": "https://wwaqu.lanzoub.com/imQlF3rk2xhi",
+        "link": "https://wwaqu.lanzoub.com/imMzs3sc200b",
         "tags": [
             "激光",
             "核弹",
             "大炮"
         ],
         "category": "entertain",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/29.png"
+        ],
         "version": "v1.0",
         "author": "LaserTeam",
         "heat": "25.6万",
