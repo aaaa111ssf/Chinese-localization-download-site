@@ -62,6 +62,26 @@
         "compat": "1.6.00.3+"
     },
     {
+        "name": "电子号",
+        "type": "zip",
+        "size": "5MB",
+        "date": "2026-6-19",
+        "desc": "电子号火箭",
+        "link": "https://wwaqu.lanzoub.com/iD0nD3sc11ab",
+        "tags": [
+            "真实",
+            "发动机"
+        ],
+        "category": "engine",
+         "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/28.png"
+        ],
+        "version": "v2.1",
+        "author": "SenchQ",
+        "heat": "19.8万",
+        "compat": "1.6.00.3+"
+    },
+    {
         "name": "新一代燃料",
         "type": "zip",
         "size": "1.8MB",
