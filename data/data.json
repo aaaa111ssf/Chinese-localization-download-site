@@ -842,7 +842,7 @@
             "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/35.png"
         ],
         "version": "v1.0",
-        "author": "UtilPack",
+        "author": "PicoSpace",
         "heat": "11.9万",
         "compat": "1.6.00.3+"
     },
@@ -861,7 +861,7 @@
             "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/47.png"
         ],
         "version": "v1.0",
-        "author": "CubeSat",
+        "author": "PicoSpace",
         "heat": "7.6万",
         "compat": "1.6.00.3+"
     },
@@ -899,7 +899,7 @@
             "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/51.png"
         ],
         "version": "v1.0",
-        "author": "Plasma",
+        "author": "TSS XingYi",
         "heat": "14.4万",
         "compat": "1.6.00.3+"
     },
@@ -975,7 +975,7 @@
             "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/54.png"
         ],
         "version": "v1.4",
-        "author": "AEP",
+        "author": "Lemniscate Biscuit",
         "heat": "9.0万",
         "compat": "1.6.00.3+"
     },
@@ -994,7 +994,7 @@
             "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/53.png"
         ],
         "version": "v2.0",
-        "author": "ACE",
+        "author": "Lemniscate Biscuit",
         "heat": "10.2万",
         "compat": "1.6.00.3+"
     },
@@ -1011,7 +1011,9 @@
             "外观"
         ],
         "category": "skin",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/56.png"
+        ],
         "version": "v1.0",
         "author": "Model",
         "heat": "22.3万",
@@ -1045,7 +1047,9 @@
             "涂装"
         ],
         "category": "skin",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/55.png"
+        ],
         "version": "v1.0",
         "author": "CN_UwU",
         "heat": "16.7万",
@@ -1057,14 +1061,16 @@
         "size": "0.9MB",
         "date": "2026-6-12",
         "desc": "各国国旗主题涂装",
-        "link": "https://wwaqu.lanzoub.com/i0iSm3ru8jha",
+        "link": "https://wwaqu.lanzoub.com/iDwVY3sch9uf",
         "tags": [
             "涂装",
             "国旗",
             "外观"
         ],
         "category": "skin",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/59.png"
+        ],
         "version": "v1.0",
         "author": "Frostblue44",
         "heat": "12.1万",
@@ -1083,7 +1089,9 @@
             "军事"
         ],
         "category": "skin",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/57.png"
+        ],
         "version": "v1.0",
         "author": "SFS-Gamer",
         "heat": "14.5万",
@@ -1102,7 +1110,9 @@
             "质感"
         ],
         "category": "skin",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/60.png"
+        ],
         "version": "v1.0",
         "author": "Dr. Stark Miller",
         "heat": "11.3万",
