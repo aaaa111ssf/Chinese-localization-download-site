@@ -690,7 +690,7 @@
             "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/42.png"
         ],
         "version": "v1.0",
-        "author": "Hopit",
+        "author": "Hopiter",
         "heat": "10.3万",
         "compat": "1.6.00.3+"
     },
@@ -741,9 +741,11 @@
             "引擎"
         ],
         "category": "engine",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/43.png"
+        ],
         "version": "v1.0",
-        "author": "Pi",
+        "author": "QMSP",
         "heat": "13.3万",
         "compat": "1.6.00.3+"
     },
@@ -777,9 +779,11 @@
             "部件"
         ],
         "category": "function",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/42.png"
+        ],
         "version": "v1.0",
-        "author": "Physics",
+        "author": "Wave",
         "heat": "9.4万",
         "compat": "1.6.00.3+"
     },
@@ -794,9 +798,11 @@
             "部件"
         ],
         "category": "function",
-        "images": [],
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/44.png"
+        ],
         "version": "v1.0",
-        "author": "FutureTech",
+        "author": "rtfg",
         "heat": "15.7万",
         "compat": "1.6.00.3+"
     },
