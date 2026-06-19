@@ -441,15 +441,18 @@
         "size": "0.2MB",
         "date": "2026-6-10",
         "desc": "一个零件包，包含多种零件，允许你重现真实火箭和任务，或创造混合型号，展示可能实现的设想。",
-        "link": "https://wwaqu.lanzoub.com/idwPU3pjjduf",
+        "link": "https://wwaqu.lanzoub.com/isvtA3sc39of",
         "tags": [
             "零件",
             "现实",
             "汉化"
         ],
         "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/30.png"
+        ],
         "version": "v0.1.1.2",
-        "author": "NewDawn",
+        "author": "QMSP",
         "heat": "5.9万",
         "compat": "1.6.00.3+"
     },
