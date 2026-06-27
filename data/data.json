@@ -1,4 +1,43 @@
 [
+        {
+        "name": "坎巴拉太空飞行模拟器",
+        "type": "zip",
+        "size": "9.1 MB",
+        "date": "2026-06-27",
+        "desc": "哈哈 KSP 在 SFS 里冲啊啊啊啊啊",
+        "link": "https://wwaqu.lanzoub.com/iX8U43t8mvih",
+        "tags": [
+            "引擎",
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/93.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "Mac",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
+        {
+        "name": "海龙号",
+        "type": "zip",
+        "size": "6.4 MB",
+        "date": "2026-06-27",
+        "desc": "海龙号",
+        "link": "https://wwaqu.lanzoub.com/iu8ZN3t8mueh",
+        "tags": [
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/92.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "Mac",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
     {
         "name": "殖民地",
         "type": "zip",
