@@ -1,5 +1,44 @@
 [
         {
+        "name": "TTS电力",
+        "type": "zip",
+        "size": "12.5 MB",
+        "date": "2026-07-03",
+        "desc": "此包包含与电力相关的部件 例如太阳能板 电池 放射性同位素热电发生器(RTG)等",
+        "link": "https://wwaqu.lanzoub.com/iAXnK3u808xi",
+        "tags": [
+            "电力",
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/95.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "TSS XingYi",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
+        {
+        "name": "着陆垫",
+        "type": "zip",
+        "size": "0.5 MB",
+        "date": "2026-07-03",
+        "desc": "猎鹰 9 号和重型着陆于无人机船和着陆垫等",
+        "link": "https://wwaqu.lanzoub.com/ivW2l3u81chc",
+        "tags": [
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/96.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "sfsupgraderocket",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
+        {
         "name": "坎巴拉太空飞行模拟器",
         "type": "zip",
         "size": "9.1 MB",
