@@ -1,5 +1,24 @@
 [
         {
+        "name": "东西和事物",
+        "type": "zip",
+        "size": "1 MB",
+        "date": "2026-07-03",
+        "desc": "包含 6 台新发动机. 感谢 A Future star, zTallsRobot, Conderblack 和 Mr. Coquita 给我机会制作你们的发动机 并帮助进行移动端适配.",
+        "link": "https://wwaqu.lanzoub.com/iMyV53ue8j8d",
+        "tags": [
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/99.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "Eternity",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
+        {
         "name": "Hyptix 的字体",
         "type": "zip",
         "size": "0.5 MB",
