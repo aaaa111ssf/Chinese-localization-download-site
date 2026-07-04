@@ -1,5 +1,23 @@
 [
         {
+        "name": "字母数字符号",
+        "type": "zip",
+        "size": "12.5 MB",
+        "date": "2026-07-03",
+        "desc": "添加字母、数字和符号",
+        "link": "https://wwaqu.lanzoub.com/iUbS73ue7hhe",
+        "tags": [
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/97.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "Roshan",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
         "name": "TTS电力",
         "type": "zip",
         "size": "12.5 MB",
