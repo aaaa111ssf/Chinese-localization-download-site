@@ -1,5 +1,24 @@
 [
         {
+        "name": "原版+",
+        "type": "zip",
+        "size": "2.3 MB",
+        "date": "2026-07-03",
+        "desc": "一套香草风格的部件和纹理",
+        "link": "https://wwaqu.lanzoub.com/iMR123ueb7of",
+        "tags": [
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/100.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "InvinteX",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
+        {
         "name": "东西和事物",
         "type": "zip",
         "size": "1 MB",
