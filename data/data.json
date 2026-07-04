@@ -18,6 +18,7 @@
         "heat": "12.5万",
         "compat": "1.6.00.3+"
     },
+        {
         "name": "TTS电力",
         "type": "zip",
         "size": "12.5 MB",
