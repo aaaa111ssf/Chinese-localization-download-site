@@ -1,5 +1,24 @@
 [
         {
+        "name": "新视野",
+        "type": "zip",
+        "size": "36.9 MB",
+        "date": "2026-07-11",
+        "desc": "土星系列火箭扩展 蓝图下载https://wwaqu.lanzoub.com/iKLVx3vqr6kj 报错1900+故不再汉化 与阿波罗（汉化）不兼容",
+        "link": "https://wwaqu.lanzoub.com/i8QYG3vqpmxg",
+        "tags": [
+            "汉化"
+        ],
+        "category": "function",
+        "images": [
+            "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/101.png"
+        ],
+        "version": "v1.0 汉化",
+        "author": "Mac",
+        "heat": "12.5万",
+        "compat": "1.6.00.3+"
+    },
+        {
         "name": "原版+",
         "type": "zip",
         "size": "2.3 MB",
