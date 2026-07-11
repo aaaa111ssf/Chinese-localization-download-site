@@ -2973,22 +2973,14 @@
             /* ---------- 初始化 ---------- */
             fetch('data/data.json')
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('HTTP ' + response.status);
-                    }
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
                 })
                 .then(data => {
-                    // 兼容新旧格式
-                    // 新格式: { files: [...], announcements: [...] }
-                    // 旧格式: [...]
                     if (Array.isArray(data)) {
                         files = data;
-                    } else if (data && typeof data === 'object') {
-                        files = Array.isArray(data.files) ? data.files : [];
-                        if (Array.isArray(data.announcements)) {
-                            renderAnnouncements(data.announcements);
-                        }
+                    } else if (data && typeof data === 'object' && Array.isArray(data.files)) {
+                        files = data.files;
                     } else {
                         throw new Error('数据格式错误');
                     }
@@ -3000,6 +2992,14 @@
                     document.getElementById('fileGrid').style.display = 'none';
                     document.getElementById('totalCount').textContent = '0';
                 });
+
+            // 单独加载公告
+            fetch('data/announce.json')
+                .then(r => r.ok ? r.json() : [])
+                .then(data => {
+                    if (Array.isArray(data) && data.length) renderAnnouncements(data);
+                })
+                .catch(() => {});
 
         })();
 
@@ -3050,16 +3050,21 @@
                     list.innerHTML = '<div class="announce-empty">暂无公告</div>';
                     return;
                 }
-                list.innerHTML = announcements.map(a => `
+                list.innerHTML = announcements.map(a => {
+                    const esc = (s) => {
+                        if (s == null) return '';
+                        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+                    };
+                    return `
                     <div class="announce-item">
                         <div class="announce-item-header">
                             <span class="announce-item-type ${a.type || 'info'}">${a.type === 'info' ? '通知' : a.type === 'warn' ? '警告' : a.type === 'success' ? '更新' : a.type === 'error' ? '紧急' : '通知'}</span>
-                            <span class="announce-item-date">${escapeHtml(a.date || '')}</span>
+                            <span class="announce-item-date">${esc(a.date || '')}</span>
                         </div>
-                        <div class="announce-item-title">${escapeHtml(a.title || '')}</div>
-                        <div class="announce-item-content">${escapeHtml(a.content || '')}</div>
-                    </div>
-                `).join('');
+                        <div class="announce-item-title">${esc(a.title || '')}</div>
+                        <div class="announce-item-content">${esc(a.content || '')}</div>
+                    </div>`;
+                }).join('');
 
                 // 检查是否有未读公告
                 const readIds = JSON.parse(localStorage.getItem(ANNOUNCE_KEY) || '[]');
@@ -3091,7 +3096,9 @@
             function closeAnnouncePanel() {
                 document.getElementById('announcePanel').classList.remove('active');
                 document.getElementById('announcePanelOverlay').classList.remove('active');
-                checkAndRemoveModalOpen();
+                // 检查是否还有其他弹窗/面板打开
+                const anyOpen = document.querySelector('.modal-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active, .img-viewer-overlay.active, .settings-panel.active, .settings-panel-overlay.active');
+                if (!anyOpen) document.body.classList.remove('modal-open');
             }
 
             document.getElementById('announceFloatBtn').addEventListener('click', openAnnouncePanel);
