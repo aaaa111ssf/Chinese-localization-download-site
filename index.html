@@ -12,8 +12,6 @@
     <link rel="preconnect" href="https://cdn.jsdmirror.com" crossorigin>
     <link rel="dns-prefetch" href="https://jsdelivr.aby.pub">
     <link rel="preconnect" href="https://jsdelivr.aby.pub" crossorigin>
-    <link rel="preload" href="/data/data.json" as="fetch" crossorigin>
-    <link rel="preload" href="/data/announce.json" as="fetch" crossorigin>
     <title>SFS汉化模组下载中心 - Spaceflight Simulator 中文模组</title>
 
     <!-- ============= SEO Meta ============= -->
@@ -3010,7 +3008,7 @@
             window.closeSponsorModal = closeSponsorModal;
 
             /* ---------- 初始化 ---------- */
-            fetch('data/data.json')
+            fetch('data/data.json?v=' + Date.now())
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
@@ -3034,7 +3032,7 @@
                 });
 
             // 单独加载公告
-            fetch('data/announce.json')
+            fetch('data/announce.json?v=' + Date.now())
                 .then(r => r.ok ? r.json() : [])
                 .then(data => {
                     if (Array.isArray(data) && data.length) renderAnnouncements(data);
