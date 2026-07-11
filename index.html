@@ -5,7 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="dns-prefetch" href="https://testingcf.jsdelivr.net">
     <link rel="preconnect" href="https://testingcf.jsdelivr.net" crossorigin>
-    <title>SFS汉化模组下载中心</title>
+    <link rel="dns-prefetch" href="https://cdn.jsdmirror.com">
+    <link rel="preconnect" href="https://cdn.jsdmirror.com" crossorigin>
+    <link rel="dns-prefetch" href="https://jsdelivr.aby.pub">
+    <link rel="preconnect" href="https://jsdelivr.aby.pub" crossorigin>
+    <title>SFS汉化模组下载中心 - Spaceflight Simulator 中文模组</title>
+
+    <!-- ============= SEO Meta ============= -->
+    <meta name="description" content="SFS汉化模组下载中心，为 Spaceflight Simulator 玩家提供海量汉化模组资源下载，包含发动机、部件、涂装包等，支持安卓/iOS/PC多平台安装教程。">
+    <meta name="keywords" content="SFS,Spaceflight Simulator,汉化模组,模组下载,中文模组,火箭模组,游戏模组">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="A-Future-star">
+    <link rel="canonical" href="https://sfszhmod.pages.dev/">
+
+    <!-- ============= Open Graph ============= -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SFS汉化模组下载中心">
+    <meta property="og:description" content="为 Spaceflight Simulator 玩家提供海量汉化模组资源下载，包含发动机、部件、涂装包等。">
+    <meta property="og:url" content="https://sfszhmod.pages.dev/">
+    <meta property="og:image" content="https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/2.png">
+    <meta property="og:site_name" content="SFS汉化模组下载中心">
+    <meta property="og:locale" content="zh_CN">
+
+    <!-- ============= Twitter Card ============= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SFS汉化模组下载中心">
+    <meta name="twitter:description" content="为 Spaceflight Simulator 玩家提供海量汉化模组资源下载。">
+    <meta name="twitter:image" content="https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/2.png">
+
+    <!-- ============= Theme Color ============= -->
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
 
         <!-- ============= Favicon 图标 ============= -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -1884,10 +1914,10 @@
     <!-- ============================================
          开屏弹窗（含"不再提示"）
          ============================================ -->
-    <div class="modal-overlay" id="entryModal">
+    <div class="modal-overlay" id="entryModal" role="dialog" aria-modal="true" aria-labelledby="entryModalTitle">
         <div class="modal-box">
             <div class="modal-icon">＼(>o<)ノ</div>
-            <div class="modal-title">欢迎访问 SFS 汉化模组站</div>
+            <div class="modal-title" id="entryModalTitle">欢迎访问 SFS 汉化模组站</div>
             <div class="modal-text">
                 本站所有模组均为汉化版本，仅供学习交流使用。<br>
                 下载前请确认您已了解模组安装方法。<br>
@@ -1908,62 +1938,61 @@
     <!-- ============================================
          主容器
          ============================================ -->
-    <div class="container">
+    <main class="container">
 
         <!-- 头部 -->
-        <div class="header">
+        <header class="header">
             <h1>汉化模组下载中心</h1>
             <p>搜索并下载你需要的模组资源</p>
             <div class="declaration" id="customDeclaration">
                 声明：本站所有汉化模组仅供学习交流，请于下载后24小时内删除，禁止用于商业用途。<br>
                 部分模组存在加载完报错、部件名称描述为空白等bug
             </div>
-        </div>
+        </header>
 
         <!-- 搜索框 -->
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="搜索文件名、简介或标签...">
+        <div class="search-box" role="search">
+            <input type="text" id="searchInput" placeholder="搜索文件名、简介或标签..." aria-label="搜索模组">
         </div>
 
         <!-- 分类导航 -->
-        <div class="category-nav">
+        <nav class="category-nav" aria-label="模组分类">
             <button class="category-btn active" data-category="all">全部</button>
             <button class="category-btn" data-category="engine">发动机</button>
             <button class="category-btn" data-category="function">功能性部件</button>
             <button class="category-btn" data-category="entertain">娱乐性部件</button>
             <button class="category-btn" data-category="skin">涂装包</button>
-            <button class="category-btn" data-category="tutorial">📖 教程</button>
-        </div>
+            <button class="category-btn" data-category="tutorial">教程</button>
+        </nav>
 
         <!-- 统计栏 -->
-        <div class="stats">
-            <span>📁 共 <strong id="totalCount">0</strong> 个文件</span>
+        <div class="stats" aria-label="网站统计">
+            <span>共 <strong id="totalCount">0</strong> 个文件</span>
             <span>累计下载 <strong>18590</strong> 次</span>
             <span>在线用户 <strong>10</strong> 人</span>
         </div>
 
         <!-- 教程区 -->
-        <div class="tutorial-section" id="tutorialSection" style="display:none;">
+        <section class="tutorial-section" id="tutorialSection" style="display:none;" aria-label="模组安装教程">
             <div class="tutorial-header">
-                <span style="font-size:1.4rem;">📖</span>
                 <h2>模组安装教程</h2>
             </div>
             <div class="tutorial-tabs">
-                <button class="tutorial-tab active" data-tutorial="android">📱 Android</button>
-                <button class="tutorial-tab" data-tutorial="ios">🍎 iOS</button>
-                <button class="tutorial-tab" data-tutorial="pc">💻 PC/Steam</button>
-                <button class="tutorial-tab" data-tutorial="common">⚙️ 常见问题</button>
+                <button class="tutorial-tab active" data-tutorial="android">Android</button>
+                <button class="tutorial-tab" data-tutorial="ios">iOS</button>
+                <button class="tutorial-tab" data-tutorial="pc">PC/Steam</button>
+                <button class="tutorial-tab" data-tutorial="common">常见问题</button>
             </div>
 
             <div class="tutorial-content active" id="tutorial-android">
                 <ul class="step-list">
-                    <li class="step-item"><div class="step-number">1</div><div class="step-content"><h4>下载模组文件</h4><p>在本站找到需要的模组，点击<span class="highlight">"⬇️ 下载"</span>按钮，将ZIP文件下载到手机。</p></div></li>
+                    <li class="step-item"><div class="step-number">1</div><div class="step-content"><h4>下载模组文件</h4><p>在本站找到需要的模组，点击<span class="highlight">"下载"</span>按钮，将ZIP文件下载到手机。</p></div></li>
                     <li class="step-item"><div class="step-number">2</div><div class="step-content"><h4>解压模组文件</h4><p>使用文件管理器找到下载的ZIP文件，解压后会得到pack文件或文件夹。</p><div class="code-block">模组文件夹：Parts / Textures Packs</div></div></li>
                     <li class="step-item"><div class="step-number">3</div><div class="step-content"><h4>定位游戏目录</h4><p>找到SFS游戏数据目录，路径通常为：</p><div class="code-block">/storage/emulated/0/Android/media/com.StefMorojna.SpaceflightSimulator/Mods/Custom_Assets/Parts/</div><p>某些手机系统路径在data内</p></div></li>
                     <li class="step-item"><div class="step-number">4</div><div class="step-content"><h4>复制模组文件</h4><p>将解压后的模组文件夹复制到游戏目录下的对应位置：</p><div class="code-block">• pack模组 → Parts/ <br>• 涂装模组 → Textures Packs/</div></div></li>
                     <li class="step-item"><div class="step-number">5</div><div class="step-content"><h4>启动游戏验证</h4><p>重新启动SFS，在主页面等待一会，待模组加载器内显示该模组即为加载成功（注意下方的报错信息）。</p></div></li>
                 </ul>
-                <div class="tip-box"><span style="font-size:1.2rem;">💡</span><p><strong>小技巧：</strong>如果游戏加载模组速度过慢，可以尝试断网重启或开启VPN。交流群923038827</p></div>
+                <div class="tip-box"><p><strong>小技巧：</strong>如果游戏加载模组速度过慢，可以尝试断网重启或开启VPN。交流群923038827</p></div>
             </div>
 
             <div class="tutorial-content" id="tutorial-ios">
@@ -1976,14 +2005,14 @@
             </div>
 
             <div class="tutorial-content" id="tutorial-pc">
-                <div class="warning-box"><span style="font-size:1.2rem;">⚠️</span><p><strong>重要提示：</strong>Steam版SFS的模组安装路径与手机版不同，请注意区分。</p></div>
+                <div class="warning-box"><p><strong>重要提示：</strong>Steam版SFS的模组安装路径与手机版不同，请注意区分。</p></div>
                 <ul class="step-list">
                     <li class="step-item"><div class="step-number">1</div><div class="step-content"><h4>下载模组文件</h4><p>从本站下载需要的模组ZIP文件，解压到电脑任意位置。</p></div></li>
                     <li class="step-item"><div class="step-number">2</div><div class="step-content"><h4>找到游戏安装目录</h4><p>Steam版SFS的存档和模组路径通常为：</p><div class="code-block">你的steam安装位置\SteamLibrary\steamapps\common\Spaceflight Simulator\Spaceflight Simulator Game</div><p>或在Steam库中右键游戏 → 管理 → 浏览本地文件。</p></div></li>
                     <li class="step-item"><div class="step-number">3</div><div class="step-content"><h4>放置模组文件</h4><p>在游戏目录下创建或找到以下文件夹，将模组文件放入：</p><div class="code-block">• 部件 → Spaceflight Simulator\Parts\<br>• 涂装 → Spaceflight Simulator\Textures Packs\</div></div></li>
                     <li class="step-item"><div class="step-number">4</div><div class="step-content"><h4>启动游戏</h4><p>通过Steam启动游戏，进入游戏检查新部件是否正常显示。</p></div></li>
                 </ul>
-                <div class="tip-box"><span style="font-size:1.2rem;">💡</span><p><strong>小技巧：</strong>PC版是本地加载，加载模组速度极快。</p></div>
+                <div class="tip-box"><p><strong>小技巧：</strong>PC版是本地加载，加载模组速度极快。</p></div>
             </div>
 
             <div class="tutorial-content" id="tutorial-common">
@@ -1994,32 +2023,32 @@
                     <li class="step-item"><div class="step-number" style="font-size:0.75rem;">?</div><div class="step-content"><h4>多个模组能否同时安装？</h4><p>可以，但需要注意模组之间可能存在冲突。<br><span class="highlight">建议：</span>一次只安装一个新模组，测试正常后再安装下一个；避免同时安装功能重复的模组。</p></div></li>
                     <li class="step-item"><div class="step-number" style="font-size:0.75rem;">?</div><div class="step-content"><h4>存档会受模组影响吗？</h4><p>使用模组部件建造的火箭存档，在卸载模组后可能无法正常加载（部件会消失）。<br><span class="highlight">建议：</span>使用模组前备份存档；重要作品建议导出蓝图保存。</p></div></li>
                 </ul>
-                <div class="tip-box"><span style="font-size:1.2rem;">💡</span><p><strong>反馈交流：</strong>如遇其他问题，欢迎加入QQ群 <span class="highlight">923038827</span> 交流讨论，或向模组作者反馈bug。</p></div>
+                <div class="tip-box"><p><strong>反馈交流：</strong>如遇其他问题，欢迎加入QQ群 <span class="highlight">923038827</span> 交流讨论，或向模组作者反馈bug。</p></div>
             </div>
-        </div>
+        </section>
 
         <!-- 模组卡片网格 -->
-        <div class="file-grid" id="fileGrid"></div>
+        <section class="file-grid" id="fileGrid" aria-label="模组列表"></section>
 
         <!-- 无结果提示 -->
-        <div class="no-results" id="noResults"></div>
+        <div class="no-results" id="noResults" aria-live="polite"></div>
 
         <!-- 页脚 -->
-        <div class="footer">
+        <footer class="footer">
             <div class="footer-col">
-                <h4>📦 关于下载</h4>
+                <h4>关于下载</h4>
                 <p>所有文件均存储于云盘，点击下载将跳转至对应网盘链接。建议使用浏览器自带下载功能以获得最佳体验。</p>
             </div>
             <div class="footer-col">
-                <h4>⚠️ 免责声明</h4>
+                <h4>免责声明</h4>
                 <p>本站所有汉化模组仅供学习交流使用，请于下载后24小时内删除，禁止用于商业用途。部分模组可能存在加载报错或空白文本等BUG。</p>
             </div>
             <div class="footer-col">
-                <h4>💬 交流反馈</h4>
+                <h4>交流反馈</h4>
                 <p>QQ群：923038827<br>UP主：A Future star<br>欢迎反馈汉化问题与模组兼容性情况</p>
             </div>
-        </div>
-    </div>
+        </footer>
+    </main>
 
     <!-- ============================================
          图片大图查看器
@@ -2059,7 +2088,7 @@
     </div>
 
     <!-- 赞助悬浮按钮 -->
-    <button class="sponsor-float-btn" id="sponsorFloatBtn" title="赞助支持">
+    <button class="sponsor-float-btn" id="sponsorFloatBtn" title="赞助支持" aria-label="赞助支持">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
@@ -2067,14 +2096,14 @@
     </button>
 
     <!-- 回到顶部按钮 -->
-    <button class="back-to-top-btn" id="backToTopBtn" title="回到顶部">
+    <button class="back-to-top-btn" id="backToTopBtn" title="回到顶部" aria-label="回到顶部">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
         </svg>
     </button>
 
     <!-- 设置悬浮按钮 -->
-    <button class="settings-float-btn" id="settingsFloatBtn" title="设置">
+    <button class="settings-float-btn" id="settingsFloatBtn" title="设置" aria-label="打开设置">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
         </svg>
@@ -2084,9 +2113,9 @@
     <div class="settings-panel-overlay" id="settingsPanelOverlay"></div>
 
     <!-- 设置面板 -->
-    <div class="settings-panel" id="settingsPanel">
+    <div class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-label="设置面板">
         <div class="settings-panel-header">
-            <h3>⚙️ 设置</h3>
+            <h3>设置</h3>
             <button class="settings-panel-close" id="settingsPanelClose">✕</button>
         </div>
         <div class="settings-panel-body">
@@ -2287,9 +2316,36 @@
                 return arr.filter(url => typeof url === 'string' && url.trim().length > 0);
             }
 
+            /* ---------- 图片CDN回退列表 ---------- */
+            const CDN_MIRRORS = [
+                'https://testingcf.jsdelivr.net/gh',
+                'https://cdn.jsdmirror.com/gh',
+                'https://jsdelivr.aby.pub/gh',
+                'https://cdn.jsdelivr.net/gh'
+            ];
+            const GH_PATH_PREFIX = '/aaaa111ssf/images@main';
+
             /* ---------- 图片加载失败回退 ---------- */
             window.handleImgError = function(img) {
                 img.onerror = null;
+
+                // 尝试CDN镜像回退
+                const currentSrc = img.src || '';
+                let mirrorIdx = parseInt(img.dataset.mirrorIdx || '0', 10);
+
+                if (mirrorIdx < CDN_MIRRORS.length - 1) {
+                    mirrorIdx++;
+                    const path = currentSrc.substring(currentSrc.indexOf(GH_PATH_PREFIX));
+                    if (path) {
+                        const newSrc = CDN_MIRRORS[mirrorIdx] + path;
+                        img.dataset.mirrorIdx = mirrorIdx;
+                        img.src = newSrc;
+                        img.onerror = function() { window.handleImgError(img); };
+                        return;
+                    }
+                }
+
+                // 所有CDN都失败，显示占位图
                 const wrap = img.parentElement;
                 if (!wrap) return;
                 wrap.classList.add('card-image-placeholder');
@@ -2320,6 +2376,7 @@
                             const src = img.dataset.src;
                             if (src) {
                                 img.src = src;
+                                img.loading = 'lazy';
                                 if (img.complete) {
                                     img.classList.add('loaded');
                                 } else {
@@ -2331,7 +2388,7 @@
                             obs.unobserve(img);
                         }
                     });
-                }, { rootMargin: '50px 0px 50px 0px', threshold: 0.01 });
+                }, { rootMargin: '100px 0px', threshold: 0.01 });
             } else {
                 imgObserver = null;
             }
@@ -2340,6 +2397,7 @@
                 if (!imgObserver) {
                     document.querySelectorAll('img[data-src]').forEach(img => {
                         img.src = img.dataset.src;
+                        img.loading = 'lazy';
                         img.classList.add('loaded');
                         img.removeAttribute('data-src');
                     });
@@ -2379,7 +2437,7 @@
                     ` : '';
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
-                            <img data-src="${escapeHtml(validImages[0])}" alt="${safe.name}" class="lazy-img" data-icon="${icon}" onerror="handleImgError(this)">
+                            <img data-src="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)">
                             ${thumbsHtml}
                         </div>
                     `;
@@ -2432,7 +2490,7 @@
                 };
                 const icon = typeIcons[safe.type] || typeIcons.default;
                 const img = validImages.length > 0
-                    ? `<div class="sug-img-wrap"><img data-src="${escapeHtml(validImages[0])}" data-icon="${icon}" class="lazy-img" alt="" onerror="handleImgError(this)"></div>`
+                    ? `<div class="sug-img-wrap"><img data-src="${escapeHtml(validImages[0])}" data-icon="${icon}" class="lazy-img" alt="${safe.name}预览图" data-mirror-idx="0" onerror="handleImgError(this)"></div>`
                     : `<div class="sug-img-wrap card-image-placeholder"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
                 return `
                     <div class="suggestion-card">
@@ -2562,11 +2620,11 @@
                 const icon = typeIcons[file.type] || typeIcons.default;
 
                 const firstImage = validImages.length > 0 
-                    ? `<img data-src="${escapeHtml(validImages[0])}" alt="" class="lazy-img" data-icon="${icon}" onerror="handleImgError(this)">`
+                    ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)">`
                     : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
 
                 const gallery = validImages.length > 0 ?
-                    `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" data-icon="${icon}" class="lazy-img" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)">`).join('')}</div></div>` : '';
+                    `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" alt="${escapeHtml(file.name||'模组')}预览图${i+1}" data-icon="${icon}" class="lazy-img" data-mirror-idx="0" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)">`).join('')}</div></div>` : '';
 
                 box.innerHTML = `
                     <div class="mod-detail-header">
