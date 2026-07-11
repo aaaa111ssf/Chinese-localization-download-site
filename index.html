@@ -21,11 +21,12 @@
            全局基础 | 黑白简约
            ============================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
                 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: #ffffff;
+            background: #f5f5f5;
             color: #111;
             min-height: 100vh;
             padding: 20px;
@@ -80,17 +81,18 @@
         .search-box input {
             width: 100%;
             padding: 14px 48px 14px 20px;
-            border: 1px solid #ddd;
+            border: 1px solid #e0e0e0;
             border-radius: 50px;
             font-size: 1rem;
-            background: #fafafa;
+            background: #fff;
             outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
             color: #111;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
         .search-box input:focus {
             border-color: #000;
-            box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
             background: #fff;
         }
         .search-box .search-icon {
@@ -119,17 +121,21 @@
             background: #fff;
             color: #444;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 0.9rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
         .category-btn:hover {
             border-color: #000;
             color: #000;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
         }
         .category-btn.active {
             background: #000;
             color: #fff;
             border-color: #000;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
         }
 
         /* ============================================
@@ -144,10 +150,11 @@
             color: #666;
         }
         .stats span {
-            background: #f5f5f5;
+            background: #fff;
             padding: 6px 14px;
             border-radius: 20px;
-            border: 1px solid #eee;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
         /* ============================================
@@ -162,24 +169,48 @@
 
         .file-card {
             background: #fff;
-            border: 1px solid #eaeaea;
+            border: 1px solid #e8e8e8;
             border-radius: 16px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             height: 100%;
-            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
         }
         .file-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-            border-color: #d0d0d0;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.04);
+            border-color: #e0e0e0;
         }
+
+        /* 卡片入场动画 */
+        .file-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .file-card:nth-child(1)  { animation-delay: 0.02s; }
+        .file-card:nth-child(2)  { animation-delay: 0.06s; }
+        .file-card:nth-child(3)  { animation-delay: 0.10s; }
+        .file-card:nth-child(4)  { animation-delay: 0.14s; }
+        .file-card:nth-child(5)  { animation-delay: 0.18s; }
+        .file-card:nth-child(6)  { animation-delay: 0.22s; }
+        .file-card:nth-child(7)  { animation-delay: 0.26s; }
+        .file-card:nth-child(8)  { animation-delay: 0.30s; }
+        .file-card:nth-child(9)  { animation-delay: 0.34s; }
+        .file-card:nth-child(10) { animation-delay: 0.38s; }
+        .file-card:nth-child(11) { animation-delay: 0.40s; }
+        .file-card:nth-child(12) { animation-delay: 0.42s; }
 
         /* ---- 图片区 ---- */
         .card-image-wrap {
             height: 180px;
-            background: #f5f5f5;
+            background: #f0f0f0;
             overflow: hidden;
             position: relative;
             flex-shrink: 0;
@@ -190,10 +221,6 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s, opacity 0.4s ease;
-        }
-        .file-card:hover .card-image-wrap img.loaded {
-            transform: scale(1.03);
         }
 
         /* 懒加载淡入 */
@@ -202,6 +229,7 @@
         }
         img.loaded {
             opacity: 1;
+            transition: opacity 0.6s ease;
         }
 
         /* 图片加载失败/无图片时的回退占位 */
@@ -350,10 +378,18 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
         .card-actions .btn:hover {
             border-color: #000;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .card-actions .btn:active {
+            transform: translateY(0);
+            box-shadow: none;
         }
         .card-actions .btn-download {
             background: #000;
@@ -391,11 +427,12 @@
             border: 1px solid #eaeaea;
             display: flex;
             flex-direction: column;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
         }
         .suggestion-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+            border-color: #ccc;
         }
         .suggestion-card .sug-img-wrap {
             height: 90px;
@@ -479,10 +516,11 @@
             color: #555;
             padding: 40px 30px;
             font-size: 0.9rem;
-            background: #fafafa;
-            border: 1px solid #eee;
+            background: #fff;
+            border: 1px solid #e8e8e8;
             border-radius: 16px;
             margin-top: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
         .footer-col h4 {
             font-size: 1rem;
@@ -533,26 +571,28 @@
             background: #fff;
             color: #555;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 0.85rem;
             font-weight: 600;
         }
         .tutorial-tab:hover {
             border-color: #000;
             color: #000;
+            transform: translateY(-1px);
         }
         .tutorial-tab.active {
             background: #000;
             color: #fff;
             border-color: #000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
         .tutorial-content { display: none; }
         .tutorial-content.active {
             display: block;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(14px); }
             to   { opacity: 1; transform: translateY(0); }
         }
         .step-list { list-style: none; padding: 0; margin: 0; }
@@ -564,11 +604,12 @@
             background: #fafafa;
             border-radius: 10px;
             border-left: 3px solid #000;
-            transition: transform 0.2s;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s ease, box-shadow 0.25s ease;
         }
         .step-item:hover {
-            transform: translateX(4px);
+            transform: translateX(6px);
             background: #f5f5f5;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
         }
         .step-number {
             width: 26px;
@@ -643,63 +684,114 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.65);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0);
+            backdrop-filter: blur(0px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            transition: background 0.4s ease, backdrop-filter 0.4s ease, opacity 0.4s ease, visibility 0.4s ease;
             padding: 20px;
         }
         .modal-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active {
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
             opacity: 1;
             visibility: visible;
         }
         .modal-box {
             background: white;
-            border-radius: 16px;
-            padding: 32px 28px;
-            max-width: 420px;
+            border-radius: 20px;
+            padding: 36px 32px 30px;
+            max-width: 400px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.08);
+            transform: translateY(30px) scale(0.96);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+            opacity: 0;
+            border: 1px solid #e8e8e8;
         }
-        .modal-overlay.active .modal-box { transform: scale(1); }
-        .modal-icon { font-size: 3rem; margin-bottom: 12px; }
-        .modal-title { font-size: 1.3rem; font-weight: 700; color: #111; margin-bottom: 10px; }
-        .modal-text { color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 8px; }
+        .modal-overlay.active .modal-box { transform: translateY(0) scale(1); opacity: 1; }
+        .modal-icon {
+            font-size: 2.6rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: modalIconBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+        }
+        @keyframes modalIconBounce {
+            from { opacity: 0; transform: scale(0.5) translateY(10px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 14px;
+            letter-spacing: -0.3px;
+        }
+        .modal-text {
+            color: #666;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
         .modal-checkbox {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            margin: 12px 0 20px;
-            font-size: 0.85rem;
-            color: #666;
+            margin: 14px 0 22px;
+            font-size: 0.82rem;
+            color: #999;
             cursor: pointer;
+            transition: color 0.2s;
         }
-        .modal-checkbox input { cursor: pointer; }
-        .modal-buttons { display: flex; gap: 12px; justify-content: center; }
+        .modal-checkbox:hover { color: #666; }
+        .modal-checkbox input {
+            cursor: pointer;
+            accent-color: #000;
+            width: 15px;
+            height: 15px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
         .modal-btn {
-            padding: 10px 24px;
-            border-radius: 10px;
-            font-size: 0.95rem;
+            padding: 11px 28px;
+            border-radius: 12px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            border: 1px solid #000;
-            transition: all 0.2s;
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             flex: 1;
-            max-width: 140px;
+            max-width: 150px;
         }
-        .modal-btn-confirm { background: #000; color: #fff; }
-        .modal-btn-confirm:hover { background: #333; }
-        .modal-btn-cancel { background: #fff; color: #333; border-color: #ddd; }
-        .modal-btn-cancel:hover { border-color: #000; color: #000; }
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .modal-btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .modal-btn-confirm {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+        .modal-btn-confirm:hover { background: #222; }
+        .modal-btn-cancel {
+            background: #f5f5f5;
+            color: #555;
+            border-color: #e0e0e0;
+        }
+        .modal-btn-cancel:hover { border-color: #ccc; color: #333; background: #eee; }
 
         body.modal-open { overflow: hidden; }
 
@@ -718,7 +810,7 @@
             z-index: 20000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
         }
         .img-viewer-overlay.active { opacity: 1; visibility: visible; }
         .img-viewer-box { position: relative; max-width: 90vw; max-height: 90vh; }
@@ -781,11 +873,12 @@
             width: 100%;
             max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+            opacity: 0;
         }
-        .mod-detail-overlay.active .mod-detail-box { transform: scale(1); }
+        .mod-detail-overlay.active .mod-detail-box { transform: scale(1) translateY(0); opacity: 1; }
         .mod-detail-header {
             position: relative;
             height: 220px;
@@ -844,14 +937,14 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
             text-decoration: none;
         }
         .detail-btn-secondary { background: #f5f5f5; color: #555; border: 1px solid #e0e0e0; }
-        .detail-btn-secondary:hover { background: #eee; }
+        .detail-btn-secondary:hover { background: #eee; transform: translateY(-1px); }
         .detail-btn-primary { background: #000; color: #fff; }
-        .detail-btn-primary:hover { background: #333; }
+        .detail-btn-primary:hover { background: #333; transform: translateY(-1px); }
 
         /* ============================================
            赞助弹窗 & 悬浮按钮
@@ -860,33 +953,29 @@
             position: fixed;
             right: 20px;
             bottom: 80px;
-            width: 56px; height: 56px;
-            border-radius: 50%;
-            background: #000;
-            color: white;
-            border: none;
-            font-size: 1.6rem;
+            padding: 10px 18px;
+            border-radius: 50px;
+            background: #fff;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
         }
-        .sponsor-float-btn:hover { transform: scale(1.1); background: #222; }
-        .sponsor-float-btn .btn-text {
-            font-size: 0.75rem;
-            position: absolute;
-            bottom: -22px;
-            white-space: nowrap;
-            color: #333;
-            font-weight: 600;
-            background: rgba(255,255,255,0.95);
-            padding: 2px 8px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 1px solid #eee;
+        .sponsor-float-btn:hover {
+            transform: translateY(-2px);
+            border-color: #000;
+            color: #000;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        .sponsor-float-btn:active {
+            transform: translateY(0);
         }
         .sponsor-modal-box {
             background: white;
@@ -896,11 +985,12 @@
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-            transform: scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
+            opacity: 0;
         }
-        .sponsor-modal-overlay.active .sponsor-modal-box { transform: scale(1); }
+        .sponsor-modal-overlay.active .sponsor-modal-box { transform: scale(1) translateY(0); opacity: 1; }
         .sponsor-modal-header { text-align: center; margin-bottom: 20px; }
         .sponsor-modal-header .modal-icon { font-size: 2.8rem; margin-bottom: 6px; }
         .sponsor-modal-header h3 { font-size: 1.2rem; color: #111; font-weight: 700; }
@@ -941,13 +1031,95 @@
             font-weight: 600;
             cursor: pointer;
             border: 1px solid #000;
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             flex: 1;
         }
+        .sponsor-modal-footer .modal-btn:hover { transform: translateY(-1px); }
         .sponsor-modal-footer .modal-btn-confirm { background: #000; color: white; }
         .sponsor-modal-footer .modal-btn-confirm:hover { background: #333; }
         .sponsor-modal-footer .modal-btn-cancel { background: #fff; color: #333; border-color: #ddd; }
         .sponsor-modal-footer .modal-btn-cancel:hover { border-color: #000; color: #000; }
+
+        /* ========== 布局风格切换 ========== */
+        body.layout-list .file-grid {
+            grid-template-columns: 1fr !important;
+            transform: none !important;
+        }
+        body.layout-list .file-card {
+            flex-direction: row;
+            height: 160px;
+        }
+        body.layout-list .card-image-wrap {
+            width: 220px;
+            height: 100%;
+            flex-shrink: 0;
+        }
+        body.layout-list .card-body {
+            flex: 1;
+            justify-content: center;
+        }
+        body.layout-list .card-desc {
+            -webkit-line-clamp: 2;
+            min-height: auto;
+        }
+        body.layout-list .card-actions {
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 16px 0 0;
+            gap: 8px;
+        }
+
+        body.layout-wide .file-grid {
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)) !important;
+            transform: none !important;
+        }
+        body.layout-wide .card-image-wrap {
+            height: 220px;
+        }
+
+        /* 列表/宽屏布局 - 平板适配 */
+        @media (max-width: 768px) {
+            body.layout-list .file-card {
+                flex-direction: column;
+                height: auto;
+            }
+            body.layout-list .card-image-wrap {
+                width: 100%;
+                height: 160px;
+            }
+            body.layout-list .card-actions {
+                flex-direction: row;
+                padding: 0 16px 16px;
+            }
+            body.layout-wide .file-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        /* 列表/宽屏布局 - 手机适配 */
+        @media (max-width: 480px) {
+            body.layout-list .card-image-wrap {
+                height: 140px;
+            }
+            body.layout-list .card-title {
+                font-size: 1rem;
+            }
+            body.layout-list .card-meta-boxes {
+                flex-direction: column;
+                gap: 4px;
+            }
+            body.layout-list .card-actions {
+                flex-direction: row;
+                padding: 0 12px 12px;
+            }
+        }
+
+        /* 列数设置项 - 非网格模式下禁用样式 */
+        body.layout-list #settingColumns,
+        body.layout-wide #settingColumns {
+            opacity: 0.35;
+            pointer-events: none;
+        }
 
         /* ============================================
            响应式
@@ -956,22 +1128,754 @@
             .suggestion-grid { grid-template-columns: repeat(3, 1fr); }
         }
         @media (max-width: 768px) {
-            .file-grid { grid-template-columns: 1fr; }
+            .file-grid { grid-template-columns: 1fr 1fr; }
             .footer { grid-template-columns: 1fr; text-align: center; gap: 24px; padding: 30px 20px; }
             .header h1 { font-size: 1.7rem; }
+            .header { padding: 30px 16px; }
             .stats { flex-direction: column; align-items: center; gap: 8px; }
             .mod-detail-gallery { grid-template-columns: repeat(2, 1fr); }
             .img-viewer-prev { left: 10px; }
             .img-viewer-next { right: 10px; }
             .card-image-wrap { height: 160px; }
-            .sponsor-float-btn { right: 15px; bottom: 70px; width: 50px; height: 50px; font-size: 1.4rem; }
+            .sponsor-float-btn { right: 15px; bottom: 70px; padding: 9px 14px; font-size: 0.8rem; }
             .sponsor-images-grid { grid-template-columns: 1fr; }
             .tutorial-section { padding: 18px 14px; }
             .step-item { flex-direction: column; gap: 8px; }
             .code-block { font-size: 0.75rem !important; padding: 8px 10px !important; }
+            .card-actions .btn { padding: 8px 14px; font-size: 0.8rem; }
+            .card-body { padding: 14px; }
         }
         @media (max-width: 640px) {
+            .file-grid { grid-template-columns: 1fr; }
             .suggestion-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ============================================
+           设置按钮 & 面板
+           ============================================ */
+        .settings-float-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #fff;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .settings-float-btn:hover {
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            border-color: #999;
+        }
+        .settings-float-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #333;
+            transition: fill 0.3s;
+        }
+        .settings-float-btn:hover svg { fill: #000; }
+
+        /* 设置面板遮罩 */
+        .settings-panel-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            z-index: 19999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .settings-panel-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 设置面板 */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -380px;
+            width: 360px;
+            height: 100%;
+            background: #fff;
+            z-index: 20000;
+            box-shadow: -8px 0 30px rgba(0,0,0,0.15);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .settings-panel.active { right: 0; box-shadow: -12px 0 40px rgba(0,0,0,0.2); }
+
+        .settings-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .settings-panel-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #111;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .settings-panel-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .settings-panel-close:hover {
+            background: #f5f5f5;
+            border-color: #999;
+            color: #111;
+        }
+
+        .settings-panel-body {
+            padding: 20px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .settings-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .settings-group-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-bottom: 4px;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .settings-item:hover { background: #f5f5f5; }
+
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .settings-item-icon {
+            font-size: 1.1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .settings-item-label {
+            font-size: 0.9rem;
+            color: #333;
+            font-weight: 500;
+        }
+        .settings-item-desc {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        /* 开关 */
+        .settings-toggle {
+            position: relative;
+            width: 46px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+        .settings-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .settings-toggle-slider {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #ddd;
+            border-radius: 26px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .settings-toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
+        .settings-toggle input:checked + .settings-toggle-slider {
+            background: #000;
+        }
+        .settings-toggle input:checked + .settings-toggle-slider::before {
+            transform: translateX(20px);
+        }
+
+        /* 滑块 */
+        .settings-slider-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .settings-slider {
+            width: 100px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e0e0e0;
+            border-radius: 4px;
+            outline: none;
+        }
+        .settings-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #000;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .settings-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #000;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .settings-slider-value {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 600;
+            min-width: 36px;
+            text-align: right;
+        }
+
+        /* 风格选择器 */
+        .style-selector {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+        }
+        .style-btn {
+            flex: 1;
+            padding: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            color: #666;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .style-btn:hover {
+            border-color: #999;
+            color: #333;
+        }
+        .style-btn.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+        body.dark-mode .style-btn {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+            color: #999;
+        }
+        body.dark-mode .style-btn:hover {
+            border-color: #555;
+            color: #ccc;
+        }
+        body.dark-mode .style-btn.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        /* 设置面板底部 */
+        .settings-panel-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .settings-reset-btn {
+            width: 100%;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            color: #666;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .settings-reset-btn:hover {
+            border-color: #000;
+            color: #000;
+        }
+
+        /* ========== 黑夜模式 ========== */
+        body.dark-mode {
+            background: #0d0d0d;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container { color: #e0e0e0; }
+        body.dark-mode .header { color: #e0e0e0; }
+        body.dark-mode .header h1 { color: #fff; }
+        body.dark-mode .header p { color: #888; }
+        body.dark-mode .declaration { color: #777; }
+        body.dark-mode .search-box input {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #e0e0e0;
+        }
+        body.dark-mode .search-box input:focus {
+            border-color: #555;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+            background: #222;
+        }
+        body.dark-mode .search-box .search-icon { color: #666; }
+        body.dark-mode .category-btn {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #aaa;
+        }
+        body.dark-mode .category-btn:hover { border-color: #666; color: #fff; }
+        body.dark-mode .category-btn.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+        body.dark-mode .stats span {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+            color: #999;
+        }
+        body.dark-mode .file-card {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+        body.dark-mode .file-card:hover {
+            border-color: #3a3a3a;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        }
+        body.dark-mode .card-image-wrap { background: #111; }
+        body.dark-mode .card-image-fallback { color: #555; }
+        body.dark-mode .card-image-fallback .fallback-text { color: #444; }
+        body.dark-mode .card-title { color: #eee; }
+        body.dark-mode .card-subtitle { color: #777; }
+        body.dark-mode .card-tags .tag {
+            background: #252525;
+            color: #aaa;
+        }
+        body.dark-mode .card-desc { color: #999; }
+        body.dark-mode .meta-box {
+            background: #1f1f1f;
+            border-color: #2a2a2a;
+            color: #999;
+        }
+        body.dark-mode .card-actions .btn {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #ccc;
+        }
+        body.dark-mode .card-actions .btn:hover { border-color: #666; }
+        body.dark-mode .card-actions .btn-download {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+        body.dark-mode .card-actions .btn-download:hover {
+            background: #ddd;
+            border-color: #ddd;
+        }
+        body.dark-mode .suggestion-card {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+        body.dark-mode .suggestion-card .sug-img-wrap { background: #111; }
+        body.dark-mode .suggestion-card .sug-name { color: #eee; }
+        body.dark-mode .suggestion-card .sug-badge {
+            background: #252525;
+            border-color: #333;
+            color: #aaa;
+        }
+        body.dark-mode .suggestion-card .sug-extra { color: #777; }
+        body.dark-mode .suggestion-card .sug-btn {
+            background: #fff;
+            color: #000;
+        }
+        body.dark-mode .suggestion-card .sug-btn:hover { background: #ddd; }
+        body.dark-mode .no-results { color: #999; }
+        body.dark-mode .footer {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+        body.dark-mode .footer-col h4 { color: #eee; }
+        body.dark-mode .footer-col p { color: #888; }
+        body.dark-mode .tutorial-section {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+        body.dark-mode .tutorial-header { border-bottom-color: #fff; }
+        body.dark-mode .tutorial-header h2 { color: #eee; }
+        body.dark-mode .tutorial-tab {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #aaa;
+        }
+        body.dark-mode .tutorial-tab:hover { border-color: #666; color: #fff; }
+        body.dark-mode .tutorial-tab.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+        body.dark-mode .step-item {
+            background: #1a1a1a;
+            border-left-color: #fff;
+        }
+        body.dark-mode .step-item:hover { background: #222; }
+        body.dark-mode .step-content h4 { color: #eee; }
+        body.dark-mode .step-content p { color: #999; }
+        body.dark-mode .code-block { background: #000; }
+        body.dark-mode .highlight {
+            background: #333;
+            color: #eee;
+        }
+        body.dark-mode .warning-box {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+        body.dark-mode .warning-box p { color: #ccc; }
+        body.dark-mode .tip-box {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+        body.dark-mode .tip-box p { color: #ccc; }
+        body.dark-mode .modal-box {
+            background: #1a1a1a;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        body.dark-mode .modal-title { color: #eee; }
+        body.dark-mode .modal-text { color: #999; }
+        body.dark-mode .modal-checkbox { color: #888; }
+        body.dark-mode .modal-btn-cancel {
+            background: #1a1a1a;
+            color: #ccc;
+            border-color: #333;
+        }
+        body.dark-mode .modal-btn-cancel:hover { border-color: #666; color: #fff; }
+        body.dark-mode .mod-detail-box {
+            background: #1a1a1a;
+        }
+        body.dark-mode .mod-detail-header { background: #111; }
+        body.dark-mode .mod-detail-body .detail-section h4 { color: #eee; }
+        body.dark-mode .mod-detail-body .detail-section p { color: #999; }
+        body.dark-mode .detail-btn-secondary {
+            background: #222;
+            color: #999;
+            border-color: #333;
+        }
+        body.dark-mode .detail-btn-secondary:hover { background: #333; color: #ccc; }
+        body.dark-mode .sponsor-modal-box {
+            background: #1a1a1a;
+        }
+        body.dark-mode .sponsor-modal-header h3 { color: #eee; }
+        body.dark-mode .sponsor-modal-header p { color: #888; }
+        body.dark-mode .sponsor-image-item {
+            background: #111;
+            border-color: #2a2a2a;
+        }
+        body.dark-mode .sponsor-modal-footer .modal-btn-cancel {
+            background: #1a1a1a;
+            color: #ccc;
+            border-color: #333;
+        }
+        body.dark-mode .sponsor-modal-footer .modal-btn-cancel:hover { border-color: #666; color: #fff; }
+        body.dark-mode .sponsor-float-btn {
+            background: #1a1a1a;
+            color: #ccc;
+            border-color: #333;
+        }
+        body.dark-mode .sponsor-float-btn:hover {
+            background: #252525;
+            border-color: #666;
+            color: #fff;
+        }
+        body.dark-mode .settings-float-btn {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #ccc;
+        }
+        body.dark-mode .settings-float-btn:hover {
+            border-color: #666;
+        }
+        body.dark-mode .settings-float-btn svg { fill: #ccc; }
+        body.dark-mode .settings-float-btn:hover svg { fill: #fff; }
+        body.dark-mode .settings-panel {
+            background: #141414;
+            box-shadow: -8px 0 30px rgba(0,0,0,0.4);
+        }
+        body.dark-mode .settings-panel-header {
+            border-bottom-color: #2a2a2a;
+        }
+        body.dark-mode .settings-panel-header h3 { color: #eee; }
+        body.dark-mode .settings-panel-close {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #999;
+        }
+        body.dark-mode .settings-panel-close:hover {
+            background: #252525;
+            border-color: #555;
+            color: #eee;
+        }
+        body.dark-mode .settings-item {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+        body.dark-mode .settings-item:hover { background: #222; }
+        body.dark-mode .settings-item-icon {
+            background: #222;
+            border-color: #333;
+        }
+        body.dark-mode .settings-item-label { color: #ddd; }
+        body.dark-mode .settings-item-desc { color: #777; }
+        body.dark-mode .settings-panel-footer { border-top-color: #2a2a2a; }
+        body.dark-mode .settings-reset-btn {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #999;
+        }
+        body.dark-mode .settings-reset-btn:hover {
+            border-color: #666;
+            color: #fff;
+        }
+        body.dark-mode .settings-slider { background: #333; }
+        body.dark-mode .settings-slider::-webkit-slider-thumb { background: #fff; }
+        body.dark-mode .settings-slider::-moz-range-thumb { background: #fff; }
+        body.dark-mode .settings-slider-value { color: #888; }
+
+        /* ========== 动画关闭模式 ========== */
+        body.no-animations,
+        body.no-animations * {
+            animation: none !important;
+            transition-duration: 0.01ms !important;
+            animation-delay: 0ms !important;
+        }
+        body.no-animations .file-card {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+        body.no-animations .file-card:hover { transform: none !important; }
+        body.no-animations .file-card:hover .card-image-wrap img.loaded { transform: none !important; }
+        body.no-animations .suggestion-card:hover { transform: none !important; }
+        body.no-animations .step-item:hover { transform: none !important; }
+        body.no-animations .sponsor-float-btn:hover { transform: none !important; }
+        body.no-animations .settings-float-btn:hover { transform: none !important; }
+        body.no-animations .modal-box { transform: none !important; opacity: 1 !important; }
+        body.no-animations .mod-detail-box { transform: none !important; opacity: 1 !important; }
+        body.no-animations .sponsor-modal-box { transform: none !important; opacity: 1 !important; }
+        body.no-animations .card-image-gallery img:hover { transform: none !important; }
+        body.no-animations .mod-detail-gallery img:hover { transform: none !important; }
+        body.no-animations .category-btn:hover { transform: none !important; }
+        body.no-animations .tutorial-tab:hover { transform: none !important; }
+        body.no-animations .card-actions .btn:hover { transform: none !important; }
+        body.no-animations .card-actions .btn:active { transform: none !important; }
+        body.no-animations .modal-btn:hover { transform: none !important; }
+        body.no-animations .modal-btn:active { transform: none !important; }
+        body.no-animations .detail-btn:hover { transform: none !important; }
+        body.no-animations .about-us-link:hover { transform: none !important; }
+        body.no-animations .back-to-top-btn:hover { transform: none !important; }
+
+        /* ========== 紧凑模式 ========== */
+        body.compact-mode .file-grid { gap: 12px; }
+        body.compact-mode .file-card { border-radius: 10px; }
+        body.compact-mode .card-image-wrap { height: 140px; }
+        body.compact-mode .card-body { padding: 12px; gap: 6px; }
+        body.compact-mode .card-title { font-size: 1rem; }
+        body.compact-mode .card-desc {
+            -webkit-line-clamp: 2;
+            min-height: 2.4em;
+        }
+        body.compact-mode .card-meta-boxes { gap: 6px; }
+        body.compact-mode .meta-box { padding: 6px 10px; font-size: 0.75rem; }
+        body.compact-mode .card-actions { padding: 0 12px 12px; }
+        body.compact-mode .card-actions .btn { padding: 7px 14px; font-size: 0.8rem; }
+
+        /* ============================================
+           回到顶部按钮
+           ============================================ */
+        .back-to-top-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 150px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #fff;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+        }
+        .back-to-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+            border-color: #999;
+        }
+        .back-to-top-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #333;
+            transition: fill 0.3s;
+        }
+        .back-to-top-btn:hover svg { fill: #000; }
+
+        body.dark-mode .back-to-top-btn {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #ccc;
+        }
+        body.dark-mode .back-to-top-btn svg { fill: #ccc; }
+        body.dark-mode .back-to-top-btn:hover svg { fill: #fff; }
+
+        /* ============================================
+           关于我们
+           ============================================ */
+        .about-us-section {
+            padding: 16px 0;
+            border-top: 1px solid #eee;
+        }
+        .about-us-section .about-desc {
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+        .about-us-links {
+            display: flex;
+            gap: 10px;
+        }
+        .about-us-link {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            background: #fafafa;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .about-us-link:hover {
+            border-color: #000;
+            color: #000;
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .about-us-link .link-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        body.dark-mode .about-us-section { border-top-color: #2a2a2a; }
+        body.dark-mode .about-us-section .about-desc { color: #777; }
+        body.dark-mode .about-us-link {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+            color: #ccc;
+        }
+        body.dark-mode .about-us-link:hover {
+            border-color: #666;
+            color: #fff;
+            background: #222;
+        }
+
+        /* 设置面板响应式 */
+        @media (max-width: 480px) {
+            .settings-panel { width: 100%; right: -100%; }
+            .settings-float-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
+            .back-to-top-btn { right: 15px; bottom: 140px; width: 42px; height: 42px; }
+            .about-us-links { flex-direction: column; }
+            .sponsor-float-btn { right: 12px; bottom: 70px; padding: 8px 12px; font-size: 0.78rem; }
+            .container { padding: 12px; }
+            .search-box { margin: 0 auto 20px; }
+            .search-box input { padding: 12px 44px 12px 16px; font-size: 0.9rem; }
+            .category-nav { gap: 8px; }
+            .category-btn { padding: 7px 14px; font-size: 0.82rem; }
+            .card-image-wrap { height: 140px; }
+            .card-title { font-size: 1rem; }
+            .card-actions .btn { padding: 7px 12px; font-size: 0.78rem; }
         }
     </style>
 </head>
@@ -1156,9 +2060,188 @@
 
     <!-- 赞助悬浮按钮 -->
     <button class="sponsor-float-btn" id="sponsorFloatBtn" title="赞助支持">
-        ￥
-        <span class="btn-text">赞助</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        赞助
     </button>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top-btn" id="backToTopBtn" title="回到顶部">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+    </button>
+
+    <!-- 设置悬浮按钮 -->
+    <button class="settings-float-btn" id="settingsFloatBtn" title="设置">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
+        </svg>
+    </button>
+
+    <!-- 设置面板遮罩 -->
+    <div class="settings-panel-overlay" id="settingsPanelOverlay"></div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-panel-header">
+            <h3>⚙️ 设置</h3>
+            <button class="settings-panel-close" id="settingsPanelClose">✕</button>
+        </div>
+        <div class="settings-panel-body">
+            <!-- 外观 -->
+            <div class="settings-group">
+                <div class="settings-group-title">外观</div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">🌙</div>
+                        <div>
+                            <div class="settings-item-label">黑夜模式</div>
+                            <div class="settings-item-desc">切换深色主题</div>
+                        </div>
+                    </div>
+                    <label class="settings-toggle">
+                        <input type="checkbox" id="settingDarkMode">
+                        <span class="settings-toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">✨</div>
+                        <div>
+                            <div class="settings-item-label">动画效果</div>
+                            <div class="settings-item-desc">关闭可减少卡顿</div>
+                        </div>
+                    </div>
+                    <label class="settings-toggle">
+                        <input type="checkbox" id="settingAnimations" checked>
+                        <span class="settings-toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 布局 -->
+            <div class="settings-group">
+                <div class="settings-group-title">布局</div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">🔍</div>
+                        <div>
+                            <div class="settings-item-label">卡片缩放</div>
+                            <div class="settings-item-desc">调整卡片大小</div>
+                        </div>
+                    </div>
+                    <div class="settings-slider-wrap">
+                        <input type="range" class="settings-slider" id="settingCardScale" min="70" max="130" value="100">
+                        <span class="settings-slider-value" id="cardScaleValue">100%</span>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">📐</div>
+                        <div>
+                            <div class="settings-item-label">紧凑模式</div>
+                            <div class="settings-item-desc">缩小卡片间距和内容</div>
+                        </div>
+                    </div>
+                    <label class="settings-toggle">
+                        <input type="checkbox" id="settingCompact">
+                        <span class="settings-toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">🖼️</div>
+                        <div>
+                            <div class="settings-item-label">图片高度</div>
+                            <div class="settings-item-desc">调整卡片图片区域</div>
+                        </div>
+                    </div>
+                    <div class="settings-slider-wrap">
+                        <input type="range" class="settings-slider" id="settingImgHeight" min="100" max="280" value="180">
+                        <span class="settings-slider-value" id="imgHeightValue">180px</span>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">▦</div>
+                        <div>
+                            <div class="settings-item-label">一行显示个数</div>
+                            <div class="settings-item-desc">仅网格模式下生效</div>
+                        </div>
+                    </div>
+                    <div class="settings-slider-wrap">
+                        <input type="range" class="settings-slider" id="settingColumns" min="0" max="5" value="0" step="1">
+                        <span class="settings-slider-value" id="columnsValue">自动</span>
+                    </div>
+                </div>
+
+                <div class="settings-item" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">◫</div>
+                        <div>
+                            <div class="settings-item-label">布局风格</div>
+                            <div class="settings-item-desc">网格 / 列表 / 宽屏</div>
+                        </div>
+                    </div>
+                    <div class="style-selector" id="styleSelector">
+                        <button class="style-btn active" data-style="grid">网格</button>
+                        <button class="style-btn" data-style="list">列表</button>
+                        <button class="style-btn" data-style="wide">宽屏</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他 -->
+            <div class="settings-group">
+                <div class="settings-group-title">其他</div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">🔄</div>
+                        <div>
+                            <div class="settings-item-label">自动加载图片</div>
+                            <div class="settings-item-desc">关闭后手动加载图片</div>
+                        </div>
+                    </div>
+                    <label class="settings-toggle">
+                        <input type="checkbox" id="settingLazyLoad" checked>
+                        <span class="settings-toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 关于我们 -->
+            <div class="settings-group">
+                <div class="settings-group-title">关于我们</div>
+                <div class="about-us-section">
+                    <div class="about-desc">
+                        SFS 汉化模组下载中心，为 Spaceflight Simulator 玩家提供优质汉化模组资源。
+                    </div>
+                    <div class="about-us-links">
+                        <a class="about-us-link" href="https://qm.qq.com/cgi-bin/qm/qr?k=Q3c7K7F7G9x5F5aB8bZ7hS9jK3nM2pL4&jump_from=webapi&authKey=xxx" target="_blank" rel="noopener noreferrer">
+                            <span class="link-icon">💬</span>
+                            QQ群: 923038827
+                        </a>
+                        <a class="about-us-link" href="https://b23.tv/BMOcJRh" target="_blank" rel="noopener noreferrer">
+                            <span class="link-icon">📺</span>
+                            B站: A-Future-star
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="settings-panel-footer">
+            <button class="settings-reset-btn" id="settingsResetBtn">重置所有设置</button>
+        </div>
+    </div>
 
     <!-- ============================================
          JavaScript
@@ -1317,19 +2400,19 @@
                         <div class="card-body">
                             <div class="card-title">${safe.name}</div>
                             <div class="card-subtitle">
-                                <span>👤 ${safe.author}</span>
-                                <span>⏱ ${safe.version}</span>
+                                <span>作者: ${safe.author}</span>
+                                <span>版本: ${safe.version}</span>
                             </div>
                             <div class="card-tags">${tagsHtml}</div>
                             <div class="card-desc">${safe.desc}</div>
                             <div class="card-meta-boxes">
-                                <div class="meta-box">💾 ${safe.size}</div>
-                                <div class="meta-box">📅 ${safe.date}</div>
+                                <div class="meta-box">大小: ${safe.size}</div>
+                                <div class="meta-box">日期: ${safe.date}</div>
                             </div>
                         </div>
                         <div class="card-actions">
-                            <button class="btn btn-detail" onclick="openModDetail(${index})">ⓘ 详情</button>
-                            <a href="${safe.link}" target="_blank" class="btn btn-download">⬇ 下载</a>
+                            <button class="btn btn-detail" onclick="openModDetail(${index})">详情</button>
+                            <a href="${safe.link}" target="_blank" class="btn btn-download">下载</a>
                         </div>
                     </div>
                 `;
@@ -1361,11 +2444,11 @@
                                 <span class="sug-badge">${safe.compat}</span>
                             </div>
                             <div class="sug-extra">
-                                <span>👤${safe.author}</span>
-                                <span>🔥${safe.heat}</span>
+                                <span>作者: ${safe.author}</span>
+                                <span>热度: ${safe.heat}</span>
                             </div>
                         </div>
-                        <a href="${safe.link}" target="_blank" class="sug-btn">⬇️ 下载</a>
+                        <a href="${safe.link}" target="_blank" class="sug-btn">下载</a>
                     </div>
                 `;
             }
@@ -1483,7 +2566,7 @@
                     : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
 
                 const gallery = validImages.length > 0 ?
-                    `<div class="detail-section"><h4>🖼️ 预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" data-icon="${icon}" class="lazy-img" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)">`).join('')}</div></div>` : '';
+                    `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" data-icon="${icon}" class="lazy-img" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)">`).join('')}</div></div>` : '';
 
                 box.innerHTML = `
                     <div class="mod-detail-header">
@@ -1494,13 +2577,13 @@
                         </div>
                     </div>
                     <div class="mod-detail-body">
-                        <div class="detail-section"><h4>📝 简介</h4><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
-                        <div class="detail-section"><h4>📌 信息</h4><p>版本：${escapeHtml(file.version||'v1.0')} &nbsp;|&nbsp; 作者：${escapeHtml(file.author||'A Future star')} &nbsp;|&nbsp; 兼容：${escapeHtml(file.compat||'1.6.00.3+')} &nbsp;|&nbsp; 大小：${escapeHtml(file.size||'未知')} &nbsp;|&nbsp; 更新：${escapeHtml(file.date||'')}</p></div>
+                        <div class="detail-section"><h4>简介</h4><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
+                        <div class="detail-section"><h4>信息</h4><p>版本：${escapeHtml(file.version||'v1.0')} &nbsp;|&nbsp; 作者：${escapeHtml(file.author||'A Future star')} &nbsp;|&nbsp; 兼容：${escapeHtml(file.compat||'1.6.00.3+')} &nbsp;|&nbsp; 大小：${escapeHtml(file.size||'未知')} &nbsp;|&nbsp; 更新：${escapeHtml(file.date||'')}</p></div>
                         ${gallery}
                     </div>
                     <div class="mod-detail-footer">
                         <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">关闭</button>
-                        <a href="${escapeHtml(file.link || '#')}" target="_blank" class="detail-btn detail-btn-primary">⬇️ 前往下载</a>
+                        <a href="${escapeHtml(file.link || '#')}" target="_blank" class="detail-btn detail-btn-primary">前往下载</a>
                     </div>
                 `;
                 document.getElementById('modDetailOverlay').classList.add('active');
@@ -1579,6 +2662,232 @@
                     files = data;
                     renderFiles();
                 });
+
+        })();
+
+        /* ============================================
+           设置面板逻辑
+           ============================================ */
+        (function() {
+            'use strict';
+
+            const STORAGE_KEY = 'sfs_site_settings';
+
+            // 默认设置
+            const DEFAULTS = {
+                darkMode: false,
+                animations: true,
+                cardScale: 100,
+                compact: false,
+                imgHeight: 180,
+                lazyLoad: true,
+                columns: 0,
+                layoutStyle: 'grid'
+            };
+
+            // 读取设置
+            function loadSettings() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) return JSON.parse(saved);
+                } catch(e) {}
+                return { ...DEFAULTS };
+            }
+
+            // 保存设置
+            function saveSettings(settings) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+                } catch(e) {}
+            }
+
+            let settings = loadSettings();
+
+            // DOM 引用
+            const panel = document.getElementById('settingsPanel');
+            const overlay = document.getElementById('settingsPanelOverlay');
+            const openBtn = document.getElementById('settingsFloatBtn');
+            const closeBtn = document.getElementById('settingsPanelClose');
+            const resetBtn = document.getElementById('settingsResetBtn');
+
+            const darkModeToggle = document.getElementById('settingDarkMode');
+            const animationsToggle = document.getElementById('settingAnimations');
+            const compactToggle = document.getElementById('settingCompact');
+            const lazyLoadToggle = document.getElementById('settingLazyLoad');
+            const cardScaleSlider = document.getElementById('settingCardScale');
+            const cardScaleValue = document.getElementById('cardScaleValue');
+            const imgHeightSlider = document.getElementById('settingImgHeight');
+            const imgHeightValue = document.getElementById('imgHeightValue');
+            const columnsSlider = document.getElementById('settingColumns');
+            const columnsValue = document.getElementById('columnsValue');
+            const styleSelector = document.getElementById('styleSelector');
+
+            // 打开/关闭面板
+            function openPanel() {
+                panel.classList.add('active');
+                overlay.classList.add('active');
+            }
+            function closePanel() {
+                panel.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+
+            openBtn.addEventListener('click', openPanel);
+            closeBtn.addEventListener('click', closePanel);
+            overlay.addEventListener('click', closePanel);
+
+            // 应用设置到 UI
+            function applySettings() {
+                // 黑夜模式
+                document.body.classList.toggle('dark-mode', settings.darkMode);
+                darkModeToggle.checked = settings.darkMode;
+
+                // 动画
+                if (settings.animations) {
+                    document.body.classList.remove('no-animations');
+                } else {
+                    document.body.classList.add('no-animations');
+                }
+                animationsToggle.checked = settings.animations;
+
+                // 卡片缩放
+                const grid = document.getElementById('fileGrid');
+                const scale = settings.cardScale / 100;
+                grid.style.transform = scale === 1 ? 'none' : 'scale(' + scale + ')';
+                grid.style.transformOrigin = 'top center';
+                cardScaleSlider.value = settings.cardScale;
+                cardScaleValue.textContent = settings.cardScale + '%';
+
+                // 紧凑模式
+                document.body.classList.toggle('compact-mode', settings.compact);
+                compactToggle.checked = settings.compact;
+
+                // 图片高度
+                document.documentElement.style.setProperty('--card-img-height', settings.imgHeight + 'px');
+                const style = document.getElementById('dynamicImgHeightStyle');
+                if (style) {
+                    style.textContent = '.card-image-wrap { height: ' + settings.imgHeight + 'px !important; }';
+                }
+                imgHeightSlider.value = settings.imgHeight;
+                imgHeightValue.textContent = settings.imgHeight + 'px';
+
+                // 布局风格（先于列数处理，因为布局风格可能覆盖列数）
+                document.body.classList.remove('layout-list', 'layout-wide');
+                if (settings.layoutStyle !== 'grid') {
+                    document.body.classList.add('layout-' + settings.layoutStyle);
+                }
+                styleSelector.querySelectorAll('.style-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.style === settings.layoutStyle);
+                });
+
+                // 一行显示个数（仅在网格布局下生效）
+                if (settings.layoutStyle === 'grid') {
+                    if (settings.columns > 0) {
+                        grid.style.gridTemplateColumns = 'repeat(' + settings.columns + ', 1fr)';
+                    } else {
+                        grid.style.gridTemplateColumns = '';
+                    }
+                } else {
+                    grid.style.gridTemplateColumns = '';
+                }
+                columnsSlider.value = settings.columns;
+                columnsValue.textContent = settings.columns === 0 ? '自动' : settings.columns + '列';
+
+                // 懒加载
+                lazyLoadToggle.checked = settings.lazyLoad;
+            }
+
+            // 创建动态样式标签
+            const dynamicStyle = document.createElement('style');
+            dynamicStyle.id = 'dynamicImgHeightStyle';
+            document.head.appendChild(dynamicStyle);
+
+            // 事件绑定
+            darkModeToggle.addEventListener('change', function() {
+                settings.darkMode = this.checked;
+                saveSettings(settings);
+                applySettings();
+            });
+
+            animationsToggle.addEventListener('change', function() {
+                settings.animations = this.checked;
+                saveSettings(settings);
+                applySettings();
+            });
+
+            cardScaleSlider.addEventListener('input', function() {
+                settings.cardScale = parseInt(this.value);
+                saveSettings(settings);
+                applySettings();
+            });
+
+            compactToggle.addEventListener('change', function() {
+                settings.compact = this.checked;
+                saveSettings(settings);
+                applySettings();
+            });
+
+            imgHeightSlider.addEventListener('input', function() {
+                settings.imgHeight = parseInt(this.value);
+                saveSettings(settings);
+                applySettings();
+            });
+
+            lazyLoadToggle.addEventListener('change', function() {
+                settings.lazyLoad = this.checked;
+                saveSettings(settings);
+                applySettings();
+            });
+
+            columnsSlider.addEventListener('input', function() {
+                settings.columns = parseInt(this.value);
+                saveSettings(settings);
+                applySettings();
+            });
+
+            styleSelector.querySelectorAll('.style-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    settings.layoutStyle = this.dataset.style;
+                    saveSettings(settings);
+                    applySettings();
+                });
+            });
+
+            // 重置
+            resetBtn.addEventListener('click', function() {
+                settings = { ...DEFAULTS };
+                saveSettings(settings);
+                applySettings();
+            });
+
+            // 初始化应用设置
+            applySettings();
+
+        })();
+
+        /* ============================================
+           回到顶部按钮逻辑
+           ============================================ */
+        (function() {
+            'use strict';
+
+            var btn = document.getElementById('backToTopBtn');
+            var scrollThreshold = 300;
+
+            function toggleVisibility() {
+                if (window.scrollY > scrollThreshold) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            }
+
+            btn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', toggleVisibility, { passive: true });
+            toggleVisibility();
 
         })();
     </script>
