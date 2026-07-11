@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="dns-prefetch" href="https://testingcf.jsdelivr.net">
     <link rel="preconnect" href="https://testingcf.jsdelivr.net" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.jsdmirror.com">
     <link rel="preconnect" href="https://cdn.jsdmirror.com" crossorigin>
     <link rel="dns-prefetch" href="https://jsdelivr.aby.pub">
     <link rel="preconnect" href="https://jsdelivr.aby.pub" crossorigin>
+    <link rel="preload" href="/data/data.json" as="fetch" crossorigin>
+    <link rel="preload" href="/data/announce.json" as="fetch" crossorigin>
     <title>SFS汉化模组下载中心 - Spaceflight Simulator 中文模组</title>
 
     <!-- ============= SEO Meta ============= -->
@@ -2106,7 +2111,7 @@
 
         /* 设置面板响应式 */
         @media (max-width: 480px) {
-            .settings-panel { width: 100%; right: -100%; }
+            .settings-panel { width: 100%; }
             .announce-float-btn { top: 66px; right: 12px; width: 40px; height: 40px; }
             .settings-float-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
             .back-to-top-btn { right: 15px; bottom: 140px; width: 42px; height: 42px; }
