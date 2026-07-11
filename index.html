@@ -451,6 +451,34 @@
         }
         .no-results.show { display: block; }
 
+        .grid-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            gap: 16px;
+        }
+        .grid-loading.hidden { display: none; }
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #333;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-text {
+            font-size: 0.88rem;
+            color: #999;
+            font-weight: 500;
+        }
+        body.dark-mode .loading-spinner { border-color: #444; border-top-color: #eee; }
+        body.dark-mode .loading-text { color: #666; }
+
         .load-error {
             display: none;
             text-align: center;
@@ -2259,7 +2287,11 @@
         </div>
 
         <!-- 模组卡片网格 -->
-        <section class="file-grid" id="fileGrid" aria-label="模组列表"></section>
+        <div class="grid-loading" id="gridLoading">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">加载中...</span>
+        </div>
+        <section class="file-grid" id="fileGrid" aria-label="模组列表" style="display:none;"></section>
 
         <!-- 无结果提示 -->
         <div class="no-results" id="noResults" aria-live="polite"></div>
@@ -2768,6 +2800,9 @@
                 const grid = document.getElementById('fileGrid');
                 const noResults = document.getElementById('noResults');
                 const tutorialSection = document.getElementById('tutorialSection');
+                const gridLoading = document.getElementById('gridLoading');
+                gridLoading.classList.add('hidden');
+                grid.style.display = '';
 
                 if (currentCategory === 'tutorial') {
                     grid.style.display = 'none';
@@ -2992,6 +3027,7 @@
                 })
                 .catch(err => {
                     console.error('数据加载失败:', err);
+                    document.getElementById('gridLoading').classList.add('hidden');
                     document.getElementById('loadError').classList.add('show');
                     document.getElementById('fileGrid').style.display = 'none';
                     document.getElementById('totalCount').textContent = '0';
