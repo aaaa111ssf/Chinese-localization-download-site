@@ -45,7 +45,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#111111">
     <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
     
@@ -55,6 +56,38 @@
            ============================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+
+        /* 无障碍：跳过导航 */
+        .skip-nav {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 0 0 8px 8px;
+            z-index: 99999;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: top 0.2s;
+        }
+        .skip-nav:focus {
+            top: 0;
+            outline: none;
+        }
+
+        /* 无障碍：键盘焦点指示器 */
+        :focus-visible {
+            outline: 2px solid #0969da;
+            outline-offset: 2px;
+        }
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid #0969da;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
@@ -239,11 +272,17 @@
         /* ---- 图片区 ---- */
         .card-image-wrap {
             height: 180px;
-            background: #f0f0f0;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
             overflow: hidden;
             position: relative;
             flex-shrink: 0;
             cursor: pointer;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         .card-image-wrap img {
             width: 100%;
@@ -336,7 +375,7 @@
             align-items: center;
             gap: 10px;
             font-size: 0.78rem;
-            color: #888;
+            color: #666;
             margin-top: -4px;
         }
 
@@ -435,6 +474,16 @@
         .card-actions .btn-download:hover {
             background: #333;
             border-color: #333;
+        }
+        .card-actions .btn-fav {
+            font-size: 1.15rem !important;
+            padding: 8px 10px;
+            min-width: auto;
+            line-height: 1;
+        }
+        .card-actions .btn-fav.active {
+            color: #e74c3c;
+            border-color: #e74c3c;
         }
 
         /* ============================================
@@ -846,6 +895,25 @@
             line-height: 1.7;
             margin-bottom: 6px;
         }
+        .modal-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .modal-links a {
+            color: #0969da;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .modal-links a:hover { background: #0969da; color: #fff; }
+        body.dark-mode .modal-links a { color: #58a6ff; border-color: #58a6ff; }
+        body.dark-mode .modal-links a:hover { background: #58a6ff; color: #0d0d0d; }
+
         .modal-checkbox {
             display: flex;
             align-items: center;
@@ -1397,7 +1465,7 @@
         .announce-item-type.error { background: #f8d7da; color: #721c24; }
         .announce-item-date {
             font-size: 0.75rem;
-            color: #999;
+            color: #666;
         }
         .announce-item-title {
             font-size: 0.95rem;
@@ -1784,7 +1852,7 @@
             border-color: #3a3a3a;
             box-shadow: 0 12px 32px rgba(0,0,0,0.3);
         }
-        body.dark-mode .card-image-wrap { background: #111; }
+        body.dark-mode .card-image-wrap { background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%); background-size: 200% 100%; }
         body.dark-mode .card-image-fallback { color: #555; }
         body.dark-mode .card-image-fallback .fallback-text { color: #444; }
         body.dark-mode .card-title { color: #eee; }
@@ -1813,6 +1881,10 @@
         body.dark-mode .card-actions .btn-download:hover {
             background: #ddd;
             border-color: #ddd;
+        }
+        body.dark-mode .card-actions .btn-fav.active {
+            color: #ff6b6b;
+            border-color: #ff6b6b;
         }
         body.dark-mode .suggestion-card {
             background: #1a1a1a;
@@ -2127,6 +2199,35 @@
 
         body.dark-mode .about-us-section { border-top-color: #2a2a2a; }
         body.dark-mode .about-us-section .about-desc { color: #777; }
+
+        .credits-section {
+            padding: 0 24px 16px;
+        }
+        .credits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .credits-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .credits-item .about-us-link {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-width: 1px;
+        }
+        .credits-item .about-us-link .link-icon {
+            font-size: 0.7rem;
+        }
+        .credits-name {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: #333;
+        }
+        body.dark-mode .credits-name { color: #ddd; }
         body.dark-mode .about-us-link {
             background: #1a1a1a;
             border-color: #2a2a2a;
@@ -2156,8 +2257,27 @@
             .card-actions .btn { padding: 7px 12px; font-size: 0.78rem; }
         }
     </style>
+
+    <!-- 结构化数据：WebSite + SearchAction -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "SFS汉化模组下载中心",
+        "url": "https://sfszhmod.pages.dev",
+        "description": "Spaceflight Simulator 中文汉化模组下载，包含发动机、部件、涂装包等海量资源",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://sfszhmod.pages.dev/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
 </head>
 <body>
+
+    <!-- 无障碍：跳过导航直达内容 -->
+    <a class="skip-nav" href="#main-content">跳到主要内容</a>
 
     <!-- ============================================
          开屏弹窗（含"不再提示"）
@@ -2168,17 +2288,21 @@
             <div class="modal-title" id="entryModalTitle">欢迎访问 SFS 汉化模组站</div>
             <div class="modal-text">
                 本站所有模组均为汉化版本，仅供学习交流使用。<br>
-                下载前请确认您已了解模组安装方法。<br>
-                点击确认进入下载中心。<br>
-                upQQ交流反馈群923038827
+                下载前请确认您已了解模组安装方法。
+            </div>
+            <div class="modal-links">
+                <a href="https://sfs-cn-mod.pages.dev/" target="_blank" rel="noopener">SFS中文模组站</a>
+                <a href="https://sfscnmod.7813.cc.cd" target="_blank" rel="noopener">SFS中文模组</a>
+                <a href="https://qm.qq.com/cgi-bin/qm/qr?k=Q3c7K7F7G9x5F5aB8bZ7hS9jK3nM2pL4&jump_from=webapi&authKey=xxx" target="_blank" rel="noopener noreferrer">QQ群</a>
+                <a href="https://b23.tv/BMOcJRh" target="_blank" rel="noopener noreferrer">B站</a>
             </div>
             <label class="modal-checkbox">
                 <input type="checkbox" id="dontShowAgain">
                 不再提示
             </label>
             <div class="modal-buttons">
-                <button class="modal-btn modal-btn-confirm" onclick="closeModal()">进入</button>
-                <button class="modal-btn modal-btn-cancel" onclick="window.close()">退出</button>
+                <button class="modal-btn modal-btn-confirm" onclick="closeModal()">进入下载</button>
+                <a class="modal-btn modal-btn-cancel" href="https://sfs-cn-mod.pages.dev/" target="_blank" rel="noopener">了解更多</a>
             </div>
         </div>
     </div>
@@ -2186,7 +2310,7 @@
     <!-- ============================================
          主容器
          ============================================ -->
-    <main class="container">
+    <main class="container" id="main-content">
 
         <!-- 头部 -->
         <header class="header">
@@ -2200,7 +2324,7 @@
 
         <!-- 搜索框 -->
         <div class="search-box" role="search">
-            <input type="text" id="searchInput" placeholder="搜索文件名、简介或标签..." aria-label="搜索模组">
+            <input type="text" id="searchInput" placeholder="搜索文件名、简介或标签... (#标签 搜索)" aria-label="搜索模组">
         </div>
 
         <!-- 分类导航 -->
@@ -2211,6 +2335,7 @@
             <button class="category-btn" data-category="entertain">娱乐性部件</button>
             <button class="category-btn" data-category="skin">涂装包</button>
             <button class="category-btn" data-category="tutorial">教程</button>
+            <button class="category-btn" id="favFilterBtn" data-category="fav" style="margin-left:4px;">&#9825; 收藏</button>
         </nav>
 
         <!-- 统计栏 -->
@@ -2319,10 +2444,10 @@
          ============================================ -->
     <div class="img-viewer-overlay" id="imgViewerOverlay" onclick="if(event.target===this)closeImgViewer()">
         <div class="img-viewer-box">
-            <button class="img-viewer-close" onclick="closeImgViewer()">✕</button>
-            <button class="img-viewer-nav img-viewer-prev" onclick="changeImg(-1)">‹</button>
+            <button class="img-viewer-close" aria-label="关闭预览" onclick="closeImgViewer()">✕</button>
+            <button class="img-viewer-nav img-viewer-prev" aria-label="上一张" onclick="changeImg(-1)">‹</button>
             <img src="" alt="大图预览" id="imgViewerImg">
-            <button class="img-viewer-nav img-viewer-next" onclick="changeImg(1)">›</button>
+            <button class="img-viewer-nav img-viewer-next" aria-label="下一张" onclick="changeImg(1)">›</button>
             <div class="img-viewer-counter" id="imgViewerCounter">1 / 1</div>
         </div>
     </div>
@@ -2401,7 +2526,7 @@
     <div class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-label="设置面板">
         <div class="settings-panel-header">
             <h3>设置</h3>
-            <button class="settings-panel-close" id="settingsPanelClose">✕</button>
+            <button class="settings-panel-close" id="settingsPanelClose" aria-label="关闭设置">✕</button>
         </div>
         <div class="settings-panel-body">
             <!-- 外观 -->
@@ -2551,6 +2676,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 鸣谢名单 -->
+            <div class="settings-group">
+                <div class="settings-group-title">鸣谢名单</div>
+                <div class="credits-section">
+                    <div class="credits-list">
+                        <div class="credits-item">
+                            <span class="credits-name">重铬酸钠</span>
+                            <a class="about-us-link" href="https://qm.qq.com/cgi-bin/qm/qr?from=webapi&jump_from=webapi&k=1078113418" target="_blank" rel="noopener noreferrer">
+                                <span class="link-icon">💬</span>QQ群: 1078113418
+                            </a>
+                        </div>
+                        <div class="credits-item">
+                            <span class="credits-name">蓝鲸公益</span>
+                            <a class="about-us-link" href="https://qm.qq.com/cgi-bin/qm/qr?from=webapi&jump_from=webapi&k=879487979" target="_blank" rel="noopener noreferrer">
+                                <span class="link-icon">💬</span>QQ群: 879487979
+                            </a>
+                        </div>
+                        <div class="credits-item">
+                            <span class="credits-name">555_55</span>
+                        </div>
+                        <div class="credits-item">
+                            <span class="credits-name">10086</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="settings-panel-footer">
             <button class="settings-reset-btn" id="settingsResetBtn">重置所有设置</button>
@@ -2574,6 +2726,53 @@
             let searchKeyword = '';
             let viewerImages = [];
             let viewerIndex = 0;
+
+            /* ---------- 收藏功能 ---------- */
+            let favorites = [];
+            let favFilterActive = false;
+            try {
+                favorites = JSON.parse(localStorage.getItem('sfs_favorites')) || [];
+            } catch(e) {
+                favorites = [];
+            }
+            function saveFavorites() {
+                localStorage.setItem('sfs_favorites', JSON.stringify(favorites));
+            }
+            function toggleFavorite(name) {
+                const idx = favorites.indexOf(name);
+                if (idx === -1) {
+                    favorites.push(name);
+                } else {
+                    favorites.splice(idx, 1);
+                }
+                saveFavorites();
+                updateFavButtons();
+            }
+            window.toggleFavorite = toggleFavorite;
+            function updateFavButtons() {
+                document.querySelectorAll('.btn-fav').forEach(btn => {
+                    const name = btn.dataset.name;
+                    if (!name) return;
+                    if (favorites.includes(name)) {
+                        btn.textContent = '\u2665';
+                        btn.classList.add('active');
+                    } else {
+                        btn.textContent = '\u2661';
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+            function updateFavFilterBtn() {
+                const btn = document.getElementById('favFilterBtn');
+                if (!btn) return;
+                if (favFilterActive) {
+                    btn.classList.add('active');
+                    btn.innerHTML = '\u2665 收藏';
+                } else {
+                    btn.classList.remove('active');
+                    btn.innerHTML = '\u2661 收藏';
+                }
+            }
 
             /* ---------- 安全转义工具 ---------- */
             function escapeHtml(str) {
@@ -2643,6 +2842,15 @@
                     </div>
                 `;
             };
+
+            /* ---------- 图片加载完成移除骨架屏 ---------- */
+            function handleImgLoad(img) {
+                var wrap = img.closest('.card-image-wrap');
+                if (wrap) {
+                    wrap.style.animation = 'none';
+                    wrap.style.background = '';
+                }
+            }
 
             /* ---------- 工具 ---------- */
             function checkAndRemoveModalOpen() {
@@ -2717,13 +2925,13 @@
                     const moreCount = validImages.length > 4 ? validImages.length - 4 : 0;
                     const thumbsHtml = thumbs.length ? `
                         <div class="card-image-gallery" onclick="event.stopPropagation()">
-                            ${thumbs.map((img, i) => `<img data-src="${escapeHtml(img)}" onclick="openImgViewer(${index}, ${i+1})" alt="" class="lazy-img" onerror="this.style.display='none'; this.onerror=null;">`).join('')}
+                            ${thumbs.map((img, i) => `<img data-src="${escapeHtml(img)}" onclick="openImgViewer(${index}, ${i+1})" alt="${escapeHtml(safe.name)}缩略图${i+1}" class="lazy-img" onerror="this.style.display='none'; this.onerror=null;">`).join('')}
                             ${moreCount ? `<span style="color:#fff;font-size:0.7rem;padding:4px 6px;background:rgba(0,0,0,0.4);border-radius:4px;white-space:nowrap;">+${moreCount}</span>` : ''}
                         </div>
                     ` : '';
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
-                            <img data-src="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)">
+                            <img data-src="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)">
                             ${thumbsHtml}
                         </div>
                     `;
@@ -2756,6 +2964,7 @@
                         </div>
                         <div class="card-actions">
                             <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">详情</button>
+                            <button class="btn btn-fav" data-name="${safe.name}" onclick="event.stopPropagation(); toggleFavorite(this.dataset.name)">&#9825;</button>
                             <a href="${safe.link}" target="_blank" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">下载<span class="dl-count" data-mod="${safe.name}"></span></a>
                         </div>
                     </div>
@@ -2776,7 +2985,7 @@
                 };
                 const icon = typeIcons[safe.type] || typeIcons.default;
                 const img = validImages.length > 0
-                    ? `<div class="sug-img-wrap"><img data-src="${escapeHtml(validImages[0])}" data-icon="${icon}" class="lazy-img" alt="${safe.name}预览图" data-mirror-idx="0" onerror="handleImgError(this)"></div>`
+                    ? `<div class="sug-img-wrap"><img data-src="${escapeHtml(validImages[0])}" data-icon="${icon}" class="lazy-img" alt="${safe.name}预览图" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)"></div>`
                     : `<div class="sug-img-wrap card-image-placeholder"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
                 return `
                     <div class="suggestion-card">
@@ -2819,13 +3028,40 @@
 
                 grid.innerHTML = '';
                 noResults.innerHTML = '';
-                const lowerFilter = searchKeyword.toLowerCase();
+                const rawQuery = searchKeyword.trim();
+                const lowerFilter = rawQuery.toLowerCase();
                 let visibleCount = 0;
 
+                /* 标签搜索：#开头则在tags中查找 */
+                const isTagSearch = rawQuery.startsWith('#');
+                const tagQuery = isTagSearch ? rawQuery.slice(1).toLowerCase() : '';
+
+                /* 拼音首字母逐字符匹配（简化版） */
+                function matchPinyinInitials(name, query) {
+                    if (!query || !name) return false;
+                    let qi = 0;
+                    for (let ni = 0; ni < name.length && qi < query.length; ni++) {
+                        if (name[ni].toLowerCase() === query[qi]) {
+                            qi++;
+                        }
+                    }
+                    return qi === query.length;
+                }
+
                 files.forEach((file, index) => {
+                    /* 收藏筛选 */
+                    if (favFilterActive && !favorites.includes(file.name || '')) return;
+
                     const matchCategory = currentCategory === 'all' || file.category === currentCategory;
-                    const searchText = ((file.name || '') + ' ' + (file.desc || '') + ' ' + (Array.isArray(file.tags) ? file.tags.join(' ') : '')).toLowerCase();
-                    const matchSearch = searchText.includes(lowerFilter);
+                    let matchSearch = false;
+                    if (isTagSearch) {
+                        matchSearch = tagQuery && Array.isArray(file.tags) && file.tags.some(t => t.toLowerCase().includes(tagQuery));
+                    } else if (lowerFilter) {
+                        const searchText = ((file.name || '') + ' ' + (file.desc || '') + ' ' + (Array.isArray(file.tags) ? file.tags.join(' ') : '')).toLowerCase();
+                        matchSearch = searchText.includes(lowerFilter) || matchPinyinInitials(file.name || '', lowerFilter);
+                    } else {
+                        matchSearch = true;
+                    }
                     if (matchCategory && matchSearch) {
                         visibleCount++;
                         grid.innerHTML += createModCard(file, index);
@@ -2863,6 +3099,7 @@
                 }
 
                 observeLazyImages();
+                updateFavButtons();
             }
 
             /* ---------- 事件绑定 ---------- */
@@ -2876,6 +3113,11 @@
                     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     currentCategory = this.dataset.category;
+                    favFilterActive = (currentCategory === 'fav');
+                    if (favFilterActive) {
+                        currentCategory = 'all';
+                    }
+                    updateFavFilterBtn();
                     renderFiles();
                 });
             });
@@ -2907,6 +3149,7 @@
             };
 
             window.addEventListener('DOMContentLoaded', showModal);
+            updateFavFilterBtn();
 
             /* ---------- 模组详情 ---------- */
             window.openModDetail = function(index) {
@@ -2918,11 +3161,11 @@
                 const icon = typeIcons[file.type] || typeIcons.default;
 
                 const firstImage = validImages.length > 0 
-                    ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)">`
+                    ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)">`
                     : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
 
                 const gallery = validImages.length > 0 ?
-                    `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" alt="${escapeHtml(file.name||'模组')}预览图${i+1}" data-icon="${icon}" class="lazy-img" data-mirror-idx="0" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)">`).join('')}</div></div>` : '';
+                    `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" alt="${escapeHtml(file.name||'模组')}预览图${i+1}" data-icon="${icon}" class="lazy-img" data-mirror-idx="0" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)" onload="handleImgLoad(this)">`).join('')}</div></div>` : '';
 
                 box.innerHTML = `
                     <div class="mod-detail-header">
@@ -3367,6 +3610,15 @@
             toggleVisibility();
 
         })();
+    </script>
+
+    <!-- 注册 Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').catch(function() {});
+            });
+        }
     </script>
 </body>
 </html>
