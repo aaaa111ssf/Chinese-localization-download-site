@@ -2290,19 +2290,13 @@
                 本站所有模组均为汉化版本，仅供学习交流使用。<br>
                 下载前请确认您已了解模组安装方法。
             </div>
-            <div class="modal-links">
-                <a href="https://sfs-cn-mod.pages.dev/" target="_blank" rel="noopener">SFS中文模组站</a>
-                <a href="https://sfscnmod.7813.cc.cd" target="_blank" rel="noopener">SFS中文模组</a>
-                <a href="https://qm.qq.com/cgi-bin/qm/qr?k=Q3c7K7F7G9x5F5aB8bZ7hS9jK3nM2pL4&jump_from=webapi&authKey=xxx" target="_blank" rel="noopener noreferrer">QQ群</a>
-                <a href="https://b23.tv/BMOcJRh" target="_blank" rel="noopener noreferrer">B站</a>
-            </div>
             <label class="modal-checkbox">
                 <input type="checkbox" id="dontShowAgain">
                 不再提示
             </label>
             <div class="modal-buttons">
                 <button class="modal-btn modal-btn-confirm" onclick="closeModal()">进入下载</button>
-                <a class="modal-btn modal-btn-cancel" href="https://sfs-cn-mod.pages.dev/" target="_blank" rel="noopener">了解更多</a>
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal(); document.getElementById('settingsFloatBtn').click(); setTimeout(function(){ var s=document.querySelector('.about-us-section'); if(s) s.scrollIntoView({behavior:'smooth'}); }, 400);">了解更多</button>
             </div>
         </div>
     </div>
@@ -2673,6 +2667,14 @@
                             <span class="link-icon">📺</span>
                             B站: A-Future-star
                         </a>
+                        <a class="about-us-link" href="https://sfs-cn-mod.pages.dev/" target="_blank" rel="noopener">
+                            <span class="link-icon">🌐</span>
+                            友站: SFS中文模组站
+                        </a>
+                        <a class="about-us-link" href="https://sfscnmod.7813.cc.cd" target="_blank" rel="noopener">
+                            <span class="link-icon">🌐</span>
+                            友站: SFS中文模组
+                        </a>
                     </div>
                 </div>
             </div>
@@ -2870,7 +2872,6 @@
                             const src = img.dataset.src;
                             if (src) {
                                 img.src = src;
-                                img.loading = 'lazy';
                                 if (img.complete) {
                                     img.classList.add('loaded');
                                 } else {
@@ -2929,9 +2930,10 @@
                             ${moreCount ? `<span style="color:#fff;font-size:0.7rem;padding:4px 6px;background:rgba(0,0,0,0.4);border-radius:4px;white-space:nowrap;">+${moreCount}</span>` : ''}
                         </div>
                     ` : '';
+                    const isAboveFold = index < 4;
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
-                            <img data-src="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)">
+                            <img ${isAboveFold ? 'src' : 'data-src'}="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)" ${isAboveFold ? 'loading="eager"' : ''}>
                             ${thumbsHtml}
                         </div>
                     `;
