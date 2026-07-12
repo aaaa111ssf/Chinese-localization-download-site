@@ -1252,6 +1252,9 @@
             .step-item { flex-direction: column; gap: 8px; }
             .code-block { font-size: 0.75rem !important; padding: 8px 10px !important; }
             .card-actions .btn { padding: 8px 14px; font-size: 0.8rem; }
+            .dl-count { font-size: 0.7rem; opacity: 0.6; margin-left: 4px; }
+            .dl-count:not(:empty)::before { content: '('; }
+            .dl-count:not(:empty)::after { content: ')'; }
             .card-body { padding: 14px; }
         }
         @media (max-width: 640px) {
@@ -2562,6 +2565,7 @@
             'use strict';
 
             let files = [];
+            let downloadStats = {}; // 全局下载统计
             const typeIcons = {
                 pdf: '📄', zip: '📦', doc: '📝', img: '🖼️',
                 video: '🎬', code: '💻', default: '📎'
@@ -2752,7 +2756,7 @@
                         </div>
                         <div class="card-actions">
                             <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">详情</button>
-                            <a href="${safe.link}" target="_blank" class="btn btn-download" onclick="event.stopPropagation()">下载</a>
+                            <a href="${safe.link}" target="_blank" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">下载<span class="dl-count" data-mod="${safe.name}"></span></a>
                         </div>
                     </div>
                 `;
@@ -3031,6 +3035,36 @@
                     document.getElementById('totalCount').textContent = '0';
                 });
 
+            // 加载全局下载统计
+            async function loadDownloadStats() {
+                try {
+                    const resp = await fetch('/api/stats');
+                    if (resp.ok) {
+                        downloadStats = await resp.json();
+                        // 更新页面上的下载计数显示
+                        document.querySelectorAll('.dl-count[data-mod]').forEach(el => {
+                            const name = el.getAttribute('data-mod');
+                            if (downloadStats[name] > 0) el.textContent = downloadStats[name];
+                        });
+                    }
+                } catch (e) {
+                    // 统计服务不可用时静默降级
+                }
+            }
+
+            // 记录下载
+            function logDownload(index) {
+                const file = files[index];
+                if (!file) return;
+                const name = (file.name || '').trim();
+                // 更新本地显示
+                downloadStats[name] = (downloadStats[name] || 0) + 1;
+                const el = document.querySelector('.dl-count[data-mod="' + name + '"]');
+                if (el) el.textContent = downloadStats[name];
+                // 后台上报（不阻塞下载）
+                navigator.sendBeacon('/api/log', JSON.stringify({ mod: name }));
+            }
+
             // 单独加载公告
             fetch('data/announce.json?v=' + Date.now())
                 .then(r => r.ok ? r.json() : [])
@@ -3038,6 +3072,9 @@
                     if (Array.isArray(data) && data.length) renderAnnouncements(data);
                 })
                 .catch(() => {});
+
+            // 加载下载统计（等卡片渲染完后再显示计数）
+            setTimeout(loadDownloadStats, 500);
 
         })();
 
