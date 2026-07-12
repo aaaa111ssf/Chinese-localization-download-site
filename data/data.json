@@ -1,36 +1,17 @@
 [
-    {
-    "name": "实用包Fix fix",
-    "type": "zip",
-    "size": "14.8MB",
-    "date": "2026-6-10",
-    "desc": "货场 花瓣整流罩等",
-    "link": "https://wwaqu.lanzoub.com/iEffs3w0vf0h",
-    "tags": [
-      "实用"
-    ],
-    "category": "function",
-    "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/35.png"
-    ],
-    "version": "v1.0",
-    "author": "PicoSpace",
-    "heat": "11.9万",
-    "compat": "1.6.00.3+"
-  },
   {
     "name": "新视野",
     "type": "zip",
     "size": "36.9 MB",
     "date": "2026-07-11",
     "desc": "土星系列火箭扩展 蓝图下载https://wwaqu.lanzoub.com/iKLVx3vqr6kj 报错1900+故不再汉化 与阿波罗（汉化）不兼容",
-    "link": "https://wwaqu.lanzoub.com/iD9wd3vsxg1i",
+    "link": "https://wwaqu.lanzoub.com/i8QYG3vqpmxg",
     "tags": [
       "汉化"
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/101.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/101.webp"
     ],
     "version": "v1.0 汉化",
     "author": "Mac",
@@ -49,7 +30,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/100.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/100.webp"
     ],
     "version": "v1.0 汉化",
     "author": "InvinteX",
@@ -68,7 +49,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/99.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/99.webp"
     ],
     "version": "v1.0 汉化",
     "author": "Eternity",
@@ -87,7 +68,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/98.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/98.webp"
     ],
     "version": "v1.0 汉化",
     "author": "HyptixFonts",
@@ -106,7 +87,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/97.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/97.webp"
     ],
     "version": "v1.0 汉化",
     "author": "Roshan",
@@ -126,7 +107,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/95.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/95.webp"
     ],
     "version": "v1.0 汉化",
     "author": "TSS XingYi",
@@ -145,7 +126,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/96.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/96.webp"
     ],
     "version": "v1.0 汉化",
     "author": "sfsupgraderocket",
@@ -165,7 +146,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/93.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/93.webp"
     ],
     "version": "v1.0 汉化",
     "author": "Mac",
@@ -184,7 +165,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/92.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/92.webp"
     ],
     "version": "v1.0 汉化",
     "author": "Mac",
@@ -205,7 +186,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/4.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/4.webp"
     ],
     "version": "v1.0 汉化",
     "author": "QMSP",
@@ -226,7 +207,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/可调节部件.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/可调节部件.webp"
     ],
     "version": "v1.4.5",
     "author": "SFS.S9",
@@ -246,7 +227,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/6.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/6.webp"
     ],
     "version": "v1.0",
     "author": "VerdiX",
@@ -266,7 +247,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/28.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/28.webp"
     ],
     "version": "v2.1",
     "author": "SenchQ",
@@ -287,8 +268,8 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/7.png",
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/8.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/7.webp",
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/8.webp"
     ],
     "version": "v1.1",
     "author": "Ludwig",
@@ -309,8 +290,8 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/9.png",
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/10.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/9.webp",
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/10.webp"
     ],
     "version": "v1.0",
     "author": "Gremlin",
@@ -331,7 +312,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/11.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/11.webp"
     ],
     "version": "v1.2",
     "author": "TSS XingYi",
@@ -351,7 +332,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/12.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/12.webp"
     ],
     "version": "v1.0",
     "author": "VerdiX",
@@ -372,7 +353,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/13.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/13.webp"
     ],
     "version": "v1.0",
     "author": "brioche",
@@ -380,7 +361,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "生命支持系统",
+    "name": "CN-QMSP'sLife Support v1.0.1 生命支持系统",
     "type": "zip",
     "size": "0.1MB",
     "date": "2026-05-16",
@@ -392,7 +373,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/14.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/14.webp"
     ],
     "version": "v1.0.1",
     "author": "QMSP",
@@ -400,7 +381,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "航天航空星舰包",
+    "name": "CN-PrimeAerospace Starship Pack 1.6 prime 航天航空星舰包",
     "type": "zip",
     "size": "11.9MB",
     "date": "2026-05-16",
@@ -413,7 +394,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/15.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/15.webp"
     ],
     "version": "v1.6",
     "author": "PrimeAero",
@@ -421,7 +402,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "半真实发动机",
+    "name": "CN-PicoSpaceSemi-Realistic Engines 1.6.2 半真实发动机",
     "type": "zip",
     "size": "2.5MB",
     "date": "2026-05-16",
@@ -434,7 +415,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/16.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/16.webp"
     ],
     "version": "v1.6.2",
     "author": "PicoSpace",
@@ -442,7 +423,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "半真实航天器",
+    "name": "CN-PicoSpaceSpaceCraft 1.6.4 半真实航天器",
     "type": "zip",
     "size": "6.8MB",
     "date": "2026-6-10",
@@ -455,7 +436,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/17.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/17.webp"
     ],
     "version": "v1.6.4",
     "author": "PicoSpace",
@@ -463,7 +444,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "异域套装",
+    "name": "CN-PicoSpaceExotics1.6 异域套装",
     "type": "zip",
     "size": "1.8MB",
     "date": "2026-6-10",
@@ -476,8 +457,8 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/3.png",
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/2.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/3.webp",
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/2.webp"
     ],
     "version": "v1.6",
     "author": "PicoSpace",
@@ -485,7 +466,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "杂项",
+    "name": "CN-杂项",
     "type": "zip",
     "size": "0.2MB",
     "date": "2026-6-11",
@@ -496,7 +477,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/18.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/18.webp"
     ],
     "version": "v1.0",
     "author": "grew",
@@ -504,7 +485,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "超频模式",
+    "name": "CN-PicoSpaceOverdrive1.6 超频模式",
     "type": "zip",
     "size": "1MB",
     "date": "2026-6-10",
@@ -517,7 +498,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/19.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/19.webp"
     ],
     "version": "v1.6",
     "author": "PicoSpace",
@@ -525,7 +506,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "助推器+",
+    "name": "CN-PicoSpaceBoosters+ 1.6 助推器+",
     "type": "zip",
     "size": "2.3MB",
     "date": "2026-6-10",
@@ -538,7 +519,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/21.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/21.webp"
     ],
     "version": "v1.6",
     "author": "PicoSpace",
@@ -546,7 +527,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "额外现代运载火箭",
+    "name": "CN-PicoSpaceAdditional Launch Vehicles 1.6.3 额外现代运载火箭",
     "type": "zip",
     "size": "3.1MB",
     "date": "2026-6-10",
@@ -559,7 +540,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/22.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/22.webp"
     ],
     "version": "v1.6.3",
     "author": "PicoSpace",
@@ -567,7 +548,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "半真实着陆器引擎+",
+    "name": "CN-PicoSpaceLanderAbort Engines 1.6.1 半真实着陆器引擎+",
     "type": "zip",
     "size": "1.7MB",
     "date": "2026-6-10",
@@ -580,7 +561,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/19.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/19.webp"
     ],
     "version": "v1.6.1",
     "author": "PicoSpace",
@@ -588,7 +569,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "现成-星级",
+    "name": "CN-OTSStarv1.0.0 现成-星级",
     "type": "zip",
     "size": "1MB",
     "date": "2026-6-10",
@@ -601,7 +582,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/24.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/24.webp"
     ],
     "version": "v1.0.0",
     "author": "Lemniscate Biscuit",
@@ -609,18 +590,18 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "通讯系统",
+    "name": "CN-OTS-CommsBeta6 通讯系统",
     "type": "zip",
     "size": "0.1MB",
     "date": "2026-6-10",
-    "desc": "基础通讯零件 模组有bug介意勿用",
+    "desc": "基础通讯零件",
     "link": "https://wwaqu.lanzoub.com/iRkYV3rw8bfc",
     "tags": [
       "通讯"
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/23.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/23.webp"
     ],
     "version": "Beta6",
     "author": "Lemniscate Biscuit",
@@ -628,7 +609,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "新曙光",
+    "name": "CN-NewDawn(BETAv0.1.1.2) 新曙光",
     "type": "zip",
     "size": "0.2MB",
     "date": "2026-6-10",
@@ -641,7 +622,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/30.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/30.webp"
     ],
     "version": "v0.1.1.2",
     "author": "QMSP",
@@ -649,7 +630,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "RL10复刻版",
+    "name": "CN-RL10Reduxv1.6 RL10复刻版",
     "type": "zip",
     "size": "2MB",
     "date": "2026-6-10",
@@ -662,7 +643,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/31.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/31.webp"
     ],
     "version": "v1.6",
     "author": "Lemniscate Biscuit",
@@ -670,7 +651,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "探索者终极套装",
+    "name": "CN-EUPv1.0.3 探索者终极套装",
     "type": "zip",
     "size": "6.8MB",
     "date": "2026-6-10",
@@ -683,7 +664,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/32.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/32.webp"
     ],
     "version": "v1.0.3",
     "author": "QMSP",
@@ -691,7 +672,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "隔热砖",
+    "name": "CN-heatshieldtiles 隔热砖",
     "type": "zip",
     "size": "0.2MB",
     "date": "2026-6-10",
@@ -703,7 +684,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/27.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/27.webp"
     ],
     "version": "v1.0",
     "author": "NeptuneSky",
@@ -723,7 +704,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/33.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/33.webp"
     ],
     "version": "v1.0",
     "author": "Hopiter",
@@ -731,7 +712,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "激光 大炮 核弹",
+    "name": "CN-lasers 激光 大炮 核弹",
     "type": "zip",
     "size": "12.1MB",
     "date": "2026-6-10",
@@ -744,7 +725,7 @@
     ],
     "category": "entertain",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/29.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/29.webp"
     ],
     "version": "v1.0",
     "author": "Gunno",
@@ -752,7 +733,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "lurins的东西",
+    "name": "CN-LurinsThings lurins的东西",
     "type": "zip",
     "size": "2.7MB",
     "date": "2026-6-10",
@@ -765,7 +746,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/34.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/34.webp"
     ],
     "version": "v1.0",
     "author": "Lurin",
@@ -773,7 +754,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "Mac的原版风格发动机",
+    "name": "CN-MSEP_1.0.5 Mac的原版风格发动机",
     "type": "zip",
     "size": "3.4MB",
     "date": "2026-6-10",
@@ -784,7 +765,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/40.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/40.webp"
     ],
     "version": "v1.0.5",
     "author": "Mac",
@@ -792,7 +773,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "米勒的新增内容",
+    "name": "CN-Miller.s.Vanilla.Esque.Additions.1.01.Hotfixes 米勒的新增内容",
     "type": "zip",
     "size": "1.5MB",
     "date": "2026-6-10",
@@ -803,7 +784,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/37.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/37.webp"
     ],
     "version": "v1.01",
     "author": "Miller",
@@ -811,7 +792,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "奇异果引擎",
+    "name": "CN-kmem1.4Build3 奇异果引擎",
     "type": "zip",
     "size": "2.7MB",
     "date": "2026-6-10",
@@ -822,7 +803,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/38.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/38.webp"
     ],
     "version": "v1.4",
     "author": "jaconos",
@@ -830,7 +811,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "路虎",
+    "name": "CN-Defender_1.0.1 路虎",
     "type": "zip",
     "size": "0.8MB",
     "date": "2026-6-10",
@@ -841,7 +822,7 @@
     ],
     "category": "entertain",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/41.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/41.webp"
     ],
     "version": "v1.0.1",
     "author": "Defender",
@@ -849,7 +830,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "战斧火箭+SpaceX引擎+部件",
+    "name": "CN-ARHLOE-Space-Part 战斧火箭+SpaceX引擎+部件",
     "type": "zip",
     "size": "8.7MB",
     "date": "2026-6-10",
@@ -860,7 +841,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/39.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/39.webp"
     ],
     "version": "v1.0",
     "author": "ARHLOE",
@@ -868,7 +849,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "霍皮特的空间站与基地部件Fix",
+    "name": "CN-霍皮特的空间站与基地部件Fix",
     "type": "zip",
     "size": "1.6MB",
     "date": "2026-6-10",
@@ -879,7 +860,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/91.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/91.webp"
     ],
     "version": "v1.0",
     "author": "Hopiter",
@@ -887,7 +868,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "海王星的模仿者",
+    "name": "CN-海王星的模仿者",
     "type": "zip",
     "size": "1.1MB",
     "date": "2026-6-10",
@@ -898,7 +879,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/36.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/36.webp"
     ],
     "version": "v1.0",
     "author": "Neptune",
@@ -906,7 +887,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "海王星的杂项",
+    "name": "CN-海王星的杂项",
     "type": "zip",
     "size": "0.76MB",
     "date": "2026-6-10",
@@ -917,7 +898,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/45.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/45.webp"
     ],
     "version": "v1.0",
     "author": "Neptune",
@@ -925,7 +906,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "圆周率引擎",
+    "name": "CN-圆周率引擎",
     "type": "zip",
     "size": "8.7MB",
     "date": "2026-6-10",
@@ -936,7 +917,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/43.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/43.webp"
     ],
     "version": "v1.0",
     "author": "QMSP",
@@ -944,7 +925,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "真实对接口",
+    "name": "CN-真实对接口",
     "type": "zip",
     "size": "0.5MB",
     "date": "2026-6-10",
@@ -955,7 +936,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/26.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/26.webp"
     ],
     "version": "v1.0",
     "author": "RealDock",
@@ -963,7 +944,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "物理零件",
+    "name": "CN-物理零件",
     "type": "zip",
     "size": "0.4MB",
     "date": "2026-6-10",
@@ -974,7 +955,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/42.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/42.webp"
     ],
     "version": "v1.0",
     "author": "Wave",
@@ -982,7 +963,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "未来科技&星舰",
+    "name": "CN-未来科技&星舰",
     "type": "zip",
     "size": "2.8MB",
     "date": "2026-6-10",
@@ -993,7 +974,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/44.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/44.webp"
     ],
     "version": "v1.0",
     "author": "rtfg",
@@ -1001,7 +982,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "万福玛丽亚",
+    "name": "CN-万福玛丽亚",
     "type": "zip",
     "size": "2.1MB",
     "date": "2026-6-10",
@@ -1012,7 +993,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/46.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/46.webp"
     ],
     "version": "v1.0",
     "author": "Maria",
@@ -1020,7 +1001,26 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "立方星",
+    "name": "CN-实用包Fix",
+    "type": "zip",
+    "size": "14.8MB",
+    "date": "2026-6-10",
+    "desc": "货场 花瓣整流罩等",
+    "link": "https://wwaqu.lanzoub.com/iw8Oc3sza86b",
+    "tags": [
+      "实用"
+    ],
+    "category": "function",
+    "images": [
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/35.webp"
+    ],
+    "version": "v1.0",
+    "author": "PicoSpace",
+    "heat": "11.9万",
+    "compat": "1.6.00.3+"
+  },
+  {
+    "name": "CN-立方星",
     "type": "zip",
     "size": "5.3MB",
     "date": "2026-6-10",
@@ -1031,7 +1031,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/47.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/47.webp"
     ],
     "version": "v1.0",
     "author": "PicoSpace",
@@ -1039,7 +1039,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "近-远未来科技",
+    "name": "CN-近-远未来科技",
     "type": "zip",
     "size": "3.5MB",
     "date": "2026-6-10",
@@ -1050,7 +1050,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/48.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/48.webp"
     ],
     "version": "v1.0",
     "author": "NearFar",
@@ -1058,7 +1058,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "等离子与离子推进技术",
+    "name": "CN-等离子与离子推进技术",
     "type": "zip",
     "size": "7.4MB",
     "date": "2026-6-10",
@@ -1069,7 +1069,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/51.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/51.webp"
     ],
     "version": "v1.0",
     "author": "TSS XingYi",
@@ -1077,7 +1077,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "ShareSpace巨型包",
+    "name": "CN-ShareSpace巨型包",
     "type": "zip",
     "size": "1.4MB",
     "date": "2026-6-10",
@@ -1088,7 +1088,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/52.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/52.webp"
     ],
     "version": "v1.0",
     "author": "ShareSpace",
@@ -1096,7 +1096,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "SDSA",
+    "name": "CN-SDSA",
     "type": "zip",
     "size": "0.58MB",
     "date": "2026-6-10",
@@ -1107,7 +1107,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/50.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/50.webp"
     ],
     "version": "v1.0",
     "author": "SDSA",
@@ -1115,7 +1115,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "QMSP的机械",
+    "name": "CN-QMSP的机械",
     "type": "zip",
     "size": "0.13MB",
     "date": "2026-6-10",
@@ -1126,7 +1126,7 @@
     ],
     "category": "function",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/49.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/49.webp"
     ],
     "version": "v1.0",
     "author": "QMSP",
@@ -1134,7 +1134,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "AEP续集",
+    "name": "CN-AEPCont.1.4 AEP续集",
     "type": "zip",
     "size": "0.9MB",
     "date": "2026-6-10",
@@ -1145,7 +1145,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/54.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/54.webp"
     ],
     "version": "v1.4",
     "author": "Lemniscate Biscuit",
@@ -1153,7 +1153,7 @@
     "compat": "1.6.00.3+"
   },
   {
-    "name": "低温发动机",
+    "name": "CN-ACEv2.0 低温发动机",
     "type": "zip",
     "size": "1.5MB",
     "date": "2026-6-10",
@@ -1164,7 +1164,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/53.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/53.webp"
     ],
     "version": "v2.0",
     "author": "Lemniscate Biscuit",
@@ -1185,7 +1185,7 @@
     ],
     "category": "skin",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/56.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/56.webp"
     ],
     "version": "v1.0",
     "author": "Model",
@@ -1204,7 +1204,7 @@
     ],
     "category": "skin",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/58.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/58.webp"
     ],
     "version": "v1.0",
     "author": "TYavaJ",
@@ -1223,7 +1223,7 @@
     ],
     "category": "skin",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/55.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/55.webp"
     ],
     "version": "v1.0",
     "author": "CN_UwU",
@@ -1244,7 +1244,7 @@
     ],
     "category": "skin",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/59.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/59.webp"
     ],
     "version": "v1.0",
     "author": "Frostblue44",
@@ -1265,7 +1265,7 @@
     ],
     "category": "skin",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/57.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/57.webp"
     ],
     "version": "v1.0",
     "author": "SFS-Gamer",
@@ -1286,7 +1286,7 @@
     ],
     "category": "skin",
     "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/60.png"
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/60.webp"
     ],
     "version": "v1.0",
     "author": "Dr. Stark Miller",
