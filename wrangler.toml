@@ -1,0 +1,7 @@
+name = "sfs-mod-stats"
+compatibility_date = "2026-07-12"
+
+[[kv_namespaces]]
+binding = "SFS"
+id = "29f8d1df5fc1490e8f68ae91beba130f"
+preview_id = "29f8d1df5fc1490e8f68ae91beba130f"
