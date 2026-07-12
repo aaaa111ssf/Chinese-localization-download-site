@@ -2852,7 +2852,7 @@
             };
 
             /* ---------- 图片加载完成移除骨架屏 ---------- */
-            function handleImgLoad(img) {
+            window.handleImgLoad = function(img) {
                 var wrap = img.closest('.card-image-wrap');
                 if (wrap) {
                     wrap.style.animation = 'none';
