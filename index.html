@@ -353,17 +353,17 @@
             <div class="settings-group">
                 <div class="settings-group-title">布局</div>
 
-                <div class="settings-item">
+                <div class="settings-item" id="cardWidthItem">
                     <div class="settings-item-left">
                         <div class="settings-item-icon">🔍</div>
                         <div>
-                            <div class="settings-item-label">卡片缩放</div>
-                            <div class="settings-item-desc">调整卡片大小</div>
+                            <div class="settings-item-label">卡片宽度</div>
+                            <div class="settings-item-desc" id="cardWidthDesc">调整卡片大小（仅自动列数时生效）</div>
                         </div>
                     </div>
                     <div class="settings-slider-wrap">
-                        <input type="range" class="settings-slider" id="settingCardScale" min="70" max="130" value="100" aria-label="卡片缩放">
-                        <span class="settings-slider-value" id="cardScaleValue">100%</span>
+                        <input type="range" class="settings-slider" id="settingCardWidth" min="200" max="400" value="280" aria-label="卡片宽度">
+                        <span class="settings-slider-value" id="cardWidthValue">280px</span>
                     </div>
                 </div>
 
@@ -421,6 +421,34 @@
                         <button class="style-btn active" data-style="grid">网格</button>
                         <button class="style-btn" data-style="list">列表</button>
                         <button class="style-btn" data-style="wide">宽屏</button>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">🔲</div>
+                        <div>
+                            <div class="settings-item-label">卡片圆角</div>
+                            <div class="settings-item-desc">调整卡片边角圆润度</div>
+                        </div>
+                    </div>
+                    <div class="settings-slider-wrap">
+                        <input type="range" class="settings-slider" id="settingCardRadius" min="0" max="28" value="16" aria-label="卡片圆角">
+                        <span class="settings-slider-value" id="cardRadiusValue">16px</span>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon">↔️</div>
+                        <div>
+                            <div class="settings-item-label">卡片间距</div>
+                            <div class="settings-item-desc">调整卡片之间的空隙</div>
+                        </div>
+                    </div>
+                    <div class="settings-slider-wrap">
+                        <input type="range" class="settings-slider" id="settingCardGap" min="8" max="40" value="20" aria-label="卡片间距">
+                        <span class="settings-slider-value" id="cardGapValue">20px</span>
                     </div>
                 </div>
             </div>
