@@ -99,37 +99,59 @@
          ============================================ -->
     <main class="container" id="main-content">
 
+        <!-- 顶部导航栏 -->
+        <nav class="top-nav" aria-label="主导航">
+            <a href="#" class="nav-item active" data-page="mods">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                <span>模组</span>
+            </a>
+            <a href="#" class="nav-item" data-page="tutorial">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                <span>教程</span>
+            </a>
+            <a href="#" class="nav-item" data-page="about">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <span>关于</span>
+            </a>
+        </nav>
+
         <!-- 头部 -->
         <header class="header">
             <h1>汉化模组下载中心</h1>
-            <p>搜索并下载你需要的模组资源</p>
-            <div class="declaration" id="customDeclaration">
-                声明：本站所有汉化模组仅供学习交流，请于下载后24小时内删除，禁止用于商业用途。<br>
-                部分模组存在加载完报错、部件名称描述为空白等bug
-            </div>
         </header>
 
-        <!-- 搜索框 -->
-        <div class="search-box" role="search">
-            <input type="text" id="searchInput" placeholder="搜索文件名、简介或标签... (#标签 搜索)" aria-label="搜索模组">
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <span class="toolbar-stat">📁 共 <strong id="totalCount">0</strong> 个文件</span>
+                <div class="dropdown" id="categoryDropdown">
+                    <button class="dropdown-toggle" id="categoryToggle" aria-haspopup="true" aria-expanded="false">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <span id="categoryToggleText">全部</span>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="#" class="dropdown-item active" data-category="all" role="menuitem">全部</a>
+                        <a href="#" class="dropdown-item" data-category="engine" role="menuitem">发动机</a>
+                        <a href="#" class="dropdown-item" data-category="function" role="menuitem">功能性部件</a>
+                        <a href="#" class="dropdown-item" data-category="entertain" role="menuitem">娱乐性部件</a>
+                        <a href="#" class="dropdown-item" data-category="skin" role="menuitem">涂装包</a>
+                        <a href="#" class="dropdown-item" data-category="fav" role="menuitem" id="favDropdownItem">&#9825; 收藏</a>
+                    </div>
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <div class="search-box" role="search">
+                    <input type="text" id="searchInput" placeholder="请输入关键字" aria-label="搜索模组">
+                    <button class="search-btn" aria-label="搜索">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- 分类导航 -->
-        <nav class="category-nav" aria-label="模组分类">
-            <button class="category-btn active" data-category="all">全部</button>
-            <button class="category-btn" data-category="engine">发动机</button>
-            <button class="category-btn" data-category="function">功能性部件</button>
-            <button class="category-btn" data-category="entertain">娱乐性部件</button>
-            <button class="category-btn" data-category="skin">涂装包</button>
-            <button class="category-btn" data-category="tutorial">教程</button>
-            <button class="category-btn" id="favFilterBtn" data-category="fav" style="margin-left:4px;">&#9825; 收藏</button>
-        </nav>
-
-        <!-- 统计栏 -->
-        <div class="stats" aria-label="网站统计">
-            <span>共 <strong id="totalCount">0</strong> 个文件</span>
-            <span>累计下载 <strong>18590</strong> 次</span>
-            <span>在线用户 <strong>10</strong> 人</span>
+        <!-- 声明 -->
+        <div class="declaration" id="customDeclaration">
+            声明：本站所有汉化模组仅供学习交流，请于下载后24小时内删除，禁止用于商业用途。部分模组存在加载完报错、部件名称描述为空白等bug
         </div>
 
         <!-- 教程区 -->
@@ -205,6 +227,60 @@
             <span class="loading-text">加载中...</span>
         </div>
         <section class="file-grid" id="fileGrid" aria-label="模组列表" style="display:none;"></section>
+
+        <!-- 关于页面 -->
+        <section class="about-page" id="aboutPage" style="display:none;" aria-label="关于我们">
+            <div class="about-page-section">
+                <h2>关于我们</h2>
+                <div class="about-desc">
+                    SFS 汉化模组下载中心，为 Spaceflight Simulator 玩家提供优质汉化模组资源。
+                </div>
+                <div class="about-us-links">
+                    <a class="about-us-link" href="https://qm.qq.com/cgi-bin/qm/qr?k=Q3c7K7F7G9x5F5aB8bZ7hS9jK3nM2pL4&jump_from=webapi&authKey=xxx" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon">💬</span>
+                        QQ群: 923038827
+                    </a>
+                    <a class="about-us-link" href="https://b23.tv/BMOcJRh" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon">📺</span>
+                        B站: A-Future-star
+                    </a>
+                </div>
+                <div class="about-us-links" style="margin-top:0;">
+                    <a class="about-us-link" href="https://sfs-cn-mod.pages.dev/" target="_blank" rel="noopener">
+                        <span class="link-icon">🌐</span>
+                        友站: SFS中文模组站
+                    </a>
+                    <a class="about-us-link" href="https://sfscnmod.7813.cc.cd" target="_blank" rel="noopener">
+                        <span class="link-icon">🌐</span>
+                        友站: SFS中文模组
+                    </a>
+                </div>
+            </div>
+
+            <div class="about-page-section">
+                <h2>鸣谢名单</h2>
+                <div class="credits-list">
+                    <div class="credits-item">
+                        <span class="credits-name">重铬酸钠</span>
+                        <a class="about-us-link" href="https://qm.qq.com/cgi-bin/qm/qr?from=webapi&jump_from=webapi&k=1078113418" target="_blank" rel="noopener noreferrer">
+                            <span class="link-icon">💬</span>QQ群: 1078113418
+                        </a>
+                    </div>
+                    <div class="credits-item">
+                        <span class="credits-name">蓝鲸公益</span>
+                        <a class="about-us-link" href="https://qm.qq.com/cgi-bin/qm/qr?from=webapi&jump_from=webapi&k=879487979" target="_blank" rel="noopener noreferrer">
+                            <span class="link-icon">💬</span>QQ群: 879487979
+                        </a>
+                    </div>
+                    <div class="credits-item">
+                        <span class="credits-name">555_55</span>
+                    </div>
+                    <div class="credits-item">
+                        <span class="credits-name">10086</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- 无结果提示 -->
         <div class="no-results" id="noResults" aria-live="polite"></div>
