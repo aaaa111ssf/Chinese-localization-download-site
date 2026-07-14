@@ -129,11 +129,22 @@
             };
 
             /* ---------- 图片加载完成移除骨架屏 ---------- */
+            window.openQQGroup = function(uin) {
+                var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+                if (isMobile) {
+                    window.location.href = 'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=' + uin + '&card_type=group&source=qrcode';
+                } else {
+                    try {
+                        navigator.clipboard.writeText(uin);
+                    } catch(e) {}
+                    alert('群号 ' + uin + ' 已复制到剪贴板，请在QQ中搜索添加');
+                }
+            };
             window.handleImgLoad = function(img) {
                 var wrap = img.closest('.card-image-wrap');
                 if (wrap) {
-                    wrap.style.animation = 'none';
-                    wrap.style.background = '';
+                    wrap.style.setProperty('--shimmer-done', '1');
+                    wrap.classList.add('img-loaded');
                 }
             }
 
@@ -300,7 +311,6 @@
                 const tutorialSection = document.getElementById('tutorialSection');
                 const gridLoading = document.getElementById('gridLoading');
                 gridLoading.classList.add('hidden');
-                grid.style.display = '';
 
                 if (currentCategory === 'tutorial') {
                     grid.style.display = 'none';
@@ -309,12 +319,10 @@
                     document.getElementById('totalCount').textContent = '教程';
                     return;
                 } else {
-                    grid.style.display = 'grid';
                     tutorialSection.style.display = 'none';
                 }
 
-                grid.innerHTML = '';
-                noResults.innerHTML = '';
+                noResults.classList.remove('show');
                 const rawQuery = searchKeyword.trim();
                 const lowerFilter = rawQuery.toLowerCase();
                 let visibleCount = 0;
@@ -335,6 +343,11 @@
                     return qi === query.length;
                 }
 
+                /* 使用 DocumentFragment 批量构建卡片，减少回流 */
+                const fragment = document.createDocumentFragment();
+                let cardsHtml = '';
+                const cardIndices = [];
+
                 files.forEach((file, index) => {
                     /* 收藏筛选 */
                     if (favFilterActive && !favorites.includes(file.name || '')) return;
@@ -351,23 +364,38 @@
                     }
                     if (matchCategory && matchSearch) {
                         visibleCount++;
-                        grid.innerHTML += createModCard(file, index);
+                        cardsHtml += createModCard(file, index);
                     }
                 });
 
-                // 动态设置入场动画 stagger delay
-                const cards = grid.querySelectorAll('.file-card');
-                const baseDelay = 0.03;
-                const maxDelay = 0.5;
-                cards.forEach((card, i) => {
-                    const delay = Math.min(i * baseDelay, maxDelay);
-                    card.style.setProperty('--card-enter-delay', delay + 's');
-                });
+                /* 一次性写入 DOM */
+                if (cardsHtml) {
+                    grid.innerHTML = cardsHtml;
+                    grid.style.display = 'grid';
+                } else {
+                    grid.innerHTML = '';
+                    grid.style.display = 'none';
+                }
+
+                // 入场动画仅前8张卡片，其余直接显示
+                if (visibleCount > 0) {
+                    const cards = grid.querySelectorAll('.file-card');
+                    const baseDelay = 0.03;
+                    cards.forEach((card, i) => {
+                        if (i < 8) {
+                            const delay = i * baseDelay;
+                            card.style.setProperty('--card-enter-delay', delay + 's');
+                        } else {
+                            card.style.setProperty('--card-enter-delay', '0s');
+                            card.style.animation = 'none';
+                            card.style.opacity = '1';
+                        }
+                    });
+                }
 
                 document.getElementById('totalCount').textContent = visibleCount;
 
                 if (visibleCount === 0) {
-                    grid.style.display = 'none';
                     noResults.classList.add('show');
                     const suggestions = files.filter(f => currentCategory === 'all' || f.category === currentCategory).slice(0, 5);
                     noResults.innerHTML = `
@@ -380,9 +408,6 @@
                             ${suggestions.map((file, idx) => createCompactCard(file, idx)).join('')}
                         </div>
                     `;
-                } else {
-                    noResults.classList.remove('show');
-                    grid.style.display = 'grid';
                 }
 
                 observeLazyImages();
@@ -469,11 +494,13 @@
             });
 
             /* ---------- 开屏弹窗（不再提示） ---------- */
+            let entryModalShown = false;
             function showModal() {
-                if (localStorage.getItem('hideEntryModal') === 'true') return;
+                if (entryModalShown || localStorage.getItem('hideEntryModal') === 'true') return;
                 const modal = document.getElementById('entryModal');
                 document.body.classList.add('modal-open');
                 setTimeout(() => modal.classList.add('active'), 100);
+                entryModalShown = true;
             }
 
             window.closeModal = function() {
@@ -485,7 +512,9 @@
                 checkAndRemoveModalOpen();
             };
 
-            window.addEventListener('DOMContentLoaded', showModal);
+            window.addEventListener('load', function() {
+                setTimeout(showModal, 100);
+            });
             updateFavFilterBtn();
 
             /* ---------- 模组详情 ---------- */
@@ -592,27 +621,60 @@
             window.closeSponsorModal = closeSponsorModal;
 
             /* ---------- 初始化 ---------- */
-            fetch('data/data.json?v=' + Date.now())
+            function setFiles(data) {
+                if (Array.isArray(data)) {
+                    files = data;
+                } else if (data && typeof data === 'object' && Array.isArray(data.files)) {
+                    files = data.files;
+                } else {
+                    throw new Error('数据格式错误');
+                }
+            }
+
+            function handleDataError() {
+                document.getElementById('gridLoading').classList.add('hidden');
+                document.getElementById('loadError').classList.add('show');
+                document.getElementById('fileGrid').style.display = 'none';
+                document.getElementById('totalCount').textContent = '—';
+            }
+
+            // 优先从本地缓存读取并立即渲染
+            let cacheLoaded = false;
+            try {
+                const cacheRaw = localStorage.getItem('sfs_data_cache');
+                if (cacheRaw) {
+                    setFiles(JSON.parse(cacheRaw));
+                    renderFiles();
+                    cacheLoaded = true;
+                }
+            } catch (e) {
+                console.warn('缓存读取失败:', e);
+            }
+
+            fetch('data/data.json?v=20260713')
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
                 })
                 .then(data => {
-                    if (Array.isArray(data)) {
-                        files = data;
-                    } else if (data && typeof data === 'object' && Array.isArray(data.files)) {
-                        files = data.files;
-                    } else {
-                        throw new Error('数据格式错误');
+                    const newVersion = JSON.stringify(data);
+                    const oldVersion = localStorage.getItem('sfs_data_version');
+                    if (newVersion !== oldVersion || !cacheLoaded) {
+                        setFiles(data);
+                        renderFiles();
+                        try {
+                            localStorage.setItem('sfs_data_cache', JSON.stringify(data));
+                            localStorage.setItem('sfs_data_version', newVersion);
+                        } catch (e) {
+                            console.warn('缓存写入失败:', e);
+                        }
                     }
-                    renderFiles();
                 })
                 .catch(err => {
                     console.error('数据加载失败:', err);
-                    document.getElementById('gridLoading').classList.add('hidden');
-                    document.getElementById('loadError').classList.add('show');
-                    document.getElementById('fileGrid').style.display = 'none';
-                    document.getElementById('totalCount').textContent = '0';
+                    if (!cacheLoaded) {
+                        handleDataError();
+                    }
                 });
 
             // 加载全局下载统计
@@ -789,10 +851,13 @@
             function openPanel() {
                 panel.classList.add('active');
                 overlay.classList.add('active');
+                document.body.classList.add('modal-open');
             }
             function closePanel() {
                 panel.classList.remove('active');
                 overlay.classList.remove('active');
+                const anyOpen = document.querySelector('.modal-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active, .img-viewer-overlay.active, .announce-panel.active, .announce-panel-overlay.active');
+                if (!anyOpen) document.body.classList.remove('modal-open');
             }
 
             openBtn.addEventListener('click', openPanel);
