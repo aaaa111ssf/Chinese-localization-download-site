@@ -1,5 +1,26 @@
 [
-    {
+  {
+    "name": "殖民地v0.2",
+    "type": "zip",
+    "size": "3 MB",
+    "date": "2026-07-14",
+    "desc": "一款可以殖民其他行星的模组，使用模组部件可以在世界中建筑部件，修复内容1.修复了重心问题2.添加轨道扫描仪",
+    "link": "https://wwaqu.lanzoub.com/ijfTE3wbr56f",
+    "tags": [
+      "科技",
+      "殖民",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/4.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "QMSP",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+"
+  },
+  {
     "name": "实用包Fix fix",
     "type": "zip",
     "size": "14.8MB",
@@ -188,27 +209,6 @@
     ],
     "version": "v1.0 汉化",
     "author": "Mac",
-    "heat": "12.5万",
-    "compat": "1.6.00.3+"
-  },
-  {
-    "name": "殖民地",
-    "type": "zip",
-    "size": "3 MB",
-    "date": "2026-05-15",
-    "desc": "一款可以殖民其他行星的模组，使用模组部件可以在世界中建筑部件，欢迎下载游玩",
-    "link": "https://wwaqu.lanzoub.com/iagGj3rrxnod",
-    "tags": [
-      "科技",
-      "殖民",
-      "汉化"
-    ],
-    "category": "function",
-    "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/4.webp"
-    ],
-    "version": "v1.0 汉化",
-    "author": "QMSP",
     "heat": "12.5万",
     "compat": "1.6.00.3+"
   },
