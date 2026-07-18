@@ -1,5 +1,24 @@
 [
   {
+    "name": "汉化-新视野",
+    "type": "zip",
+    "size": "36.9 MB",
+    "date": "2026-07-11",
+    "desc": "土星系列火箭扩展 克服1900报错汉化而成 搭配阿波罗计划【整合部件】使用 否则会出现问题 蓝图下载https://wwaqu.lanzoub.com/iKLVx3vqr6kj",
+    "link": "https://wwaqu.lanzoub.com/iQouC3x6yu3a",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/101.webp"
+    ],
+    "version": "v1.1 汉化",
+    "author": "Mac",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+"
+  },
+  {
     "name": "殖民地v0.2",
     "type": "zip",
     "size": "3 MB",
@@ -37,25 +56,6 @@
     "version": "v1.0",
     "author": "PicoSpace",
     "heat": "11.9万",
-    "compat": "1.6.00.3+"
-  },
-  {
-    "name": "新视野",
-    "type": "zip",
-    "size": "36.9 MB",
-    "date": "2026-07-11",
-    "desc": "土星系列火箭扩展 蓝图下载https://wwaqu.lanzoub.com/iKLVx3vqr6kj 报错1900+故不再汉化 与阿波罗（汉化）不兼容",
-    "link": "https://wwaqu.lanzoub.com/iD9wd3vsxg1i",
-    "tags": [
-      "汉化"
-    ],
-    "category": "function",
-    "images": [
-      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/101.webp"
-    ],
-    "version": "v1.0 汉化",
-    "author": "Mac",
-    "heat": "12.5万",
     "compat": "1.6.00.3+"
   },
   {
