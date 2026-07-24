@@ -1,5 +1,24 @@
 [
   {
+    "name": "原版套件",
+    "type": "zip",
+    "size": "0.7 MB",
+    "date": "2026-07-24",
+    "desc": "有很多新东西以及偏移模块，可用于将任何部分的尺寸偏移 0.25 米",
+    "link": "https://wwaqu.lanzoub.com/igcKt3yealng",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/106.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "Sam",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+"
+  },
+  {
     "name": "可部署部件",
     "type": "zip",
     "size": "10.7 MB",
