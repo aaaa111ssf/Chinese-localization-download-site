@@ -1,5 +1,24 @@
 [
   {
+    "name": "可部署部件",
+    "type": "zip",
+    "size": "10.7 MB",
+    "date": "2026-07-24",
+    "desc": "可折叠轮子 舱门 螺旋桨等等",
+    "link": "https://wwaqu.lanzoub.com/itvPq3ye9shg",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/105.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "SFS Theta",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+"
+  },
+  {
     "name": "新视野-汉化-修复完成",
     "type": "zip",
     "size": "36.9 MB",
