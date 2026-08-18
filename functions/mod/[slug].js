@@ -173,7 +173,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     </div>
 </div>
 
-<script src="/waline/waline.js"></script>
+<!-- waline.js 是 ES Module，必须用 type="module" 加载 -->
+<script src="/waline/waline-loader.js" type="module"></script>
 <script>
 const MOD_NAME = ${JSON.stringify(file.name)};
 const MOD_SLUG = ${JSON.stringify(slug)};

@@ -676,8 +676,9 @@
     <!-- ============================================
          JavaScript
          ============================================ -->
-    <script src="waline/waline.js?v=20260818c" defer></script>
-    <script src="app.min.js?v=20260818c" defer></script>
+    <!-- waline.js 是 ES Module 格式，必须用 type="module" 加载 -->
+    <script src="waline/waline-loader.js?v=20260818d" type="module"></script>
+    <script src="app.min.js?v=20260818d" defer></script>
 
     <!-- 注册 Service Worker -->
     <script>

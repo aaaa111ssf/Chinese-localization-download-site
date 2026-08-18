@@ -597,6 +597,7 @@
         .card-actions {
             padding: 0 16px 14px;
             display: flex;
+            flex-wrap: wrap;
             justify-content: flex-end;
             gap: 8px;
             margin-top: 4px;
@@ -1266,6 +1267,7 @@
         .mod-detail-footer {
             padding: 0 24px 24px;
             display: flex;
+            flex-wrap: wrap;
             gap: 12px;
         }
         .detail-btn {
@@ -2210,6 +2212,10 @@
             color: #ccc;
         }
         body.dark-mode .card-actions .btn:hover { border-color: #666; }
+        body.dark-mode .card-actions .btn-comment:hover { color: #fff; }
+        body.dark-mode .card-actions .btn-comment .comment-count { color: #777; }
+        body.dark-mode .card-actions .btn-comment:hover .comment-count { color: #ccc; }
+        body.dark-mode .card-actions .btn-share:hover { color: #fff; }
         body.dark-mode .card-actions .btn-download {
             background: #fff;
             color: #000;

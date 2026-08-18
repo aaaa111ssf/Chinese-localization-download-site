@@ -348,12 +348,12 @@
                         <div class="card-actions">
                             <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">详情</button>
                             <button class="btn btn-comment" title="查看评论" onclick="event.stopPropagation(); openModDetail(${index}, true)">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
                                 <span class="comment-count" data-slug="${slug}"></span>
                             </button>
                             <button class="btn btn-fav" data-name="${safe.name}" onclick="event.stopPropagation(); toggleFavorite(this.dataset.name)">&#9825;<span class="fav-count" data-mod="${safe.name}"></span></button>
                             <button class="btn btn-share" title="分享模组" onclick="event.stopPropagation(); shareModLink(${index})">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
                             </button>
                             <a href="${safe.link}" target="_blank" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">下载<span class="dl-count" data-mod="${safe.name}"></span></a>
                         </div>
@@ -679,7 +679,7 @@
                     <div class="mod-detail-footer">
                         <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">关闭</button>
                         <button onclick="shareModLink(${index})" class="detail-btn detail-btn-share">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
                             分享
                         </button>
                         <a href="${escapeHtml(file.link || '#')}" target="_blank" class="detail-btn detail-btn-primary" onclick="event.stopPropagation(); logDownload(${index})">前往下载</a>
@@ -903,6 +903,35 @@
                 document.getElementById('totalCount').textContent = '—';
             }
 
+            // 加载全局下载统计 + 收藏统计（必须在所有 renderFiles 调用之前声明，避免 TDZ 错误）
+            let statsLoading = false;
+            async function loadDownloadStats() {
+                if (statsLoading) return;
+                statsLoading = true;
+                try {
+                    const resp = await fetch('/api/stats');
+                    if (resp.ok) {
+                        const data = await resp.json();
+                        downloadStats = data.downloads || {};
+                        const favStats = data.favorites || {};
+                        // 更新页面上的下载计数显示
+                        document.querySelectorAll('.dl-count[data-mod]').forEach(el => {
+                            const name = el.getAttribute('data-mod');
+                            if (downloadStats[name] > 0) el.textContent = downloadStats[name];
+                        });
+                        // 更新页面上的收藏计数显示
+                        document.querySelectorAll('.fav-count[data-mod]').forEach(el => {
+                            const name = el.getAttribute('data-mod');
+                            if (favStats[name] > 0) el.textContent = favStats[name];
+                        });
+                    }
+                } catch (e) {
+                    // 统计服务不可用时静默降级
+                } finally {
+                    statsLoading = false;
+                }
+            }
+
             // 优先从本地缓存读取并立即渲染
             let cacheLoaded = false;
             try {
@@ -941,35 +970,6 @@
                         handleDataError();
                     }
                 });
-
-            // 加载全局下载统计 + 收藏统计
-            let statsLoading = false;
-            async function loadDownloadStats() {
-                if (statsLoading) return;
-                statsLoading = true;
-                try {
-                    const resp = await fetch('/api/stats');
-                    if (resp.ok) {
-                        const data = await resp.json();
-                        downloadStats = data.downloads || {};
-                        const favStats = data.favorites || {};
-                        // 更新页面上的下载计数显示
-                        document.querySelectorAll('.dl-count[data-mod]').forEach(el => {
-                            const name = el.getAttribute('data-mod');
-                            if (downloadStats[name] > 0) el.textContent = downloadStats[name];
-                        });
-                        // 更新页面上的收藏计数显示
-                        document.querySelectorAll('.fav-count[data-mod]').forEach(el => {
-                            const name = el.getAttribute('data-mod');
-                            if (favStats[name] > 0) el.textContent = favStats[name];
-                        });
-                    }
-                } catch (e) {
-                    // 统计服务不可用时静默降级
-                } finally {
-                    statsLoading = false;
-                }
-            }
 
             // 加载每个模组的评论数（从 D1 的 wl_Comment 表统计）
             async function loadCommentCounts() {
