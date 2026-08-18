@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v7';
+const CACHE_VERSION = 'sfs-v8';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
