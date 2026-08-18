@@ -9,6 +9,7 @@
             };
             let currentCategory = 'all';
             let searchKeyword = '';
+            let currentSort = 'default'; // default | heat | date
             let viewerImages = [];
             let viewerIndex = 0;
 
@@ -111,8 +112,36 @@
             }
             window.toSlug = toSlug;
 
-            /* ---------- Waline 评论服务地址（走主站代理，解决 workers.dev 大陆无法访问） ---------- */
-            const WALINE_SERVER = location.origin + '/waline-proxy';
+            /* ---------- 热力值解析（"12.5万" -> 125000） ---------- */
+            function parseHeat(heat) {
+                if (heat == null) return 0;
+                const s = String(heat).trim();
+                if (!s) return 0;
+                const m = s.match(/^([\d.]+)\s*(万|w|W)?/);
+                if (!m) return 0;
+                const num = parseFloat(m[1]) || 0;
+                if (m[2]) return Math.round(num * 10000);
+                return Math.round(num);
+            }
+
+            /* ---------- 更新日期解析（兼容 2026-6-10 与 2026-08-06） ---------- */
+            function parseDate(dateStr) {
+                if (!dateStr) return 0;
+                const m = String(dateStr).match(/(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+                if (!m) return 0;
+                return new Date(+m[1], +m[2] - 1, +m[3]).getTime();
+            }
+
+            /* ---------- 排序 ---------- */
+            function sortFiles(list) {
+                const arr = list.slice();
+                if (currentSort === 'heat') {
+                    arr.sort((a, b) => parseHeat(b.heat) - parseHeat(a.heat));
+                } else if (currentSort === 'date') {
+                    arr.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+                }
+                return arr;
+            }
 
             /* ---------- 个人下载记录（localStorage） ---------- */
             const DL_HISTORY_KEY = 'sfs_dl_history';
@@ -296,6 +325,7 @@
                     version: escapeHtml(file.version || 'v1.0'),
                     size: escapeHtml(file.size || '未知'),
                     date: escapeHtml(file.date || ''),
+                    heat: escapeHtml(file.heat || ''),
                     link: escapeHtml(file.link || '#'),
                     tags: Array.isArray(file.tags) ? file.tags : [],
                     type: file.type || 'default'
@@ -347,14 +377,11 @@
                             <div class="card-meta-boxes">
                                 <div class="meta-box">大小: ${safe.size}</div>
                                 <div class="meta-box">日期: ${safe.date}</div>
+                                ${safe.heat ? `<div class="meta-box meta-heat">热力: ${safe.heat}</div>` : ''}
                             </div>
                         </div>
                         <div class="card-actions">
                             <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">详情</button>
-                            <button class="btn btn-comment" title="查看评论" onclick="event.stopPropagation(); openModDetail(${index}, true)">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
-                                <span>评论</span><span class="comment-count" data-slug="${slug}"></span>
-                            </button>
                             <button class="btn btn-fav" data-name="${safe.name}" onclick="event.stopPropagation(); toggleFavorite(this.dataset.name)">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                                 <span class="fav-count" data-mod="${safe.name}"></span>
@@ -447,7 +474,9 @@
                 let cardsHtml = '';
                 const cardIndices = [];
 
-                files.forEach((file, index) => {
+                const sortedFiles = sortFiles(files);
+
+                sortedFiles.forEach((file, sortedIndex) => {
                     /* 收藏筛选 */
                     if (favFilterActive && !favorites.includes(file.name || '')) return;
 
@@ -463,6 +492,7 @@
                     }
                     if (matchCategory && matchSearch) {
                         visibleCount++;
+                        const index = files.indexOf(file);
                         cardsHtml += createModCard(file, index);
                     }
                 });
@@ -512,7 +542,6 @@
 
                 observeLazyImages();
                 updateFavButtons();
-                loadCommentCounts();
                 loadDownloadStats();
             }
 
@@ -535,13 +564,17 @@
             document.addEventListener('click', function() {
                 categoryDropdown.classList.remove('open');
                 categoryToggle.setAttribute('aria-expanded', 'false');
+                if (sortDropdown) {
+                    sortDropdown.classList.remove('open');
+                    sortToggle.setAttribute('aria-expanded', 'false');
+                }
             });
 
-            document.querySelectorAll('.dropdown-item').forEach(item => {
+            document.querySelectorAll('.dropdown-item[data-category]').forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+                    document.querySelectorAll('.dropdown-item[data-category]').forEach(i => i.classList.remove('active'));
                     this.classList.add('active');
                     currentCategory = this.dataset.category;
                     favFilterActive = (currentCategory === 'fav');
@@ -555,6 +588,31 @@
                     renderFiles();
                 });
             });
+
+            // 排序下拉菜单
+            const sortDropdown = document.getElementById('sortDropdown');
+            const sortToggle = document.getElementById('sortToggle');
+            const sortToggleText = document.getElementById('sortToggleText');
+            if (sortDropdown && sortToggle) {
+                sortToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sortDropdown.classList.toggle('open');
+                    this.setAttribute('aria-expanded', sortDropdown.classList.contains('open'));
+                });
+                document.querySelectorAll('.dropdown-item[data-sort]').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        document.querySelectorAll('.dropdown-item[data-sort]').forEach(i => i.classList.remove('active'));
+                        this.classList.add('active');
+                        currentSort = this.dataset.sort;
+                        sortToggleText.textContent = this.textContent;
+                        sortDropdown.classList.remove('open');
+                        sortToggle.setAttribute('aria-expanded', 'false');
+                        renderFiles();
+                    });
+                });
+            }
 
             document.querySelectorAll('.tutorial-tab').forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -631,7 +689,7 @@
             updateFavFilterBtn();
 
             /* ---------- 模组详情 ---------- */
-            window.openModDetail = function(index, gotoComment) {
+            window.openModDetail = function(index) {
                 const file = files[index];
                 if (!file) return;
                 const validImages = getValidImages(file);
@@ -642,6 +700,7 @@
                 const slug = toSlug(modName);
                 const modUrl = location.origin + '/mod/' + slug;
                 const dlCount = downloadStats[modName] || 0;
+                const heatHtml = file.heat ? ` &nbsp;|&nbsp; 热力：${escapeHtml(file.heat)}` : '';
 
                 const firstImage = validImages.length > 0 
                     ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)">`
@@ -660,28 +719,25 @@
                     </div>
                     <div class="mod-detail-body">
                         <div class="detail-section"><h4>简介</h3><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
-                        <div class="detail-section"><h4>信息</h3><p>版本：${escapeHtml(file.version||'v1.0')} &nbsp;|&nbsp; 作者：${escapeHtml(file.author||'A Future star')} &nbsp;|&nbsp; 兼容：${escapeHtml(file.compat||'1.6.00.3+')} &nbsp;|&nbsp; 大小：${escapeHtml(file.size||'未知')} &nbsp;|&nbsp; 更新：${escapeHtml(file.date||'')}</p></div>
+                        <div class="detail-section"><h4>信息</h3><p>版本：${escapeHtml(file.version||'v1.0')} &nbsp;|&nbsp; 作者：${escapeHtml(file.author||'A Future star')} &nbsp;|&nbsp; 兼容：${escapeHtml(file.compat||'1.6.00.3+')} &nbsp;|&nbsp; 大小：${escapeHtml(file.size||'未知')} &nbsp;|&nbsp; 更新：${escapeHtml(file.date||'')}${heatHtml}</p></div>
                         <div class="detail-section detail-stats">
                             <h4>数据</h3>
                             <div class="detail-stats-row">
                                 <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 下载 <b id="dlCountDetail">${dlCount}</b></span>
-                                <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> 收藏 <b id="favCountDetail">${favorites.includes(modName) ? '--' : '--'}</b></span>
+                                <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> 收藏 <b id="favCountDetail">--</b></span>
                                 <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> 评分 <b id="ratingCountDetail">--</b></span>
                             </div>
                         </div>
                         <div class="detail-section detail-rating">
                             <h4>评分</h3>
-                            <div class="rating-row">
+                            <div class="rating-info">
+                                <div class="rating-score" id="detailRatingScore">--</div>
                                 <div class="stars" id="detailStars"></div>
-                                <span class="rating-score" id="detailRatingScore">--</span>
-                                <span class="rating-msg" id="detailRatingMsg"></span>
+                                <span class="rating-count" id="detailRatingCount"></span>
                             </div>
+                            <div class="rating-msg" id="detailRatingMsg"></div>
                         </div>
                         ${gallery}
-                        <div class="detail-section" id="commentSection">
-                            <h4>评论 <button class="avatar-set-btn" onclick="openAvatarSet()">更换头像</button></h4>
-                            <div id="waline"></div>
-                        </div>
                     </div>
                     <div class="mod-detail-footer">
                         <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">关闭</button>
@@ -700,22 +756,12 @@
                 loadRating(modName);
                 // 加载下载/收藏统计
                 refreshDetailStats();
-                // 初始化评论
-                initWaline('/mod/' + slug);
-                // 从卡片评论按钮进入时，滚动到评论区
-                if (gotoComment) {
-                    setTimeout(function() {
-                        const sec = document.getElementById('commentSection');
-                        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 150);
-                }
             };
 
             window.closeModDetail = function() {
                 document.getElementById('modDetailOverlay').classList.remove('active');
                 checkAndRemoveModalOpen();
                 currentDetailMod = '';
-                destroyWaline();
             };
 
             /* ---------- 分享模组链接 ---------- */
@@ -738,19 +784,34 @@
                 }
             };
 
-            /* ---------- 评分（SVG 星星） ---------- */
+            /* ---------- 评分（参考 sfs-cn-mod：双层半星 + 平均分 + 人数） ---------- */
+            function makeStarSvg(cls) {
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('class', cls);
+                svg.innerHTML = '<path d="M12 2l2.9 6.26 6.6.57-5 4.47 1.5 6.7L12 16.9 5.99 20l1.5-6.7-5-4.47 6.6-.57z"/>';
+                return svg;
+            }
+
             function renderStars(container, score, onClick) {
                 container.innerHTML = '';
                 for (let i = 1; i <= 5; i++) {
-                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                    svg.setAttribute('viewBox', '0 0 24 24');
-                    svg.setAttribute('class', 'star-svg' + (i <= score ? ' on' : ''));
-                    svg.innerHTML = '<path d="M12 2l2.9 6.26 6.6.57-5 4.47 1.5 6.7L12 16.9 5.99 20l1.5-6.7-5-4.47 6.6-.57z"/>';
+                    const fill = Math.min(1, Math.max(0, score - i + 1)); // 0..1 部分填充
+                    const wrap = document.createElement('span');
+                    wrap.className = 'star-wrap';
+                    const base = makeStarSvg('star-svg-base');
+                    const fillSpan = document.createElement('span');
+                    fillSpan.className = 'star-fill';
+                    fillSpan.style.width = (fill * 100) + '%';
+                    fillSpan.appendChild(makeStarSvg('star-svg-fill'));
+                    wrap.appendChild(base);
+                    wrap.appendChild(fillSpan);
                     if (onClick) {
-                        svg.style.cursor = 'pointer';
-                        svg.onclick = function() { onClick(i); };
+                        wrap.style.cursor = 'pointer';
+                        wrap.title = '点击评 ' + i + ' 星';
+                        wrap.onclick = function() { onClick(i); };
                     }
-                    container.appendChild(svg);
+                    container.appendChild(wrap);
                 }
             }
 
@@ -759,11 +820,12 @@
                     .then(r => r.json())
                     .then(d => {
                         const scoreEl = document.getElementById('detailRatingScore');
-                        const countEl = document.getElementById('ratingCountDetail');
-                        if (scoreEl) scoreEl.textContent = d.average ? d.average.toFixed(1) : '--';
-                        if (countEl) countEl.textContent = d.count ? d.count + '人' : '--';
+                        const countEl = document.getElementById('detailRatingCount');
+                        const avg = d.average || 0;
+                        if (scoreEl) scoreEl.textContent = avg ? avg.toFixed(1) : '--';
+                        if (countEl) countEl.textContent = d.count ? d.count + ' 人评分' : '暂无评分';
                         const stars = document.getElementById('detailStars');
-                        if (stars) renderStars(stars, d.myScore || 0, function(s) { submitRating(modName, s); });
+                        if (stars) renderStars(stars, avg, function(s) { submitRating(modName, s); });
                     })
                     .catch(() => {});
             }
@@ -778,13 +840,13 @@
                     .then(d => {
                         if (d.ok) {
                             const scoreEl = document.getElementById('detailRatingScore');
-                            const countEl = document.getElementById('ratingCountDetail');
+                            const countEl = document.getElementById('detailRatingCount');
                             const msgEl = document.getElementById('detailRatingMsg');
                             if (scoreEl) scoreEl.textContent = d.average.toFixed(1);
-                            if (countEl) countEl.textContent = d.count + '人';
+                            if (countEl) countEl.textContent = d.count + ' 人评分';
                             if (msgEl) msgEl.textContent = '感谢你的评分！';
                             const stars = document.getElementById('detailStars');
-                            if (stars) renderStars(stars, score);
+                            if (stars) renderStars(stars, d.average, function(s) { submitRating(modName, s); });
                         }
                     })
                     .catch(() => {
@@ -816,130 +878,6 @@
                 // 刷新评分
                 loadRating(currentDetailMod);
             }
-
-            /* ---------- Waline 评论（SVG 符号，无表情反应） ---------- */
-            let walineInstance = null;
-            let walineObserver = null;
-            function initWaline(path) {
-                if (!window.Waline) {
-                    // Waline 脚本可能尚未加载完成，稍后重试
-                    setTimeout(function() { initWaline(path); }, 300);
-                    return;
-                }
-                try {
-                    if (walineInstance) { walineInstance.destroy(); walineInstance = null; }
-                } catch (e) {}
-                // 清理旧观察器
-                if (walineObserver) { try { walineObserver.disconnect(); } catch (e) {} walineObserver = null; }
-                walineInstance = Waline.init({
-                    el: '#waline',
-                    serverURL: WALINE_SERVER,
-                    path: path,
-                    lang: 'zh-CN',
-                    reaction: false,
-                    pageview: false,
-                    dark: 'body.dark-mode',
-                    emoji: false
-                });
-                // 记录当前路径，供头像更换等场景重新初始化时使用
-                const walineEl = document.getElementById('waline');
-                if (walineEl) walineEl.dataset.path = path;
-
-                // MutationObserver 监听评论列表变化，提供提交成功反馈
-                setTimeout(function() {
-                    const we = document.getElementById('waline');
-                    if (!we) return;
-                    let prevCount = we.querySelectorAll('.wl-card-item').length;
-                    let submitting = false;
-
-                    // 监听提交按钮点击，提前给出"提交中"反馈
-                    we.addEventListener('click', function(e) {
-                        const btn = e.target.closest('.wl-btn.primary');
-                        if (btn && btn.textContent.trim() && !btn.disabled) {
-                            submitting = true;
-                            toast('评论发布中...');
-                        }
-                    }, true);
-
-                    walineObserver = new MutationObserver(function() {
-                        const cards = we.querySelectorAll('.wl-card-item');
-                        if (cards.length > prevCount) {
-                            prevCount = cards.length;
-                            if (submitting) {
-                                submitting = false;
-                                toast('评论发布成功！');
-                                // 提交成功后刷新统计
-                                refreshDetailStats();
-                            }
-                        } else if (cards.length < prevCount) {
-                            prevCount = cards.length;
-                        }
-                    });
-                    walineObserver.observe(we, { childList: true, subtree: true });
-
-                    // 备用：监听 wl-empty 消失 + 卡片出现
-                    // 有些场景 Waline 会整体重渲，prevCount 可能从 0 开始
-                }, 1200);
-            }
-            function destroyWaline() {
-                if (walineObserver) { try { walineObserver.disconnect(); } catch (e) {} walineObserver = null; }
-                if (walineInstance) {
-                    try { walineInstance.destroy(); } catch (e) {}
-                    walineInstance = null;
-                }
-            }
-
-            /* ---------- 更换头像 ---------- */
-            window.openAvatarSet = function() {
-                let user = {};
-                try { user = JSON.parse(localStorage.getItem('WALINE_USER') || '{}'); } catch (e) {}
-                if (!user.token || !user.objectId) {
-                    toast('请先在评论区登录后再更换头像');
-                    return;
-                }
-                const url = prompt('请输入头像图片 URL（支持 https 图片链接）：', user.avatar || '');
-                if (!url) return;
-                if (!/^https?:\/\//i.test(url)) {
-                    toast('请输入有效的图片 URL（以 http:// 或 https:// 开头）');
-                    return;
-                }
-                fetch(WALINE_SERVER + '/api/user/' + user.objectId, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + user.token
-                    },
-                    body: JSON.stringify({ avatar: url })
-                }).then(r => r.json()).then(d => {
-                    if (d.errno === 0) {
-                        toast('头像已更新，刷新评论区');
-                        try {
-                            // 同时更新 localStorage 和 sessionStorage 中的用户信息
-                            user.avatar = url;
-                            const userStr = JSON.stringify(user);
-                            localStorage.setItem('WALINE_USER', userStr);
-                            sessionStorage.setItem('WALINE_USER', userStr);
-                        } catch (e) {}
-                        // 发送 profile 事件让 Waline 内部同步
-                        window.postMessage({ type: 'profile', data: user }, '*');
-                        // 刷新 Waline 评论区（重新初始化），显示新头像
-                        setTimeout(function() {
-                            if (walineInstance) {
-                                try { walineInstance.destroy(); } catch(e) {}
-                                walineInstance = null;
-                            }
-                            const pathEl = document.getElementById('waline');
-                            if (pathEl && pathEl.dataset.path) {
-                                initWaline(pathEl.dataset.path);
-                            }
-                        }, 300);
-                    } else {
-                        toast('更新失败：' + (d.errmsg || '未知错误'));
-                    }
-                }).catch(() => {
-                    toast('更新失败，请稍后再试');
-                });
-            };
 
             /* ---------- 轻提示 ---------- */
             function toast(msg) {
@@ -1075,7 +1013,7 @@
                 console.warn('缓存读取失败:', e);
             }
 
-            fetch('data/data.json?v=20260713')
+            fetch('data/data.json?v=20260818g')
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
@@ -1100,28 +1038,6 @@
                         handleDataError();
                     }
                 });
-
-            // 加载每个模组的评论数（从 D1 的 wl_Comment 表统计）
-            async function loadCommentCounts() {
-                try {
-                    const els = document.querySelectorAll('.comment-count[data-slug]');
-                    if (!els.length) return;
-                    const slugs = Array.from(new Set(
-                        Array.from(els).map(el => el.getAttribute('data-slug')).filter(Boolean)
-                    )).slice(0, 100);
-                    if (!slugs.length) return;
-                    const resp = await fetch('/api/comments?slugs=' + encodeURIComponent(slugs.join(',')));
-                    if (!resp.ok) return;
-                    const counts = await resp.json();
-                    els.forEach(el => {
-                        const slug = el.getAttribute('data-slug');
-                        const n = counts['/mod/' + slug] || 0;
-                        if (n > 0) el.textContent = n;
-                    });
-                } catch (e) {
-                    // 评论服务不可用时静默降级
-                }
-            }
 
             // 记录下载
             function logDownload(index) {

@@ -644,7 +644,6 @@
             line-height: 1;
         }
         .card-actions .btn svg { flex-shrink: 0; }
-        .card-actions .btn-comment span,
         .card-actions .btn-fav span,
         .card-actions .btn-share span { margin-left: 2px; }
         .card-actions .btn-fav.active {
@@ -1328,15 +1327,6 @@
             padding: 8px 10px; min-width: auto; color: #555;
         }
         .card-actions .btn-share:hover { color: #000; border-color: #000; }
-        .card-actions .btn-comment {
-            padding: 8px 10px; min-width: auto; color: #555;
-        }
-        .card-actions .btn-comment:hover { color: #000; border-color: #000; }
-        .card-actions .btn-comment .comment-count {
-            font-size: 0.72rem; color: #999; font-weight: 500;
-            margin-left: 2px; min-width: 14px;
-        }
-        .card-actions .btn-comment:hover .comment-count { color: #000; }
 
         /* ============================================
            下载记录弹窗
@@ -1386,96 +1376,6 @@
             cursor: pointer; transition: all 0.2s;
         }
         .settings-dl-btn:hover { border-color: #000; color: #000; }
-
-        /* Waline 评论适配 */
-        .wl-panel { margin-top: 8px; }
-        .wl-panel .wl-header, .wl-panel .wl-comment { color: #333; }
-        body.dark-mode .wl-panel .wl-header,
-        body.dark-mode .wl-panel .wl-comment { color: #ccc; }
-
-        /* Waline 暗色主题统一（跟随 body.dark-mode） */
-        body.dark-mode .wl-panel {
-            border-color: #2a2a4a;
-            background: #14141f;
-            box-shadow: none;
-        }
-        body.dark-mode .wl-panel .wl-header {
-            border-bottom-color: #2a2a4a;
-        }
-        body.dark-mode .wl-header input,
-        body.dark-mode .wl-editor,
-        body.dark-mode .wl-input {
-            color: #e0e0e0;
-            background: transparent;
-        }
-        body.dark-mode .wl-header input::placeholder,
-        body.dark-mode .wl-editor::placeholder {
-            color: #666;
-        }
-        body.dark-mode .wl-editor:focus,
-        body.dark-mode .wl-input:focus {
-            background: #1c1c2e;
-        }
-        body.dark-mode .wl-btn {
-            border-color: #2a2a4a;
-            color: #ccc;
-            background: transparent;
-        }
-        body.dark-mode .wl-btn:hover,
-        body.dark-mode .wl-btn:active {
-            border-color: #4facfe;
-            color: #4facfe;
-        }
-        body.dark-mode .wl-btn.primary {
-            border-color: #4facfe;
-            background: #4facfe;
-            color: #001;
-        }
-        body.dark-mode .wl-btn.primary:hover,
-        body.dark-mode .wl-btn.primary:active {
-            border-color: #00f2fe;
-            background: #00f2fe;
-        }
-        body.dark-mode .wl-card .wl-nick { color: #eee; }
-        body.dark-mode .wl-card .wl-time { color: #777; }
-        body.dark-mode .wl-card .wl-content { color: #ccc; }
-        body.dark-mode .wl-card .wl-content .wl-reply-to { color: #4facfe; }
-        body.dark-mode .wl-card .wl-delete,
-        body.dark-mode .wl-card .wl-like,
-        body.dark-mode .wl-card .wl-reply,
-        body.dark-mode .wl-card .wl-edit,
-        body.dark-mode .wl-card .wl-rss { color: #999; }
-        body.dark-mode .wl-card .wl-delete:hover,
-        body.dark-mode .wl-card .wl-like:hover,
-        body.dark-mode .wl-card .wl-reply:hover,
-        body.dark-mode .wl-card .wl-edit:hover,
-        body.dark-mode .wl-card .wl-rss:hover { color: #4facfe; }
-        body.dark-mode .wl-count { color: #eee; }
-        body.dark-mode .wl-empty { color: #999; }
-        body.dark-mode .wl-sort li { color: #777; }
-        body.dark-mode .wl-sort li.active { color: #4facfe; }
-        body.dark-mode .wl-power { color: #666; }
-        body.dark-mode .wl-info .wl-text-number { color: #777; }
-        body.dark-mode .wl-action { color: #999; }
-        body.dark-mode .wl-action:hover { color: #4facfe; }
-        body.dark-mode .wl-login-nick { color: #4facfe; }
-        body.dark-mode .wl-avatar { border-color: #2a2a4a; }
-        body.dark-mode .wl-card .wl-meta > span { background: #1c1c2e; color: #999; }
-        body.dark-mode .wl-card .wl-badge { border-color: #4facfe; color: #4facfe; }
-        body.dark-mode .wl-card-item .wl-card { border-bottom-color: #2a2a4a; }
-        body.dark-mode .wl-preview h4 { color: #eee; }
-        body.dark-mode .wl-preview .wl-content { color: #ccc; }
-        body.dark-mode .wl-emoji-popup,
-        body.dark-mode .wl-gif-popup { background: #1c1c2e; border-color: #2a2a4a; }
-        body.dark-mode .wl-emoji-popup button:hover { background: #2a2a4a; }
-        body.dark-mode .wl-content pre,
-        body.dark-mode .wl-content pre[class*=language-] { background: #0d0d0d; }
-        body.dark-mode .wl-content code,
-        body.dark-mode .wl-content pre code { color: #bbb; }
-        body.dark-mode .wl-content blockquote { border-inline-start-color: #2a2a4a; color: #999; }
-        body.dark-mode .wl-content .wl-tex { background: #1c1c2e; color: #999; }
-        body.dark-mode .wl-content a { color: #4facfe; }
-        body.dark-mode .wl-content a:hover { color: #00f2fe; }
 
         body.dark-mode .detail-btn-secondary,
         body.dark-mode .detail-btn-share { background: #222; color: #aaa; border-color: #333; }
@@ -2299,9 +2199,6 @@
             color: #ccc;
         }
         body.dark-mode .card-actions .btn:hover { border-color: #666; }
-        body.dark-mode .card-actions .btn-comment:hover { color: #fff; }
-        body.dark-mode .card-actions .btn-comment .comment-count { color: #777; }
-        body.dark-mode .card-actions .btn-comment:hover .comment-count { color: #ccc; }
         body.dark-mode .card-actions .btn-share:hover { color: #fff; }
         body.dark-mode .card-actions .btn-download {
             background: #fff;

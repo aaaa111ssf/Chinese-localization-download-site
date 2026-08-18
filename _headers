@@ -37,7 +37,7 @@
 /data/*
   Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=3600
 
-# API 端点 - 60秒缓存（评论数/评分/统计等，函数自身会覆盖更细的缓存策略）
+# API 端点 - 60秒缓存（评分/统计等，函数自身会覆盖更细的缓存策略）
 /api/*
   Cache-Control: public, max-age=60, s-maxage=60
 

@@ -4,8 +4,6 @@ const PRECACHE_ASSETS = [
   '/index.html',
   '/data/data.json',
   '/data/announce.json',
-  '/waline/waline.js',
-  '/waline/waline.css',
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
   '/apple-touch-icon.png'
@@ -41,11 +39,7 @@ function getRequestType(url) {
   if (url.pathname.startsWith('/api/')) {
     return 'api';
   }
-  // Waline 评论代理不缓存（评论需要实时）
-  if (url.pathname.startsWith('/waline-proxy/')) {
-    return 'api';
-  }
-  // 独立模组页按 HTML 处理（NetworkFirst，保证评论/评分最新）
+  // 独立模组页按 HTML 处理（NetworkFirst，保证评分/统计最新）
   if (url.pathname.startsWith('/mod/')) {
     return 'html';
   }
