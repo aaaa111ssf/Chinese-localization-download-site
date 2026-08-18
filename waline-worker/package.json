@@ -1,0 +1,47 @@
+{
+	"name": "waline-on-worker",
+	"version": "1.0.0",
+	"description": "Waline-compatible comment system backend running on Cloudflare Workers with D1",
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"db:init": "wrangler d1 execute waline-db --file=./schema.sql",
+		"db:init:local": "wrangler d1 execute waline-db --file=./schema.sql --local",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage --coverage.provider=istanbul"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wuyilingwei/Waline_On_Worker.git"
+	},
+	"keywords": [
+		"waline",
+		"cloudflare-workers",
+		"comment-system",
+		"d1"
+	],
+	"author": "wuyilingwei",
+	"license": "MIT",
+	"dependencies": {
+		"bcryptjs": "^3.0.3",
+		"hono": "^4.12.9"
+	},
+	"engines": {
+		"node": ">=20.0.0",
+		"pnpm": ">=9.0.0"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": ["esbuild", "workerd"]
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.16",
+		"@cloudflare/vitest-pool-workers": "^0.16.13",
+		"@cloudflare/workers-types": "^4.20260604.1",
+		"@vitest/coverage-istanbul": "^4.1.8",
+		"typescript": "^6.0.2",
+		"vitest": "^4.1.8",
+		"wrangler": "^4.97.0"
+	}
+}

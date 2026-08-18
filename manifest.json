@@ -1,0 +1,14 @@
+{
+  "name": "SFS汉化模组下载中心",
+  "short_name": "SFS模组",
+  "description": "Spaceflight Simulator 中文汉化模组下载中心",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "apple touch icon" }
+  ]
+}
