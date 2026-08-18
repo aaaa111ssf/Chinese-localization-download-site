@@ -1,0 +1,15 @@
+name = "sfs-mod-stats"
+compatibility_date = "2026-07-12"
+
+[[kv_namespaces]]
+binding = "SFS"
+id = "29f8d1df5fc1490e8f68ae91beba130f"
+preview_id = "29f8d1df5fc1490e8f68ae91beba130f"
+
+# D1 数据库（评分 / 下载记录）
+# 创建方式: npx wrangler d1 create sfs-db
+# 然后把返回的 database_id 填到下面
+[[d1_databases]]
+binding = "SFS_DB"
+database_name = "sfs-db"
+database_id = "fc07e90c-a783-4054-9407-7b2e3264db2e"

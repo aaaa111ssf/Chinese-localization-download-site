@@ -245,8 +245,13 @@ document.getElementById('dlBtn').addEventListener('click', () => {
     navigator.sendBeacon('/api/log', JSON.stringify({ mod: MOD_NAME }));
 });
 
-/* Waline 评论 */
-if (window.Waline) {
+/* Waline 评论 - 重试机制确保脚本加载完成后初始化 */
+function initWaline() {
+    if (!window.Waline) {
+        // Waline 脚本可能尚未加载完成，稍后重试
+        setTimeout(function() { initWaline(); }, 300);
+        return;
+    }
     Waline.init({
         el: '#waline',
         serverURL: ${JSON.stringify(walineServerUrl(origin))},
@@ -254,9 +259,11 @@ if (window.Waline) {
         lang: 'zh-CN',
         reaction: false,
         pageview: false,
-        dark: 'auto'
+        dark: 'auto',
+        emoji: false
     });
 }
+initWaline();
 </script>
 </body>
 </html>`;
