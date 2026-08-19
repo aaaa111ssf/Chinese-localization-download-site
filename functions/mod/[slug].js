@@ -51,7 +51,7 @@ export async function onRequestGet(context) {
 
     const galleryHtml = images.length > 0
         ? `<div class="mod-gallery">${images.map((img, i) =>
-            `<img src="${esc(img)}" alt="${esc(file.name)}预览图${i + 1}" loading="lazy">`).join('')}</div>`
+            `<img src="${esc(img)}" alt="${esc(file.name)}预览图${i + 1}" loading="lazy" decoding="async">`).join('')}</div>`
         : '';
 
     const jsonLd = JSON.stringify({
@@ -138,7 +138,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
             <span class="m">大小 ${esc(file.size || '未知')}</span>
             <span class="m">兼容 ${esc(file.compat || '1.6.00.3+')}</span>
             <span class="m">更新 ${esc(file.date || '')}</span>
-            ${file.heat ? `<span class="m">热力 ${esc(file.heat)}</span>` : ''}
         </div>
         <div class="desc">${esc(file.desc || '暂无描述')}</div>
         <div class="stats" id="modStats">

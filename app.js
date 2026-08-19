@@ -31,7 +31,7 @@
             }
             let currentCategory = 'all';
             let searchKeyword = '';
-            let currentSort = 'default'; // default | heat | date
+            let currentSort = 'default'; // default | date
             let viewerImages = [];
             let viewerIndex = 0;
 
@@ -70,18 +70,6 @@
             }
             window.toSlug = toSlug;
 
-            /* ---------- 热力值解析（"12.5万" -> 125000） ---------- */
-            function parseHeat(heat) {
-                if (heat == null) return 0;
-                const s = String(heat).trim();
-                if (!s) return 0;
-                const m = s.match(/^([\d.]+)\s*(万|w|W)?/);
-                if (!m) return 0;
-                const num = parseFloat(m[1]) || 0;
-                if (m[2]) return Math.round(num * 10000);
-                return Math.round(num);
-            }
-
             /* ---------- 更新日期解析（兼容 2026-6-10 与 2026-08-06） ---------- */
             function parseDate(dateStr) {
                 if (!dateStr) return 0;
@@ -93,9 +81,7 @@
             /* ---------- 排序 ---------- */
             function sortFiles(list) {
                 const arr = list.slice();
-                if (currentSort === 'heat') {
-                    arr.sort((a, b) => parseHeat(b.heat) - parseHeat(a.heat));
-                } else if (currentSort === 'date') {
+                if (currentSort === 'date') {
                     arr.sort((a, b) => parseDate(b.date) - parseDate(a.date));
                 }
                 return arr;
@@ -129,7 +115,8 @@
                 'https://cdn.jsdelivr.net/gh/aaaa111ssf/images@main',       // jsDelivr全球
                 'https://cloudflare-b2.a2107478976.workers.dev'             // B2兜底
             ];
-            const IMG_TIMEOUT_MS = 3500;
+            const IMG_TIMEOUT_MS = 3200;
+            const MAX_IMG_MIRROR_ATTEMPTS = 3;
 
             /* ---------- 图片加载超时回退（慢则自动换源） ---------- */
             function armImgTimeout(img) {
@@ -173,32 +160,25 @@
                 const found = CDN_MIRRORS.findIndex(function(m) { return currentSrc.indexOf(m) === 0; });
                 if (found !== -1) mirrorIdx = found;
 
-                // 回绕保护：若当前已是最后一个镜像(B2)，回绕到第一个镜像再试一轮
-                let retries = parseInt(img.dataset.retry || '0', 10);
-                if (mirrorIdx >= CDN_MIRRORS.length - 1) {
-                    if (retries >= 1) {
-                        showImgPlaceholder(img);
-                        return;
-                    }
-                    mirrorIdx = 0;
-                    retries++;
-                    img.dataset.retry = retries;
-                } else {
-                    mirrorIdx++;
+                // 仅尝试有限的备用镜像，避免移动网络下对多个代理反复发起请求。
+                const attempts = parseInt(img.dataset.attempts || '0', 10);
+                const nextMirrorIdx = mirrorIdx + 1;
+                if (attempts >= MAX_IMG_MIRROR_ATTEMPTS || nextMirrorIdx >= CDN_MIRRORS.length) {
+                    showImgPlaceholder(img);
+                    return;
                 }
 
                 // 提取文件名（最后一个 / 之后的部分）
                 const fileName = currentSrc.substring(currentSrc.lastIndexOf('/') + 1);
-                if (fileName) {
-                    const newSrc = CDN_MIRRORS[mirrorIdx] + '/' + fileName;
-                    img.dataset.mirrorIdx = mirrorIdx;
-                    img.src = newSrc;
-                    img.onerror = function() { window.handleImgError(img); };
-                    armImgTimeout(img);
+                if (!fileName) {
+                    showImgPlaceholder(img);
                     return;
                 }
-
-                showImgPlaceholder(img);
+                img.dataset.attempts = String(attempts + 1);
+                img.dataset.mirrorIdx = String(nextMirrorIdx);
+                img.src = CDN_MIRRORS[nextMirrorIdx] + '/' + fileName;
+                img.onerror = function() { window.handleImgError(img); };
+                armImgTimeout(img);
             };
 
             /* ---------- 图片加载完成移除骨架屏 ---------- */
@@ -239,22 +219,23 @@
                             const img = entry.target;
                             const src = img.dataset.src;
                             if (src) {
+                                img.decoding = 'async';
                                 img.src = src;
                                 armImgTimeout(img);
-                                // 立即显示模糊占位，等加载完再变清晰
-                                img.style.opacity = '1';
-                                if (img.complete) {
-                                    img.classList.add('loaded');
-                                } else {
-                                    img.onload = () => img.classList.add('loaded');
-                                    img.onerror = () => img.classList.add('loaded');
-                                }
+                                const markLoaded = function() {
+                                    if (img.naturalWidth > 0) {
+                                        img.classList.add('loaded');
+                                        window.handleImgLoad(img);
+                                    }
+                                };
+                                if (img.complete) markLoaded();
+                                else img.addEventListener('load', markLoaded, { once: true });
                                 img.removeAttribute('data-src');
                             }
                             obs.unobserve(img);
                         }
                     });
-                }, { rootMargin: '100px 0px', threshold: 0.01 });
+                }, { rootMargin: '200px 0px', threshold: 0.01 });
             } else {
                 imgObserver = null;
             }
@@ -283,7 +264,6 @@
                     version: escapeHtml(file.version || 'v1.0'),
                     size: escapeHtml(file.size || '未知'),
                     date: escapeHtml(file.date || ''),
-                    heat: escapeHtml(file.heat || ''),
                     link: escapeHtml(file.link || '#'),
                     tags: Array.isArray(file.tags) ? file.tags : [],
                     type: file.type || 'default'
@@ -295,18 +275,21 @@
 
                 let imageHtml = '';
                 if (validImages.length > 0) {
-                    const thumbs = validImages.slice(1, 4);
-                    const moreCount = validImages.length > 4 ? validImages.length - 4 : 0;
+                    const enableThumbs = window.matchMedia('(min-width: 641px)').matches;
+                    const thumbs = enableThumbs ? validImages.slice(1, 3) : [];
+                    const moreCount = enableThumbs && validImages.length > 3 ? validImages.length - 3 : 0;
                     const thumbsHtml = thumbs.length ? `
                         <div class="card-image-gallery" onclick="event.stopPropagation()">
-                            ${thumbs.map((img, i) => `<img data-src="${escapeHtml(img)}" onclick="openImgViewer(${index}, ${i+1})" alt="${escapeHtml(safe.name)}缩略图${i+1}" class="lazy-img" onerror="this.style.display='none'; this.onerror=null;">`).join('')}
+                            ${thumbs.map((img, i) => `<img data-src="${escapeHtml(img)}" decoding="async" onclick="openImgViewer(${index}, ${i+1})" alt="${escapeHtml(safe.name)}缩略图${i+1}" class="lazy-img" onerror="this.style.display='none'; this.onerror=null;">`).join('')}
                             ${moreCount ? `<span style="color:#fff;font-size:0.7rem;padding:4px 6px;background:rgba(0,0,0,0.4);border-radius:4px;white-space:nowrap;">+${moreCount}</span>` : ''}
                         </div>
                     ` : '';
-                    const isAboveFold = index < 4;
+                    const eagerCount = window.matchMedia('(max-width: 640px)').matches ? 1 : 3;
+                    const isAboveFold = index < eagerCount;
+                    const fetchPriority = index === 0 ? 'fetchpriority="high"' : '';
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
-                            <img ${isAboveFold ? 'src' : 'data-src'}="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)" ${isAboveFold ? 'loading="eager" fetchpriority="high"' : ''}>
+                            <img ${isAboveFold ? 'src' : 'data-src'}="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" decoding="async" onerror="handleImgError(this)" onload="handleImgLoad(this)" ${isAboveFold ? `loading="eager" ${fetchPriority}` : 'loading="lazy"'}>
                             ${thumbsHtml}
                         </div>
                     `;
@@ -335,7 +318,6 @@
                             <div class="card-meta-boxes">
                                 <div class="meta-box">${svgIcon('box')}<span>大小: ${safe.size}</span></div>
                                 <div class="meta-box">${svgIcon('calendar')}<span>日期: ${safe.date}</span></div>
-                                ${safe.heat ? `<div class="meta-box meta-heat">${svgIcon('activity')}<span>热力: ${safe.heat}</span></div>` : ''}
                             </div>
                         </div>
                         <div class="card-actions">
@@ -361,7 +343,6 @@
                     author: escapeHtml((file.author || 'UP').slice(0,6)),
                     version: escapeHtml(file.version || 'v1.0'),
                     compat: escapeHtml(file.compat || '1.5.x+'),
-                    heat: escapeHtml(file.heat || '热'),
                     link: escapeHtml(file.link || '#'),
                     type: file.type || 'default'
                 };
@@ -380,7 +361,6 @@
                             </div>
                             <div class="sug-extra">
                                 <span>作者: ${safe.author}</span>
-                                <span>热度: ${safe.heat}</span>
                             </div>
                         </div>
                         <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="sug-btn">下载</a>
@@ -657,15 +637,14 @@
                     ['box', '大小', file.size || '未知'],
                     ['calendar', '更新', file.date || '']
                 ];
-                if (file.heat) detailInfo.push(['activity', '热力', file.heat]);
                 const detailInfoHtml = detailInfo.map(([iconName, label, value]) => `<span class="detail-info-item">${svgIcon(iconName)}<span><b>${label}</b>${escapeHtml(value)}</span></span>`).join('');
 
                 const firstImage = validImages.length > 0 
-                    ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)">`
+                    ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" loading="lazy" decoding="async" onerror="handleImgError(this)" onload="handleImgLoad(this)">`
                     : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${svgIcon(icon)}</span><span class="fallback-text">暂无预览</span></div></div>`;
 
                 const gallery = validImages.length > 0 ?
-                    `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" alt="${escapeHtml(file.name||'模组')}预览图${i+1}" data-icon="${icon}" class="lazy-img" data-mirror-idx="0" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)" onload="handleImgLoad(this)">`).join('')}</div></div>` : '';
+                    `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" alt="${escapeHtml(file.name||'模组')}预览图${i+1}" data-icon="${icon}" class="lazy-img" data-mirror-idx="0" loading="lazy" decoding="async" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)" onload="handleImgLoad(this)">`).join('')}</div></div>` : '';
 
                 box.innerHTML = `
                     <div class="mod-detail-header">
@@ -708,7 +687,7 @@
                 // 加载评分
                 currentDetailMod = modName;
                 loadRating(modName);
-                // 加载下载/收藏统计
+                // 加载下载统计
                 refreshDetailStats();
             };
 

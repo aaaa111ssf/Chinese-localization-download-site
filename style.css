@@ -2805,3 +2805,159 @@ body.dark-mode .detail-info-item .ui-icon { color: #aaa; }
     .detail-info-grid { grid-template-columns: 1fr; }
     .card-subtitle { gap: 8px; flex-wrap: wrap; }
 }
+
+/* ============================================
+   2026-08 移动端与列表模式优化
+   ============================================ */
+body.layout-list .file-card {
+    display: grid;
+    grid-template-columns: 184px minmax(0, 1fr) 122px;
+    height: 176px;
+}
+body.layout-list .card-image-wrap {
+    width: 184px;
+    height: 176px;
+}
+body.layout-list .card-body {
+    padding: 15px 16px;
+    justify-content: flex-start;
+    gap: 6px;
+}
+body.layout-list .card-desc {
+    -webkit-line-clamp: 2;
+    min-height: 0;
+}
+body.layout-list .card-meta-boxes {
+    width: max-content;
+    max-width: 100%;
+    margin-top: auto;
+}
+body.layout-list .meta-box { flex: 0 1 auto; }
+body.layout-list .card-actions {
+    align-self: stretch;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 14px 12px 0;
+}
+body.layout-list .card-actions-secondary,
+body.layout-list .card-actions-primary {
+    width: 100%;
+    justify-content: stretch;
+}
+body.layout-list .card-actions-secondary { display: none; }
+body.layout-list .card-actions-primary { gap: 7px; }
+body.layout-list .card-actions-primary .btn-detail,
+body.layout-list .card-actions-primary .btn-download {
+    flex: 1 1 0;
+    max-width: none;
+    min-width: 0;
+    padding: 8px 7px;
+}
+body.layout-list .card-actions-primary .btn-detail span,
+body.layout-list .card-actions-primary .btn-download span { font-size: 0.78rem; }
+
+@media (max-width: 768px) {
+    body { padding: 12px; }
+    .container { min-height: calc(100vh - 24px); }
+    body.layout-list .file-card {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+    body.layout-list .card-image-wrap {
+        width: 100%;
+        height: 150px;
+    }
+    body.layout-list .card-body { padding: 13px 14px 10px; }
+    body.layout-list .card-desc { -webkit-line-clamp: 2; }
+    body.layout-list .card-meta-boxes { width: 100%; }
+    body.layout-list .meta-box { flex: 1 1 0; }
+    body.layout-list .card-actions {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 14px 14px;
+        gap: 8px;
+    }
+    body.layout-list .card-actions-secondary {
+        display: flex;
+        width: auto;
+    }
+    body.layout-list .card-actions-primary { flex: 1; }
+    .file-grid { gap: 14px; }
+    .file-card:hover { transform: none; }
+    .card-image-gallery { display: none; }
+    .mod-detail-overlay { align-items: flex-end; padding: 0; }
+    .mod-detail-box {
+        width: 100%;
+        max-height: 92dvh;
+        border-radius: 20px 20px 0 0;
+        transform: translateY(28px);
+    }
+    .mod-detail-overlay.active .mod-detail-box { transform: translateY(0); }
+    .mod-detail-header { height: 164px; }
+    .mod-detail-header .header-overlay { padding: 28px 16px 12px; }
+    .mod-detail-header h2 { font-size: 1.15rem; line-height: 1.25; margin-bottom: 5px; }
+    .mod-detail-body { padding: 16px 16px 8px; }
+    .mod-detail-body .detail-section { margin-bottom: 16px; }
+    .mod-detail-body .detail-section h4 { margin-bottom: 8px; }
+    .mod-detail-body .detail-section p { font-size: 0.88rem; }
+    .detail-stats-row { gap: 8px; }
+    .stat-chip { padding: 6px 10px; font-size: 0.8rem; }
+    .mod-detail-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .mod-detail-gallery img { height: 108px; }
+    .mod-detail-footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1fr auto 1.35fr;
+        gap: 8px;
+        padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+        background: rgba(255,255,255,0.96);
+        border-top: 1px solid #eee;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    .detail-btn,
+    .detail-btn-share {
+        min-height: 44px;
+        margin: 0;
+        padding: 10px 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        font-size: 0.86rem;
+    }
+    .detail-btn-share { width: auto; }
+    body.dark-mode .mod-detail-footer { background: rgba(20,20,31,0.96); border-top-color: #2a2a4a; }
+}
+
+@media (max-width: 420px) {
+    .top-nav { width: 100%; justify-content: space-around; }
+    .nav-item { flex: 1; justify-content: center; padding: 7px 9px; }
+    .card-actions { padding-left: 12px; padding-right: 12px; }
+    .card-actions-secondary .btn-share { width: 36px; min-width: 36px; }
+    .card-actions-primary { gap: 6px; }
+    .card-actions-primary .btn-detail { flex-basis: 0; }
+    .card-actions-primary .btn-download { min-width: 0; }
+    body.layout-list .card-image-wrap { height: 138px; }
+    body.layout-list .card-actions { padding: 0 12px 12px; }
+    .mod-detail-header { height: 144px; }
+    .mod-detail-body { padding-left: 14px; padding-right: 14px; }
+    .detail-info-item { padding: 8px 9px; }
+    .mod-detail-footer { grid-template-columns: 44px 44px minmax(0, 1fr); padding-left: 12px; padding-right: 12px; }
+    .detail-btn-secondary span,
+    .detail-btn-share span { display: none; }
+    .detail-btn-secondary,
+    .detail-btn-share { padding: 10px; }
+    .detail-btn-primary { min-width: 0; }
+}
+
+@media (max-width: 768px) {
+    img[data-src] { filter: none; transform: none; }
+    img.loaded { transition: opacity 0.2s ease; }
+    .card-image-wrap::before { animation-duration: 2.2s; }
+}
