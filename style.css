@@ -2617,9 +2617,13 @@
             background: #222;
         }
 
-        /* 设置面板响应式 */
+        /* 设置面板响应式：手机端与公告栏一致，保留左侧遮罩区域而非全屏覆盖。 */
         @media (max-width: 480px) {
-            .settings-panel { width: 100%; }
+            .settings-panel {
+                width: min(360px, 90vw);
+                max-width: 90vw;
+                height: 100dvh;
+            }
             .announce-float-btn { top: 66px; right: 12px; width: 40px; height: 40px; }
             .settings-float-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
             .back-to-top-btn { right: 15px; bottom: 140px; width: 42px; height: 42px; }
