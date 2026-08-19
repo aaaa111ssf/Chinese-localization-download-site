@@ -3590,3 +3590,50 @@ body:not(.dark-mode) .announce-float-btn .announce-badge { background: var(--sit
 body:not(.dark-mode) .settings-slider {
     background: var(--site-surface-border);
 }
+
+/* 列表模式：桌面端将详情与下载改为纵向完整操作，避免窄侧栏裁切文字。 */
+@media (min-width: 769px) {
+    body.layout-list .file-card {
+        grid-template-columns: 184px minmax(0, 1fr) 146px;
+    }
+    body.layout-list .card-actions {
+        grid-template-columns: minmax(0, 1fr);
+        align-self: stretch;
+        padding: 12px 14px 12px 0;
+    }
+    body.layout-list .card-actions-secondary { display: none; }
+    body.layout-list .card-actions-primary {
+        grid-template-columns: minmax(0, 1fr);
+        align-content: center;
+        gap: 8px;
+    }
+    body.layout-list .card-actions-primary .btn {
+        width: 100%;
+        min-height: 48px;
+        padding: 9px 10px;
+        overflow: hidden;
+    }
+    body.layout-list .card-actions-primary .btn span {
+        overflow: visible;
+        text-overflow: clip;
+    }
+}
+
+/* 手机端卡片已改为纵向堆叠，保留分享、详情、下载的横向触达布局。 */
+@media (max-width: 768px) {
+    body.layout-list .card-actions {
+        grid-template-columns: 44px minmax(0, 1fr);
+        padding: 0 14px 14px;
+    }
+    body.layout-list .card-actions-secondary { display: flex; }
+    body.layout-list .card-actions-primary {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+        gap: 8px;
+    }
+    body.layout-list .card-actions-primary .btn {
+        width: auto;
+        min-height: 42px;
+        padding: 8px 10px;
+        overflow: visible;
+    }
+}
