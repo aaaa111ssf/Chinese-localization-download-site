@@ -22,6 +22,7 @@
                 download: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
                 close: '<path d="m6 6 12 12M18 6 6 18"/>',
                 share: '<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5M8 13l8 5"/>',
+                edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
                 folder: '<path d="M3 6h6l2 2h10v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
                 search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>'
             };
@@ -33,6 +34,11 @@
             let currentSort = 'default'; // default | date
             let viewerImages = [];
             let viewerIndex = 0;
+            let activeRatingMod = '';
+            let activeRating = { average: 0, count: 0, myScore: 0 };
+            let pendingRating = 0;
+            let ratingSubmitting = false;
+            let ratingRequestId = 0;
 
             /* ---------- 安全转义工具 ---------- */
             function escapeHtml(str) {
@@ -654,20 +660,26 @@
                     <div class="mod-detail-body">
                         <div class="detail-section"><h4>简介</h3><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
                         <div class="detail-section"><h4>信息</h3><div class="detail-info-grid">${detailInfoHtml}</div></div>
-                        <div class="detail-section detail-stats">
-                            <h4>数据</h3>
-                            <div class="detail-stats-row">
-                                <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> 评分 <b id="ratingCountDetail">--</b></span>
-                            </div>
-                        </div>
                         <div class="detail-section detail-rating">
-                            <h4>评分</h3>
-                            <div class="rating-info">
+                            <div class="detail-section-heading">
+                                <h4>评分</h4>
+                                <button type="button" class="rating-edit-btn" id="ratingEditBtn" onclick="openRatingEditor()" aria-label="编辑评分">${svgIcon('edit')}<span>编辑评分</span></button>
+                            </div>
+                            <div class="rating-summary" id="detailRatingSummary" aria-live="polite">
                                 <div class="rating-score" id="detailRatingScore">--</div>
-                                <div class="stars" id="detailStars"></div>
-                                <span class="rating-count" id="detailRatingCount"></span>
+                                <div class="stars rating-read-stars" id="detailRatingStars" aria-label="评分加载中"></div>
+                                <span class="rating-count" id="detailRatingCount">正在加载评分...</span>
                             </div>
                             <div class="rating-msg" id="detailRatingMsg"></div>
+                            <div class="rating-editor" id="ratingEditor" hidden aria-label="编辑评分">
+                                <div class="rating-editor-head"><strong>为模组评分</strong><button type="button" class="rating-editor-close" onclick="closeRatingEditor()" aria-label="取消编辑">${svgIcon('close')}</button></div>
+                                <p class="rating-editor-desc" id="ratingEditorDesc">请选择 1 至 5 星</p>
+                                <div class="stars rating-editor-stars" id="ratingEditorStars" role="group" aria-label="选择星级"></div>
+                                <div class="rating-editor-actions">
+                                    <button type="button" class="rating-cancel-btn" onclick="closeRatingEditor()">取消</button>
+                                    <button type="button" class="rating-submit-btn" id="ratingSubmitBtn" onclick="submitRating()" disabled>提交评分</button>
+                                </div>
+                            </div>
                         </div>
                         ${gallery}
                     </div>
@@ -680,11 +692,13 @@
                 document.getElementById('modDetailOverlay').classList.add('active');
                 document.body.classList.add('modal-open');
                 observeLazyImages();
-                // 加载评分
+                // 加载只读评分摘要
                 loadRating(modName);
             };
 
             window.closeModDetail = function() {
+                ratingRequestId += 1;
+                activeRatingMod = '';
                 document.getElementById('modDetailOverlay').classList.remove('active');
                 checkAndRemoveModalOpen();
             };
@@ -709,7 +723,7 @@
                 }
             };
 
-            /* ---------- 评分（参考 sfs-cn-mod：双层半星 + 平均分 + 人数） ---------- */
+            /* ---------- 评分：默认只读，编辑后再提交 ---------- */
             function makeStarSvg(cls) {
                 const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 svg.setAttribute('viewBox', '0 0 24 24');
@@ -719,11 +733,18 @@
             }
 
             function renderStars(container, score, onClick) {
+                if (!container) return;
                 container.innerHTML = '';
                 for (let i = 1; i <= 5; i++) {
-                    const fill = Math.min(1, Math.max(0, score - i + 1)); // 0..1 部分填充
-                    const wrap = document.createElement('span');
-                    wrap.className = 'star-wrap';
+                    const fill = Math.min(1, Math.max(0, Number(score) - i + 1));
+                    const wrap = document.createElement(onClick ? 'button' : 'span');
+                    wrap.className = 'star-wrap' + (onClick ? ' star-option' : '');
+                    if (onClick) {
+                        wrap.type = 'button';
+                        wrap.title = '选择 ' + i + ' 星';
+                        wrap.setAttribute('aria-label', '选择 ' + i + ' 星');
+                        wrap.onclick = function() { onClick(i); };
+                    }
                     const base = makeStarSvg('star-svg-base');
                     const fillSpan = document.createElement('span');
                     fillSpan.className = 'star-fill';
@@ -731,71 +752,114 @@
                     fillSpan.appendChild(makeStarSvg('star-svg-fill'));
                     wrap.appendChild(base);
                     wrap.appendChild(fillSpan);
-                    if (onClick) {
-                        wrap.style.cursor = 'pointer';
-                        wrap.title = '点击评 ' + i + ' 星';
-                        wrap.onclick = function() { onClick(i); };
-                    }
                     container.appendChild(wrap);
                 }
             }
 
-            function loadRating(modName) {
-                fetch('/api/ratings?mod=' + encodeURIComponent(modName), { cache: 'no-store', headers: { 'Accept': 'application/json' } })
-                    .then(r => r.json())
-                    .then(d => {
-                        const scoreEl = document.getElementById('detailRatingScore');
-                        const countEl = document.getElementById('detailRatingCount');
-                        const avg = Number(d.average) || 0;
-                        const formatted = avg ? avg.toFixed(1) : '--';
-                        if (scoreEl) scoreEl.textContent = formatted;
-                        if (countEl) countEl.textContent = d.count ? d.count + ' 人评分' : '暂无评分';
-                        const statEl = document.getElementById('ratingCountDetail');
-                        if (statEl) statEl.textContent = formatted;
-                        const stars = document.getElementById('detailStars');
-                        if (stars) renderStars(stars, avg, function(s) { submitRating(modName, s); });
-                    })
-                    .catch(() => {});
+            function renderRatingSummary(status) {
+                const avg = Number(activeRating.average) || 0;
+                const count = Number(activeRating.count) || 0;
+                const scoreEl = document.getElementById('detailRatingScore');
+                const countEl = document.getElementById('detailRatingCount');
+                const stars = document.getElementById('detailRatingStars');
+                const editBtn = document.getElementById('ratingEditBtn');
+                if (scoreEl) scoreEl.textContent = avg ? avg.toFixed(1) : '--';
+                if (countEl) countEl.textContent = status || (count ? count + ' 人评分' : '暂无评分');
+                if (stars) {
+                    renderStars(stars, avg);
+                    stars.setAttribute('aria-label', avg ? '平均分数 ' + avg.toFixed(1) + ' 分' : '暂无评分');
+                }
+                if (editBtn) editBtn.querySelector('span').textContent = activeRating.myScore ? '修改评分' : '编辑评分';
             }
 
-            function submitRating(modName, score) {
-                const stars = document.getElementById('detailStars');
-                if (stars) stars.setAttribute('aria-busy', 'true');
+            function renderRatingEditor() {
+                const editor = document.getElementById('ratingEditor');
+                if (!editor || editor.hidden) return;
+                const editorStars = document.getElementById('ratingEditorStars');
+                const desc = document.getElementById('ratingEditorDesc');
+                const submitBtn = document.getElementById('ratingSubmitBtn');
+                renderStars(editorStars, pendingRating, function(score) {
+                    if (ratingSubmitting) return;
+                    pendingRating = score;
+                    renderRatingEditor();
+                });
+                if (desc) desc.textContent = pendingRating ? '已选择 ' + pendingRating + ' 星，可提交或继续修改' : '请选择 1 至 5 星';
+                if (submitBtn) {
+                    submitBtn.disabled = !pendingRating || ratingSubmitting;
+                    submitBtn.textContent = ratingSubmitting ? '正在保存...' : (activeRating.myScore ? '保存修改' : '提交评分');
+                }
+            }
+
+            window.openRatingEditor = function() {
+                if (!activeRatingMod) return;
+                const editor = document.getElementById('ratingEditor');
+                const msgEl = document.getElementById('detailRatingMsg');
+                if (!editor) return;
+                if (msgEl) msgEl.textContent = '';
+                pendingRating = Number(activeRating.myScore) || 0;
+                ratingSubmitting = false;
+                editor.hidden = false;
+                renderRatingEditor();
+            };
+
+            window.closeRatingEditor = function() {
+                const editor = document.getElementById('ratingEditor');
+                if (editor) editor.hidden = true;
+                ratingSubmitting = false;
+            };
+
+            function loadRating(modName) {
+                const requestId = ++ratingRequestId;
+                activeRatingMod = modName;
+                activeRating = { average: 0, count: 0, myScore: 0 };
+                renderRatingSummary('正在加载评分...');
+                fetch('/api/ratings?mod=' + encodeURIComponent(modName), { cache: 'no-store', headers: { 'Accept': 'application/json' } })
+                    .then(r => r.ok ? r.json() : Promise.reject(new Error('评分加载失败')))
+                    .then(d => {
+                        if (requestId !== ratingRequestId || activeRatingMod !== modName) return;
+                        activeRating = {
+                            average: Number(d.average) || 0,
+                            count: Number(d.count) || 0,
+                            myScore: Number(d.myScore) || 0
+                        };
+                        renderRatingSummary();
+                    })
+                    .catch(() => {
+                        if (requestId === ratingRequestId && activeRatingMod === modName) renderRatingSummary('评分暂时无法加载');
+                    });
+            }
+
+            window.submitRating = function() {
+                if (!activeRatingMod || !pendingRating || ratingSubmitting) return;
+                ratingSubmitting = true;
+                renderRatingEditor();
                 fetch('/api/ratings', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({ mod: modName, score }),
+                    body: JSON.stringify({ mod: activeRatingMod, score: pendingRating }),
                     keepalive: true,
                     cache: 'no-store'
                 })
-                    .then(r => r.json())
+                    .then(r => r.ok ? r.json() : Promise.reject(new Error('评分提交失败')))
                     .then(d => {
-                        if (d.ok) {
-                            const scoreEl = document.getElementById('detailRatingScore');
-                            const countEl = document.getElementById('detailRatingCount');
-                            const msgEl = document.getElementById('detailRatingMsg');
-                            const formatted = Number(d.average).toFixed(1);
-                            if (scoreEl) scoreEl.textContent = formatted;
-                            if (countEl) countEl.textContent = d.count + ' 人评分';
-                            const statEl = document.getElementById('ratingCountDetail');
-                            if (statEl) statEl.textContent = formatted;
-                            if (msgEl) msgEl.textContent = '感谢你的评分！';
-                            const stars = document.getElementById('detailStars');
-                            if (stars) {
-                                stars.removeAttribute('aria-busy');
-                                renderStars(stars, d.average, function(s) { submitRating(modName, s); });
-                            }
-                        } else {
-                            throw new Error(d.error || '评分提交失败');
-                        }
+                        if (!d.ok) throw new Error(d.error || '评分提交失败');
+                        activeRating = {
+                            average: Number(d.average) || 0,
+                            count: Number(d.count) || 0,
+                            myScore: Number(d.myScore) || pendingRating
+                        };
+                        renderRatingSummary();
+                        closeRatingEditor();
+                        const msgEl = document.getElementById('detailRatingMsg');
+                        if (msgEl) msgEl.textContent = activeRating.myScore === pendingRating ? '评分已保存，可随时点击编辑修改' : '评分已更新';
                     })
                     .catch(() => {
-                        const stars = document.getElementById('detailStars');
-                        if (stars) stars.removeAttribute('aria-busy');
+                        ratingSubmitting = false;
+                        renderRatingEditor();
                         const msgEl = document.getElementById('detailRatingMsg');
                         if (msgEl) msgEl.textContent = '评分提交失败，请稍后重试';
                     });
-            }
+            };
 
             /* ---------- 轻提示 ---------- */
             function toast(msg) {

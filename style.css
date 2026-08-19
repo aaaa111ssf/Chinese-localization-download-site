@@ -3108,3 +3108,150 @@ body.dark-mode .background-upload-btn { color: #ddd; border-color: #555; }
     .background-upload-btn,
     .background-clear-btn { flex: 1; }
 }
+
+/* ============================================
+   编辑式评分：默认只读，点击编辑后提交
+   ============================================ */
+.detail-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.detail-section-heading h4 { margin-bottom: 0 !important; }
+.rating-summary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    min-height: 34px;
+}
+.rating-read-stars .star-wrap { cursor: default; }
+.rating-edit-btn,
+.rating-editor-close,
+.rating-cancel-btn,
+.rating-submit-btn {
+    border: 1px solid #dedede;
+    background: #fff;
+    color: #444;
+    border-radius: 9px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.rating-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 32px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+}
+.rating-edit-btn .ui-icon { width: 15px; height: 15px; }
+.rating-edit-btn:hover { color: var(--site-accent); border-color: var(--site-accent); }
+.rating-editor {
+    margin-top: 14px;
+    padding: 15px;
+    border: 1px solid #e6e8ee;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+.rating-editor[hidden] { display: none !important; }
+.rating-editor-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: #222;
+    font-size: 0.9rem;
+}
+.rating-editor-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+}
+.rating-editor-close .ui-icon { width: 16px; height: 16px; }
+.rating-editor-desc { margin: 8px 0 12px; color: #777; font-size: 0.8rem; }
+.rating-editor-stars { gap: 8px; min-height: 36px; }
+.star-option {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: transform 0.15s ease;
+}
+.star-option:hover { transform: scale(1.12); }
+.star-option:focus-visible { outline: 2px solid var(--site-accent); outline-offset: 3px; }
+.rating-editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 15px;
+}
+.rating-cancel-btn,
+.rating-submit-btn { min-height: 36px; padding: 8px 13px; font-size: 0.8rem; }
+.rating-submit-btn { background: var(--site-accent); border-color: var(--site-accent); color: var(--site-on-accent); }
+.rating-submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.rating-submit-btn:not(:disabled):hover { filter: brightness(0.9); }
+body.dark-mode .rating-editor { background: #181826; border-color: #2a2a4a; }
+body.dark-mode .rating-editor-head { color: #eee; }
+body.dark-mode .rating-editor-desc { color: #999; }
+body.dark-mode .rating-edit-btn,
+body.dark-mode .rating-editor-close,
+body.dark-mode .rating-cancel-btn { background: #1c1c2e; border-color: #343452; color: #d6d6e4; }
+@media (max-width: 420px) {
+    .rating-summary { gap: 8px; }
+    .rating-edit-btn span { display: none; }
+    .rating-edit-btn { width: 32px; justify-content: center; padding: 6px; }
+    .rating-editor { padding: 13px; }
+    .rating-editor-stars { gap: 5px; }
+    .rating-editor-actions > button { flex: 1; }
+}
+
+/* 黑夜模式下的纯色背景必须覆盖默认浅色纯色规则。 */
+body.dark-mode.background-plain {
+    background-color: #0d0d0d;
+    background-image: none;
+}
+
+/* 深色主题仍应使用用户自定义主色，而非回退为黑白默认色。 */
+body.dark-mode .top-nav .nav-item.active,
+body.dark-mode .category-btn.active,
+body.dark-mode .dropdown-item.active,
+body.dark-mode .search-btn,
+body.dark-mode .card-actions .btn-download,
+body.dark-mode .suggestion-card .sug-btn,
+body.dark-mode .tutorial-tab.active,
+body.dark-mode .detail-btn-primary,
+body.dark-mode .sponsor-modal-footer .modal-btn-confirm,
+body.dark-mode .settings-reset-btn,
+body.dark-mode .dl-tab.active,
+body.dark-mode .rating-submit-btn,
+body.dark-mode .background-style-btn.active {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+}
+body.dark-mode .search-btn:hover,
+body.dark-mode .card-actions .btn-download:hover,
+body.dark-mode .suggestion-card .sug-btn:hover,
+body.dark-mode .tutorial-tab.active:hover,
+body.dark-mode .detail-btn-primary:hover,
+body.dark-mode .sponsor-modal-footer .modal-btn-confirm:hover,
+body.dark-mode .settings-reset-btn:hover,
+body.dark-mode .dl-tab.active:hover,
+body.dark-mode .rating-submit-btn:not(:disabled):hover {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+    filter: brightness(0.9);
+}
+body.dark-mode .settings-toggle input:checked + .settings-toggle-slider {
+    background: var(--site-accent);
+}
