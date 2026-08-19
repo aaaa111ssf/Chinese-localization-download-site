@@ -1233,28 +1233,34 @@
                 const b = parseInt(value.slice(4, 6), 16);
                 return (r * 0.299 + g * 0.587 + b * 0.114) > 176 ? '#111111' : '#FFFFFF';
             }
+            function hasCustomBackgroundImage() {
+                return typeof settings.backgroundImage === 'string' && settings.backgroundImage.startsWith('data:image/');
+            }
             function applyCustomStyle() {
                 const selectedAccent = normalizeAccentColor(settings.accentColor);
-                const colorAdjustmentLocked = Boolean(settings.darkMode);
-                // 黑夜模式固定使用高对比中性色，避免保存的浅色主题降低深色界面可读性。
-                const activeAccent = colorAdjustmentLocked ? '#FFFFFF' : selectedAccent;
+                const imageReady = hasCustomBackgroundImage();
+                const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
+                const imageColorLocked = activeBackground === 'image';
+                const colorAdjustmentLocked = Boolean(settings.darkMode || imageColorLocked);
+                // 深色模式和图片背景均使用中性色，避免已保存的高饱和主题色破坏阅读对比。
+                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : selectedAccent;
                 settings.accentColor = selectedAccent;
                 document.documentElement.style.setProperty('--site-accent', activeAccent);
                 document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(activeAccent));
                 document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
-                    meta.content = colorAdjustmentLocked ? '#0D0D0D' : selectedAccent;
+                    meta.content = settings.darkMode ? '#0D0D0D' : activeAccent;
                 });
                 accentColorInput.value = selectedAccent;
                 accentColorValue.textContent = selectedAccent;
                 accentColorInput.disabled = colorAdjustmentLocked;
                 accentColorItem.classList.toggle('is-disabled', colorAdjustmentLocked);
+                accentColorItem.classList.toggle('is-image-locked', imageColorLocked);
                 accentColorControl.setAttribute('aria-disabled', String(colorAdjustmentLocked));
-                accentColorDesc.textContent = colorAdjustmentLocked
+                accentColorDesc.textContent = settings.darkMode
                     ? '黑夜模式下已锁定为高对比配色；切回浅色模式后可调整'
-                    : '同步应用于卡片、信息区、主按钮和选中状态';
-
-                const imageReady = typeof settings.backgroundImage === 'string' && settings.backgroundImage.startsWith('data:image/');
-                const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
+                    : imageColorLocked
+                        ? '图片背景下已锁定为中性色；切回网格或纯色背景后可调整'
+                        : '同步应用于卡片、设置、公告、赞助和主按钮';
                 document.body.classList.remove('background-plain', 'background-grid', 'background-image');
                 document.body.classList.add('background-' + activeBackground);
                 if (activeBackground === 'image') {
@@ -1382,7 +1388,7 @@
 
             // 事件绑定
             accentColorInput.addEventListener('input', function() {
-                if (settings.darkMode) return;
+                if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
                 settings.accentColor = normalizeAccentColor(this.value);
                 saveSettings(settings);
                 applySettings();

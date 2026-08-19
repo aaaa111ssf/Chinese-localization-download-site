@@ -3507,6 +3507,7 @@ body:not(.dark-mode) .search-box input {
     font-weight: 600;
     vertical-align: 1px;
 }
+#accentColorItem.is-image-locked .settings-item-label::after { content: '图片锁定'; }
 .color-picker-control[aria-disabled="true"],
 .color-picker-control[aria-disabled="true"] input {
     cursor: not-allowed;
@@ -3525,4 +3526,67 @@ body.dark-mode .color-picker-control[aria-disabled="true"] {
     background: #171724;
     border-color: #303044;
     color: #a3a3b4;
+}
+
+/* 主题表面：设置、公告和赞助与首页卡片使用同一组自定义颜色。 */
+body:not(.dark-mode) .announce-float-btn,
+body:not(.dark-mode) .settings-float-btn,
+body:not(.dark-mode) .sponsor-float-btn,
+body:not(.dark-mode) .announce-panel,
+body:not(.dark-mode) .settings-panel,
+body:not(.dark-mode) .sponsor-modal-box {
+    background: var(--site-surface);
+    border-color: var(--site-surface-border);
+}
+body:not(.dark-mode) .announce-panel-header,
+body:not(.dark-mode) .settings-panel-header,
+body:not(.dark-mode) .settings-panel-footer {
+    border-color: var(--site-surface-border);
+}
+body:not(.dark-mode) .announce-panel-header h3,
+body:not(.dark-mode) .settings-panel-header h3,
+body:not(.dark-mode) .sponsor-modal-header h3,
+body:not(.dark-mode) .announce-float-btn,
+body:not(.dark-mode) .settings-float-btn,
+body:not(.dark-mode) .sponsor-float-btn,
+body:not(.dark-mode) .settings-item-icon,
+body:not(.dark-mode) .settings-dl-btn:hover,
+body:not(.dark-mode) .sponsor-modal-footer .modal-btn-cancel:hover {
+    color: var(--site-accent);
+}
+body:not(.dark-mode) .settings-float-btn svg { fill: currentColor; }
+body:not(.dark-mode) .announce-float-btn,
+body:not(.dark-mode) .settings-float-btn,
+body:not(.dark-mode) .sponsor-float-btn,
+body:not(.dark-mode) .settings-item-icon,
+body:not(.dark-mode) .settings-dl-btn,
+body:not(.dark-mode) .sponsor-modal-footer .modal-btn-cancel,
+body:not(.dark-mode) .announce-close-btn,
+body:not(.dark-mode) .settings-panel-close {
+    border-color: var(--site-surface-border);
+}
+body:not(.dark-mode) .announce-item,
+body:not(.dark-mode) .settings-item,
+body:not(.dark-mode) .sponsor-image-item,
+body:not(.dark-mode) .settings-item-icon,
+body:not(.dark-mode) .announce-close-btn,
+body:not(.dark-mode) .settings-panel-close {
+    background: var(--site-surface-subtle);
+    border-color: var(--site-surface-border);
+}
+body:not(.dark-mode) .announce-item:hover,
+body:not(.dark-mode) .settings-item:hover {
+    border-color: var(--site-accent);
+}
+body:not(.dark-mode) .announce-float-btn:hover,
+body:not(.dark-mode) .settings-float-btn:hover,
+body:not(.dark-mode) .sponsor-float-btn:hover {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+}
+body:not(.dark-mode) .settings-float-btn:hover svg { fill: currentColor; }
+body:not(.dark-mode) .announce-float-btn .announce-badge { background: var(--site-accent); }
+body:not(.dark-mode) .settings-slider {
+    background: var(--site-surface-border);
 }
