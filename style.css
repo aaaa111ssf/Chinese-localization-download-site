@@ -2657,3 +2657,59 @@
             .card-title { font-size: 1rem; }
             .card-actions .btn { padding: 7px 12px; font-size: 0.78rem; }
         }
+
+        /* ===== 2026-08 UX hardening ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .toolbar { align-items: stretch; }
+            .toolbar-left, .toolbar-right, .search-box, .search-box input { width: 100%; }
+            .search-box input, .search-box input:focus { width: 100%; }
+            .category-nav { gap: 8px; margin-bottom: 20px; }
+            .category-btn { padding: 8px 14px; font-size: 0.82rem; }
+        }
+
+        /* ===== 2026-08 card actions ===== */
+        .card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: nowrap;
+            padding: 0 16px 16px;
+            margin-top: auto;
+        }
+        .card-actions-secondary,
+        .card-actions-primary {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+        .card-actions-primary { flex: 1; justify-content: flex-end; }
+        .card-actions .btn { min-height: 38px; white-space: nowrap; }
+        .card-actions-primary .btn-detail { flex: 0 1 76px; }
+        .card-actions-primary .btn-download { flex: 1 1 104px; max-width: 140px; }
+        .card-actions-secondary .btn-fav,
+        .card-actions-secondary .btn-share {
+            width: 38px;
+            min-width: 38px;
+            padding: 8px;
+        }
+        .card-actions-secondary .fav-count { font-size: 0.7rem; }
+        @media (max-width: 420px) {
+            .card-actions { gap: 6px; padding-left: 12px; padding-right: 12px; }
+            .card-actions-primary { gap: 6px; }
+            .card-actions-primary .btn-detail { flex-basis: 66px; }
+            .card-actions-primary .btn-download { min-width: 84px; }
+            .card-actions-secondary .btn-fav,
+            .card-actions-secondary .btn-share { width: 34px; min-width: 34px; padding: 7px; }
+        }

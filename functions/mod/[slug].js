@@ -251,43 +251,57 @@ function sharePage() {
 
 /* 下载上报 + 下载后自动刷新统计 */
 document.getElementById('dlBtn').addEventListener('click', () => {
-    navigator.sendBeacon('/api/log', JSON.stringify({ mod: MOD_NAME }));
-    setTimeout(() => {
-        const el = document.getElementById('statDl');
-        if (el) {
-            const cur = parseInt(el.textContent.replace(/[^0-9]/g, '') || '0', 10);
-            el.innerHTML = '下载 <b>' + (cur + 1) + '</b>';
-        }
-    }, 100);
+    fetch('/api/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ mod: MOD_NAME }),
+        keepalive: true,
+        cache: 'no-store'
+    }).then(r => r.json()).then(d => {
+        if (d.ok) document.getElementById('statDl').innerHTML = '下载 <b>' + d.count + '</b>';
+    }).catch(() => {});
 });
 
-/* 收藏 */
-function toggleFav() {
-    const key = 'sfs_fav_' + MOD_NAME;
-    let fav = false;
-    try { fav = localStorage.getItem(key) === '1'; } catch (e) {}
-    fav = !fav;
-    try { localStorage.setItem(key, fav ? '1' : '0'); } catch (e) {}
-    const btn = document.getElementById('favBtn');
-    btn.textContent = fav ? '★ 已收藏' : '☆ 收藏';
-    btn.classList.toggle('active', fav);
-    navigator.sendBeacon('/api/favorites', JSON.stringify({ mod: MOD_NAME, action: fav ? 'add' : 'remove' }));
-    setTimeout(() => {
-        const el = document.getElementById('statFav');
-        if (el) {
-            const cur = parseInt(el.textContent.replace(/[^0-9]/g, '') || '0', 10);
-            el.innerHTML = '收藏 <b>' + Math.max(0, cur + (fav ? 1 : -1)) + '</b>';
-        }
-    }, 100);
+/* 收藏：与首页共用 sfs_favorites 数组 */
+function readFavorites() {
+    try {
+        const value = JSON.parse(localStorage.getItem('sfs_favorites') || '[]');
+        return Array.isArray(value) ? value : [];
+    } catch (e) { return []; }
 }
-(function() {
+function writeFavorites(value) {
+    try { localStorage.setItem('sfs_favorites', JSON.stringify(value)); } catch (e) {}
+}
+function applyFavoriteState(fav) {
     const btn = document.getElementById('favBtn');
     if (!btn) return;
-    let fav = false;
-    try { fav = localStorage.getItem('sfs_fav_' + MOD_NAME) === '1'; } catch (e) {}
     btn.textContent = fav ? '★ 已收藏' : '☆ 收藏';
     btn.classList.toggle('active', fav);
-})();
+}
+async function toggleFav() {
+    const previous = readFavorites();
+    const fav = !previous.includes(MOD_NAME);
+    const next = fav ? [...previous, MOD_NAME] : previous.filter(name => name !== MOD_NAME);
+    writeFavorites(next);
+    applyFavoriteState(fav);
+    try {
+        const response = await fetch('/api/favorites', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ mod: MOD_NAME, action: fav ? 'add' : 'remove' }),
+            keepalive: true,
+            cache: 'no-store'
+        });
+        if (!response.ok) throw new Error('收藏同步失败');
+        const data = await response.json();
+        document.getElementById('statFav').innerHTML = '收藏 <b>' + (data.count || 0) + '</b>';
+    } catch (e) {
+        writeFavorites(previous);
+        applyFavoriteState(previous.includes(MOD_NAME));
+        document.getElementById('statFav').innerHTML = '收藏 <b>--</b>';
+    }
+}
+(function() { applyFavoriteState(readFavorites().includes(MOD_NAME)); })();
 </script>
 </body>
 </html>`;

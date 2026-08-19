@@ -23,7 +23,7 @@ export async function onRequestGet(context) {
     }
 
     return json({ downloads: stats, favorites: favs }, {
-        'Cache-Control': 'public, max-age=60, s-maxage=60'
+        'Cache-Control': 'no-store'
     });
 }
 

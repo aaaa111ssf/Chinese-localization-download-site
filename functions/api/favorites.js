@@ -12,7 +12,7 @@ export async function onRequestGet(context) {
         const n = parseInt(val, 10) || 0;
         if (n > 0) stats[name] = n;
     }
-    return json(stats, { 'Cache-Control': 'public, max-age=60, s-maxage=60' });
+    return json(stats, { 'Cache-Control': 'no-store' });
 }
 
 export async function onRequestPost(context) {
@@ -32,7 +32,7 @@ export async function onRequestPost(context) {
     const next = action === 'add' ? current + 1 : Math.max(0, current - 1);
     await SFS.put(key, String(next));
 
-    return json({ ok: true, mod, count: next });
+    return json({ ok: true, mod, count: next }, { 'Cache-Control': 'no-store' });
 }
 
 export async function onRequestOptions() {

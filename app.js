@@ -22,36 +22,43 @@
                 favorites = [];
             }
             function saveFavorites() {
-                localStorage.setItem('sfs_favorites', JSON.stringify(favorites));
+                try { localStorage.setItem('sfs_favorites', JSON.stringify(favorites)); } catch (e) {}
+            }
+            function updateFavoriteCountNodes(name, count) {
+                document.querySelectorAll('.fav-count').forEach(el => {
+                    if (el.dataset.mod === name) el.textContent = count > 0 ? String(count) : '';
+                });
+                const detailEl = document.getElementById('favCountDetail');
+                if (detailEl && currentDetailMod === name) detailEl.textContent = String(Math.max(0, count));
+            }
+            async function syncFavorite(name, action, previousFavorites) {
+                try {
+                    const response = await fetch('/api/favorites', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ mod: name, action }),
+                        keepalive: true,
+                        cache: 'no-store'
+                    });
+                    if (!response.ok) throw new Error('收藏同步失败');
+                    const data = await response.json();
+                    updateFavoriteCountNodes(name, Number(data.count) || 0);
+                } catch (e) {
+                    favorites = previousFavorites;
+                    saveFavorites();
+                    updateFavButtons();
+                    toast('收藏同步失败，请稍后重试');
+                }
             }
             function toggleFavorite(name) {
+                const previousFavorites = favorites.slice();
                 const idx = favorites.indexOf(name);
-                let action;
-                if (idx === -1) {
-                    favorites.push(name);
-                    action = 'add';
-                } else {
-                    favorites.splice(idx, 1);
-                    action = 'remove';
-                }
+                const action = idx === -1 ? 'add' : 'remove';
+                if (idx === -1) favorites.push(name);
+                else favorites.splice(idx, 1);
                 saveFavorites();
                 updateFavButtons();
-                // 上报收藏统计（不阻塞）
-                try {
-                    navigator.sendBeacon('/api/favorites', JSON.stringify({ mod: name, action }));
-                } catch (e) {}
-                // 更新卡片上的收藏计数
-                const el = document.querySelector('.fav-count[data-mod="' + name + '"]');
-                if (el) {
-                    const cur = parseInt(el.textContent || '0', 10);
-                    el.textContent = Math.max(0, cur + (action === 'add' ? 1 : -1));
-                }
-                // 如果详情弹窗打开且是当前模组，同步更新详情弹窗
-                const detailEl = document.getElementById('favCountDetail');
-                if (detailEl && currentDetailMod === name) {
-                    const cur = parseInt(detailEl.textContent || '0', 10);
-                    detailEl.textContent = Math.max(0, cur + (action === 'add' ? 1 : -1));
-                }
+                syncFavorite(name, action, previousFavorites);
             }
             window.toggleFavorite = toggleFavorite;
             function updateFavButtons() {
@@ -381,15 +388,19 @@
                             </div>
                         </div>
                         <div class="card-actions">
-                            <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">详情</button>
-                            <button class="btn btn-fav" data-name="${safe.name}" onclick="event.stopPropagation(); toggleFavorite(this.dataset.name)">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                <span class="fav-count" data-mod="${safe.name}"></span>
-                            </button>
-                            <button class="btn btn-share" title="分享模组" onclick="event.stopPropagation(); shareModLink(${index})">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                            </button>
-                            <a href="${safe.link}" target="_blank" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">下载<span class="dl-count" data-mod="${safe.name}"></span></a>
+                            <div class="card-actions-secondary">
+                                <button class="btn btn-fav" data-name="${safe.name}" aria-label="收藏 ${safe.name}" title="收藏" onclick="event.stopPropagation(); toggleFavorite(this.dataset.name)">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.08 2.42-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                    <span class="fav-count" data-mod="${safe.name}"></span>
+                                </button>
+                                <button class="btn btn-share" aria-label="分享 ${safe.name}" title="分享模组" onclick="event.stopPropagation(); shareModLink(${index})">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+                                </button>
+                            </div>
+                            <div class="card-actions-primary">
+                                <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">详情</button>
+                                <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">下载<span class="dl-count" data-mod="${safe.name}"></span></a>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -425,7 +436,7 @@
                                 <span>热度: ${safe.heat}</span>
                             </div>
                         </div>
-                        <a href="${safe.link}" target="_blank" class="sug-btn">下载</a>
+                        <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="sug-btn">下载</a>
                     </div>
                 `;
             }
@@ -666,11 +677,13 @@
 
             /* ---------- 开屏弹窗（不再提示） ---------- */
             let entryModalShown = false;
+            const ENTRY_SEEN_KEY = 'sfs_entry_modal_seen';
             function showModal() {
-                if (entryModalShown || localStorage.getItem('hideEntryModal') === 'true') return;
+                if (entryModalShown || localStorage.getItem('hideEntryModal') === 'true' || sessionStorage.getItem(ENTRY_SEEN_KEY) === 'true') return;
                 const modal = document.getElementById('entryModal');
+                if (!modal) return;
                 document.body.classList.add('modal-open');
-                setTimeout(() => modal.classList.add('active'), 100);
+                setTimeout(() => modal.classList.add('active'), 650);
                 entryModalShown = true;
             }
 
@@ -679,12 +692,13 @@
                 if (checkbox && checkbox.checked) {
                     localStorage.setItem('hideEntryModal', 'true');
                 }
+                try { sessionStorage.setItem(ENTRY_SEEN_KEY, 'true'); } catch (e) {}
                 document.getElementById('entryModal').classList.remove('active');
                 checkAndRemoveModalOpen();
             };
 
             window.addEventListener('load', function() {
-                setTimeout(showModal, 100);
+                showModal();
             });
             updateFavFilterBtn();
 
@@ -816,7 +830,7 @@
             }
 
             function loadRating(modName) {
-                fetch('/api/ratings?mod=' + encodeURIComponent(modName))
+                fetch('/api/ratings?mod=' + encodeURIComponent(modName), { cache: 'no-store', headers: { 'Accept': 'application/json' } })
                     .then(r => r.json())
                     .then(d => {
                         const scoreEl = document.getElementById('detailRatingScore');
@@ -831,10 +845,14 @@
             }
 
             function submitRating(modName, score) {
+                const stars = document.getElementById('detailStars');
+                if (stars) stars.setAttribute('aria-busy', 'true');
                 fetch('/api/ratings', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mod: modName, score })
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ mod: modName, score }),
+                    keepalive: true,
+                    cache: 'no-store'
                 })
                     .then(r => r.json())
                     .then(d => {
@@ -846,12 +864,19 @@
                             if (countEl) countEl.textContent = d.count + ' 人评分';
                             if (msgEl) msgEl.textContent = '感谢你的评分！';
                             const stars = document.getElementById('detailStars');
-                            if (stars) renderStars(stars, d.average, function(s) { submitRating(modName, s); });
+                            if (stars) {
+                                stars.removeAttribute('aria-busy');
+                                renderStars(stars, d.average, function(s) { submitRating(modName, s); });
+                            }
+                        } else {
+                            throw new Error(d.error || '评分提交失败');
                         }
                     })
                     .catch(() => {
+                        const stars = document.getElementById('detailStars');
+                        if (stars) stars.removeAttribute('aria-busy');
                         const msgEl = document.getElementById('detailRatingMsg');
-                        if (msgEl) msgEl.textContent = '评分提交失败';
+                        if (msgEl) msgEl.textContent = '评分提交失败，请稍后重试';
                     });
             }
 
@@ -871,9 +896,7 @@
                     document.querySelectorAll('.dl-count[data-mod="' + currentDetailMod + '"]').forEach(el => {
                         if (d > 0) el.textContent = d;
                     });
-                    document.querySelectorAll('.fav-count[data-mod="' + currentDetailMod + '"]').forEach(el => {
-                        if (f > 0) el.textContent = f;
-                    });
+                updateFavoriteCountNodes(currentDetailMod, f);
                 }).catch(() => {});
                 // 刷新评分
                 loadRating(currentDetailMod);
@@ -1056,7 +1079,13 @@
                 // 记录个人下载历史
                 addDlHistory(name);
                 // 后台上报（不阻塞下载）
-                navigator.sendBeacon('/api/log', JSON.stringify({ mod: name }));
+                fetch('/api/log', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ mod: name }),
+                    keepalive: true,
+                    cache: 'no-store'
+                }).catch(() => {});
             }
 
             // 加载下载统计（等卡片渲染完后再显示计数）

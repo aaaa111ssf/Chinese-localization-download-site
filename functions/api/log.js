@@ -37,7 +37,7 @@ export async function onRequestPost(context) {
         }
     }
 
-    return json({ ok: true, count: newCount });
+    return json({ ok: true, count: newCount }, { 'Cache-Control': 'no-store' });
 }
 
 export async function onRequestOptions() {

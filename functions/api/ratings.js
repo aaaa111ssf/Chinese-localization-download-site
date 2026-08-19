@@ -22,7 +22,7 @@ export async function onRequestGet(context) {
         count: summary.count || 0,
         average: summary.avg ? Math.round(summary.avg * 10) / 10 : 0,
         myScore: mine ? mine.score : 0
-    });
+    }, { 'Cache-Control': 'no-store' });
 }
 
 export async function onRequestPost(context) {
@@ -38,8 +38,9 @@ export async function onRequestPost(context) {
     if (!mod) return json({ error: '缺少 mod 参数' }, { status: 400 });
     if (!score || score < 1 || score > 5) return json({ error: '评分需在 1-5 之间' }, { status: 400 });
 
-    const userKey = getUserKey(context.request);
+    // 先生成 cookie，再用同一个 cookie 生成 userKey，避免首次评分按 IP、后续评分按 cookie 导致重复用户。
     const cookie = ensureUserCookie(context.request);
+    const userKey = getUserKey(context.request, cookie || '');
 
     await SFS_DB.prepare(
         `INSERT INTO ratings (mod_name, user_key, score, created_at, updated_at)
@@ -54,6 +55,7 @@ export async function onRequestPost(context) {
 
     const headers = {};
     if (cookie) headers['Set-Cookie'] = cookie;
+    headers['Cache-Control'] = 'no-store';
 
     return json({
         ok: true,
