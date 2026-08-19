@@ -2961,3 +2961,150 @@ body.layout-list .card-actions-primary .btn-download span { font-size: 0.78rem; 
     img.loaded { transition: opacity 0.2s ease; }
     .card-image-wrap::before { animation-duration: 2.2s; }
 }
+
+/* ============================================
+   自定义风格：主题颜色与背景
+   ============================================ */
+:root {
+    --site-accent: #111111;
+    --site-on-accent: #ffffff;
+    --custom-background-image: none;
+}
+body.background-plain { background: #f5f5f5; }
+body.background-grid {
+    background-color: #f5f7fb;
+    background-image:
+        linear-gradient(to right, transparent 29px, rgba(148, 163, 184, 0.20) 30px),
+        linear-gradient(to bottom, transparent 29px, rgba(148, 163, 184, 0.20) 30px);
+    background-size: 30px 30px;
+    background-attachment: fixed;
+}
+body.background-image {
+    background-color: #eef1f5;
+    background-image: linear-gradient(rgba(245,247,251,0.82), rgba(245,247,251,0.82)), var(--custom-background-image);
+    background-position: center, center;
+    background-size: cover, cover;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+}
+body.dark-mode.background-grid {
+    background-color: #0d0d0d;
+    background-image:
+        linear-gradient(to right, transparent 29px, rgba(255,255,255,0.07) 30px),
+        linear-gradient(to bottom, transparent 29px, rgba(255,255,255,0.07) 30px);
+}
+body.dark-mode.background-image {
+    background-image: linear-gradient(rgba(13,13,13,0.78), rgba(13,13,13,0.78)), var(--custom-background-image);
+}
+.top-nav .nav-item.active,
+.dropdown-item.active,
+.search-btn,
+.card-actions .btn-download,
+.detail-btn-primary,
+.load-error-retry,
+.sponsor-modal-footer .modal-btn-confirm,
+.settings-reset-btn,
+.dl-tab.active {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+}
+.search-btn:hover,
+.card-actions .btn-download:hover,
+.detail-btn-primary:hover,
+.load-error-retry:hover,
+.sponsor-modal-footer .modal-btn-confirm:hover,
+.settings-reset-btn:hover,
+.dl-tab.active:hover {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+    filter: brightness(0.9);
+}
+.settings-toggle input:checked + .settings-toggle-slider { background: var(--site-accent); }
+.color-picker-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px 5px 5px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 9px;
+    color: #555;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.color-picker-control input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    background: transparent;
+}
+.color-picker-control input::-webkit-color-swatch-wrapper { padding: 0; }
+.color-picker-control input::-webkit-color-swatch { border: 0; border-radius: 6px; }
+.background-style-selector {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    flex-shrink: 0;
+}
+.background-style-btn {
+    min-height: 30px;
+    padding: 5px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #666;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.background-style-btn.active {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+}
+.background-upload-actions { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.background-upload-btn,
+.background-clear-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    border: 1px solid #dfe3e8;
+    background: #fff;
+    color: #444;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.background-upload-btn { border-color: var(--site-accent); color: var(--site-accent); }
+.background-clear-btn:disabled { opacity: 0.42; cursor: not-allowed; }
+body.dark-mode .color-picker-control,
+body.dark-mode .background-style-selector,
+body.dark-mode .background-upload-btn,
+body.dark-mode .background-clear-btn { background: #1c1c2e; border-color: #2a2a4a; color: #aaa; }
+body.dark-mode .background-upload-btn { color: #ddd; border-color: #555; }
+@media (max-width: 520px) {
+    body.background-grid { background-size: 24px 24px; }
+    .custom-background-item,
+    .custom-background-upload { align-items: flex-start; flex-direction: column; gap: 10px; }
+    .background-style-selector,
+    .background-upload-actions { width: 100%; }
+    .background-style-btn,
+    .background-upload-btn,
+    .background-clear-btn { flex: 1; }
+}

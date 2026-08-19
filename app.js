@@ -2,7 +2,6 @@
             'use strict';
 
             let files = [];
-            let downloadStats = {}; // 全局下载统计
             const typeIconNames = {
                 pdf: 'file', zip: 'archive', doc: 'file-text', img: 'image',
                 video: 'video', code: 'code', default: 'file'
@@ -476,7 +475,6 @@
                 }
 
                 observeLazyImages();
-                loadDownloadStats();
             }
 
             /* ---------- 事件绑定 ---------- */
@@ -629,7 +627,6 @@
                 const modName = file.name || '未命名模组';
                 const slug = toSlug(modName);
                 const modUrl = location.origin + '/mod/' + slug;
-                const dlCount = downloadStats[modName] || 0;
                 const detailInfo = [
                     ['tag', '版本', file.version || 'v1.0'],
                     ['user', '作者', file.author || 'A Future star'],
@@ -660,7 +657,6 @@
                         <div class="detail-section detail-stats">
                             <h4>数据</h3>
                             <div class="detail-stats-row">
-                                <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 下载 <b id="dlCountDetail">${dlCount}</b></span>
                                 <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> 评分 <b id="ratingCountDetail">--</b></span>
                             </div>
                         </div>
@@ -685,16 +681,12 @@
                 document.body.classList.add('modal-open');
                 observeLazyImages();
                 // 加载评分
-                currentDetailMod = modName;
                 loadRating(modName);
-                // 加载下载统计
-                refreshDetailStats();
             };
 
             window.closeModDetail = function() {
                 document.getElementById('modDetailOverlay').classList.remove('active');
                 checkAndRemoveModalOpen();
-                currentDetailMod = '';
             };
 
             /* ---------- 分享模组链接 ---------- */
@@ -805,20 +797,6 @@
                     });
             }
 
-            /* ---------- 详情弹窗统计刷新 ---------- */
-            let currentDetailMod = '';
-            function refreshDetailStats() {
-                if (!currentDetailMod) return;
-                // 刷新详情页下载统计（首页不显示下载数字）
-                fetch('/api/stats', { cache: 'no-store' }).then(r => r.json()).then(s => {
-                    const d = (s.downloads || {})[currentDetailMod] || 0;
-                    const dlEl = document.getElementById('dlCountDetail');
-                    if (dlEl) dlEl.textContent = d;
-                }).catch(() => {});
-                // 刷新评分
-                loadRating(currentDetailMod);
-            }
-
             /* ---------- 轻提示 ---------- */
             function toast(msg) {
                 let t = document.getElementById('sfsToast');
@@ -911,25 +889,6 @@
                 document.getElementById('totalCount').textContent = '—';
             }
 
-            // 加载全局下载统计 + 收藏统计（必须在所有 renderFiles 调用之前声明，避免 TDZ 错误）
-            let statsLoading = false;
-            async function loadDownloadStats() {
-                if (statsLoading) return;
-                statsLoading = true;
-                try {
-                    const resp = await fetch('/api/stats');
-                    if (resp.ok) {
-                        const data = await resp.json();
-                        downloadStats = data.downloads || {};
-
-                    }
-                } catch (e) {
-                    // 统计服务不可用时静默降级
-                } finally {
-                    statsLoading = false;
-                }
-            }
-
             // 优先从本地缓存读取并立即渲染
             let cacheLoaded = false;
             try {
@@ -974,13 +933,6 @@
                 const file = files[index];
                 if (!file) return;
                 const name = (file.name || '').trim();
-                // 更新本地显示
-                downloadStats[name] = (downloadStats[name] || 0) + 1;
-                // 详情弹窗下载计数同步更新
-                const dlDetailEl = document.getElementById('dlCountDetail');
-                if (dlDetailEl && currentDetailMod === name) {
-                    dlDetailEl.textContent = downloadStats[name];
-                }
                 // 记录个人下载历史
                 addDlHistory(name);
                 // 后台上报（不阻塞下载）
@@ -992,9 +944,6 @@
                     cache: 'no-store'
                 }).catch(() => {});
             }
-
-            // 加载下载统计（等卡片渲染完后再显示计数）
-            // 已移至 renderFiles 中调用
 
             /* ---------- 下载记录弹窗 ---------- */
             window.openDlHistory = function() {
@@ -1082,14 +1031,17 @@
                 columns: 0,
                 layoutStyle: 'grid',
                 cardRadius: 16,
-                cardGap: 20
+                cardGap: 20,
+                accentColor: '#111111',
+                backgroundStyle: 'grid',
+                backgroundImage: ''
             };
 
             // 读取设置
             function loadSettings() {
                 try {
                     const saved = localStorage.getItem(STORAGE_KEY);
-                    if (saved) return JSON.parse(saved);
+                    if (saved) return { ...DEFAULTS, ...JSON.parse(saved) };
                 } catch(e) {}
                 return { ...DEFAULTS };
             }
@@ -1197,6 +1149,47 @@
             const cardGapSlider = document.getElementById('settingCardGap');
             const cardGapValue = document.getElementById('cardGapValue');
             const styleSelector = document.getElementById('styleSelector');
+            const accentColorInput = document.getElementById('settingAccentColor');
+            const accentColorValue = document.getElementById('accentColorValue');
+            const backgroundStyleSelector = document.getElementById('backgroundStyleSelector');
+            const backgroundImageInput = document.getElementById('settingBackgroundImage');
+            const clearBackgroundImageBtn = document.getElementById('clearBackgroundImage');
+            const backgroundUploadStatus = document.getElementById('backgroundUploadStatus');
+
+            function normalizeAccentColor(value) {
+                return /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value).toUpperCase() : DEFAULTS.accentColor;
+            }
+            function getOnAccentColor(hex) {
+                const value = normalizeAccentColor(hex).slice(1);
+                const r = parseInt(value.slice(0, 2), 16);
+                const g = parseInt(value.slice(2, 4), 16);
+                const b = parseInt(value.slice(4, 6), 16);
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 176 ? '#111111' : '#FFFFFF';
+            }
+            function applyCustomStyle() {
+                const accent = normalizeAccentColor(settings.accentColor);
+                settings.accentColor = accent;
+                document.documentElement.style.setProperty('--site-accent', accent);
+                document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(accent));
+                accentColorInput.value = accent;
+                accentColorValue.textContent = accent;
+
+                const imageReady = typeof settings.backgroundImage === 'string' && settings.backgroundImage.startsWith('data:image/');
+                const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
+                document.body.classList.remove('background-plain', 'background-grid', 'background-image');
+                document.body.classList.add('background-' + activeBackground);
+                if (activeBackground === 'image') {
+                    const safeUrl = settings.backgroundImage.replace(/"/g, '%22');
+                    document.documentElement.style.setProperty('--custom-background-image', 'url("' + safeUrl + '")');
+                } else {
+                    document.documentElement.style.removeProperty('--custom-background-image');
+                }
+                backgroundStyleSelector.querySelectorAll('.background-style-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.background === activeBackground);
+                });
+                clearBackgroundImageBtn.disabled = !imageReady;
+                backgroundUploadStatus.textContent = imageReady ? '当前图片仅保存在此浏览器，可随时移除或更换' : '支持 JPG、PNG、WebP，建议不超过 1.5MB';
+            }
 
             // 打开/关闭面板
             function openPanel() {
@@ -1217,6 +1210,9 @@
 
             // 应用设置到 UI
             function applySettings() {
+                // 自定义主题与背景
+                applyCustomStyle();
+
                 // 黑夜模式
                 document.body.classList.toggle('dark-mode', settings.darkMode);
                 darkModeToggle.checked = settings.darkMode;
@@ -1306,6 +1302,58 @@
             document.head.appendChild(dynamicStyle);
 
             // 事件绑定
+            accentColorInput.addEventListener('input', function() {
+                settings.accentColor = normalizeAccentColor(this.value);
+                saveSettings(settings);
+                applySettings();
+            });
+
+            backgroundStyleSelector.querySelectorAll('.background-style-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const nextStyle = this.dataset.background;
+                    if (nextStyle === 'image' && !(settings.backgroundImage || '').startsWith('data:image/')) {
+                        backgroundImageInput.click();
+                        return;
+                    }
+                    settings.backgroundStyle = nextStyle;
+                    saveSettings(settings);
+                    applySettings();
+                });
+            });
+
+            backgroundImageInput.addEventListener('change', function() {
+                const file = this.files && this.files[0];
+                this.value = '';
+                if (!file) return;
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    toast('请选择 JPG、PNG 或 WebP 图片');
+                    return;
+                }
+                if (file.size > 1.5 * 1024 * 1024) {
+                    toast('背景图片请控制在 1.5MB 以内');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function() {
+                    settings.backgroundImage = String(reader.result || '');
+                    settings.backgroundStyle = 'image';
+                    saveSettings(settings);
+                    applySettings();
+                    toast('已应用自定义背景图片');
+                };
+                reader.onerror = function() { toast('图片读取失败，请更换后重试'); };
+                reader.readAsDataURL(file);
+            });
+
+            clearBackgroundImageBtn.addEventListener('click', function() {
+                settings.backgroundImage = '';
+                settings.backgroundStyle = 'grid';
+                saveSettings(settings);
+                applySettings();
+                toast('已移除自定义背景图片');
+            });
+
             darkModeToggle.addEventListener('change', function() {
                 settings.darkMode = this.checked;
                 saveSettings(settings);

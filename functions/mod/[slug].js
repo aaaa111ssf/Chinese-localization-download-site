@@ -141,7 +141,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
         </div>
         <div class="desc">${esc(file.desc || '暂无描述')}</div>
         <div class="stats" id="modStats">
-            <span class="s" id="statDl">下载 <b>--</b></span>
             <span class="s" id="statRating">评分 <b>--</b></span>
         </div>
         <div class="actions">
@@ -168,12 +167,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 const MOD_NAME = ${JSON.stringify(file.name)};
 const MOD_SLUG = ${JSON.stringify(slug)};
 const PAGE_URL = ${JSON.stringify(pageUrl)};
-
-/* 统计加载 */
-fetch('/api/stats').then(r => r.json()).then(s => {
-    const d = (s.downloads || {})[MOD_NAME] || 0;
-    document.getElementById('statDl').innerHTML = '下载 <b>' + d + '</b>';
-}).catch(() => {});
 
 /* 评分（双层半星，参考 sfs-cn-mod） */
 function makeStarSvg(cls) {
@@ -244,7 +237,7 @@ function sharePage() {
     }
 }
 
-/* 下载上报 + 下载后自动刷新统计 */
+/* 下载上报 */
 document.getElementById('dlBtn').addEventListener('click', () => {
     fetch('/api/log', {
         method: 'POST',
@@ -252,8 +245,6 @@ document.getElementById('dlBtn').addEventListener('click', () => {
         body: JSON.stringify({ mod: MOD_NAME }),
         keepalive: true,
         cache: 'no-store'
-    }).then(r => r.json()).then(d => {
-        if (d.ok) document.getElementById('statDl').innerHTML = '下载 <b>' + d.count + '</b>';
     }).catch(() => {});
 });
 
