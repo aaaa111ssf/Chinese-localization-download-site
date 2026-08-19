@@ -638,18 +638,7 @@
             background: #333;
             border-color: #333;
         }
-        .card-actions .btn-fav {
-            padding: 8px 10px;
-            min-width: auto;
-            line-height: 1;
-        }
         .card-actions .btn svg { flex-shrink: 0; }
-        .card-actions .btn-fav span,
-        .card-actions .btn-share span { margin-left: 2px; }
-        .card-actions .btn-fav.active {
-            color: #e74c3c;
-            border-color: #e74c3c;
-        }
 
         /* ============================================
            无结果 / 推荐卡片
@@ -1310,19 +1299,17 @@
         }
         .stat-chip b { color: #111; }
         .stat-chip svg { color: #888; }
-        .rating-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .stars { display: flex; gap: 4px; }
+        .rating-row, .detail-rating .rating-info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .stars { display: flex; gap: 4px; align-items: center; min-height: 26px; }
+        .star-wrap { position: relative; display: block; width: 26px; height: 26px; flex: 0 0 26px; }
+        .star-wrap svg { width: 26px; height: 26px; display: block; pointer-events: none; }
         .star-svg { width: 26px; height: 26px; fill: #d0d0d0; transition: fill 0.15s; }
-        .star-svg.on { fill: #ffb400; }
+        .star-svg.on, .star-svg-fill { fill: #ffb400; }
+        .star-svg-base { fill: #dedede; }
+        .star-fill { position: absolute; inset: 0 auto 0 0; overflow: hidden; display: block; pointer-events: none; }
         .rating-score { font-size: 1.6rem; font-weight: 700; color: #ffb400; }
         .rating-msg { font-size: 0.85rem; color: #7aa2ff; min-height: 1.2em; }
 
-        /* 卡片收藏计数 */
-        .fav-count {
-            font-size: 0.72rem; color: #999; font-weight: 500;
-            margin-left: 2px; min-width: 14px;
-        }
-        .card-actions .btn-fav.active .fav-count { color: #e74c3c; }
         .card-actions .btn-share {
             padding: 8px 10px; min-width: auto; color: #555;
         }
@@ -1384,6 +1371,7 @@
         body.dark-mode .stat-chip { background: #1c1c2e; border-color: #2a2a4a; color: #aaa; }
         body.dark-mode .stat-chip b { color: #eee; }
         body.dark-mode .star-svg { fill: #444; }
+        body.dark-mode .star-svg-fill { fill: #ffb400; }
         body.dark-mode .dl-history-box { background: #14141f; }
         body.dark-mode .dl-history-header { border-bottom-color: #2a2a4a; }
         body.dark-mode .dl-history-header h3 { color: #eee; }
@@ -1594,9 +1582,6 @@
             .step-item { flex-direction: column; gap: 8px; }
             .code-block { font-size: 0.75rem !important; padding: 8px 10px !important; }
             .card-actions .btn { padding: 8px 14px; font-size: 0.8rem; }
-            .dl-count { font-size: 0.7rem; opacity: 0.6; margin-left: 4px; }
-            .dl-count:not(:empty)::before { content: '('; }
-            .dl-count:not(:empty)::after { content: ')'; }
             .card-body { padding: 14px; }
         }
         @media (max-width: 640px) {
@@ -2209,10 +2194,6 @@
             background: #ddd;
             border-color: #ddd;
         }
-        body.dark-mode .card-actions .btn-fav.active {
-            color: #ff6b6b;
-            border-color: #ff6b6b;
-        }
         body.dark-mode .suggestion-card {
             background: #1a1a1a;
             border-color: #2a2a2a;
@@ -2698,18 +2679,129 @@
         .card-actions .btn { min-height: 38px; white-space: nowrap; }
         .card-actions-primary .btn-detail { flex: 0 1 76px; }
         .card-actions-primary .btn-download { flex: 1 1 104px; max-width: 140px; }
-        .card-actions-secondary .btn-fav,
         .card-actions-secondary .btn-share {
             width: 38px;
             min-width: 38px;
             padding: 8px;
         }
-        .card-actions-secondary .fav-count { font-size: 0.7rem; }
         @media (max-width: 420px) {
             .card-actions { gap: 6px; padding-left: 12px; padding-right: 12px; }
             .card-actions-primary { gap: 6px; }
             .card-actions-primary .btn-detail { flex-basis: 66px; }
             .card-actions-primary .btn-download { min-width: 84px; }
-            .card-actions-secondary .btn-fav,
             .card-actions-secondary .btn-share { width: 34px; min-width: 34px; padding: 7px; }
         }
+
+/* ============================================
+   统一 SVG 图标体系
+   ============================================ */
+.ui-icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    flex: 0 0 auto;
+    vertical-align: -0.14em;
+}
+.toolbar-stat-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+}
+.fallback-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.fallback-icon .ui-icon {
+    width: 38px;
+    height: 38px;
+    stroke-width: 1.45;
+}
+.card-inline-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+.card-inline-meta .ui-icon,
+.meta-box .ui-icon {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    stroke-width: 1.9;
+}
+.card-actions .ui-icon {
+    width: 15px;
+    height: 15px;
+    stroke-width: 2;
+}
+.no-results-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+    color: #888;
+}
+.no-results-icon .ui-icon { width: 42px; height: 42px; stroke-width: 1.4; }
+.detail-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+.detail-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+    padding: 9px 10px;
+    color: #555;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    background: #f7f7f7;
+    border: 1px solid #eee;
+    border-radius: 9px;
+}
+.detail-info-item .ui-icon {
+    width: 15px;
+    height: 15px;
+    margin-top: 1px;
+    color: #777;
+    flex: 0 0 15px;
+}
+.detail-info-item span { min-width: 0; overflow-wrap: anywhere; }
+.detail-info-item b { display: block; color: #222; font-size: 0.74rem; font-weight: 700; margin-bottom: 1px; }
+.mod-detail-footer .ui-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+.img-viewer-close .ui-icon,
+.announce-close-btn .ui-icon,
+.settings-panel-close .ui-icon,
+.dl-history-close .ui-icon {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+.link-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    stroke-width: 1.9;
+}
+.settings-item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.settings-item-icon .ui-icon { width: 20px; height: 20px; stroke-width: 1.8; }
+body.dark-mode .detail-info-item { background: #1c1c2e; border-color: #2a2a4a; color: #aaa; }
+body.dark-mode .detail-info-item b { color: #eee; }
+body.dark-mode .detail-info-item .ui-icon { color: #aaa; }
+@media (max-width: 520px) {
+    .detail-info-grid { grid-template-columns: 1fr; }
+    .card-subtitle { gap: 8px; flex-wrap: wrap; }
+}

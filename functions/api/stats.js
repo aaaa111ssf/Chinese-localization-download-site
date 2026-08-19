@@ -7,22 +7,15 @@ export async function onRequestGet(context) {
     // 获取所有 key 列表
     const list = await SFS.list();
     const stats = {};
-    const favs = {};
 
     for (const key of list.keys) {
-        if (key.name.startsWith('mod:')) {
-            const modName = key.name.slice(4);
-            const count = await SFS.get(key.name);
-            if (count) stats[modName] = parseInt(count) || 0;
-        } else if (key.name.startsWith('fav:')) {
-            const modName = key.name.slice(4);
-            const count = await SFS.get(key.name);
-            const n = parseInt(count, 10) || 0;
-            if (n > 0) favs[modName] = n;
-        }
+        if (!key.name.startsWith('mod:')) continue;
+        const modName = key.name.slice(4);
+        const count = await SFS.get(key.name);
+        if (count) stats[modName] = parseInt(count, 10) || 0;
     }
 
-    return json({ downloads: stats, favorites: favs }, {
+    return json({ downloads: stats }, {
         'Cache-Control': 'no-store'
     });
 }

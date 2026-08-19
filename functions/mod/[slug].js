@@ -143,13 +143,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
         <div class="desc">${esc(file.desc || '暂无描述')}</div>
         <div class="stats" id="modStats">
             <span class="s" id="statDl">下载 <b>--</b></span>
-            <span class="s" id="statFav">收藏 <b>--</b></span>
             <span class="s" id="statRating">评分 <b>--</b></span>
         </div>
         <div class="actions">
             <a class="btn btn-dl" href="${esc(file.link || '#')}" target="_blank" rel="noopener" id="dlBtn">下载模组</a>
             <button class="btn btn-share" onclick="sharePage()">分享</button>
-            <button class="btn btn-fav" id="favBtn" onclick="toggleFav()">☆ 收藏</button>
             <a class="btn btn-home" href="${esc(mainUrl)}">回到主页</a>
         </div>
     </div>
@@ -175,9 +173,7 @@ const PAGE_URL = ${JSON.stringify(pageUrl)};
 /* 统计加载 */
 fetch('/api/stats').then(r => r.json()).then(s => {
     const d = (s.downloads || {})[MOD_NAME] || 0;
-    const f = (s.favorites || {})[MOD_NAME] || 0;
     document.getElementById('statDl').innerHTML = '下载 <b>' + d + '</b>';
-    document.getElementById('statFav').innerHTML = '收藏 <b>' + f + '</b>';
 }).catch(() => {});
 
 /* 评分（双层半星，参考 sfs-cn-mod） */
@@ -262,46 +258,6 @@ document.getElementById('dlBtn').addEventListener('click', () => {
     }).catch(() => {});
 });
 
-/* 收藏：与首页共用 sfs_favorites 数组 */
-function readFavorites() {
-    try {
-        const value = JSON.parse(localStorage.getItem('sfs_favorites') || '[]');
-        return Array.isArray(value) ? value : [];
-    } catch (e) { return []; }
-}
-function writeFavorites(value) {
-    try { localStorage.setItem('sfs_favorites', JSON.stringify(value)); } catch (e) {}
-}
-function applyFavoriteState(fav) {
-    const btn = document.getElementById('favBtn');
-    if (!btn) return;
-    btn.textContent = fav ? '★ 已收藏' : '☆ 收藏';
-    btn.classList.toggle('active', fav);
-}
-async function toggleFav() {
-    const previous = readFavorites();
-    const fav = !previous.includes(MOD_NAME);
-    const next = fav ? [...previous, MOD_NAME] : previous.filter(name => name !== MOD_NAME);
-    writeFavorites(next);
-    applyFavoriteState(fav);
-    try {
-        const response = await fetch('/api/favorites', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ mod: MOD_NAME, action: fav ? 'add' : 'remove' }),
-            keepalive: true,
-            cache: 'no-store'
-        });
-        if (!response.ok) throw new Error('收藏同步失败');
-        const data = await response.json();
-        document.getElementById('statFav').innerHTML = '收藏 <b>' + (data.count || 0) + '</b>';
-    } catch (e) {
-        writeFavorites(previous);
-        applyFavoriteState(previous.includes(MOD_NAME));
-        document.getElementById('statFav').innerHTML = '收藏 <b>--</b>';
-    }
-}
-(function() { applyFavoriteState(readFavorites().includes(MOD_NAME)); })();
 </script>
 </body>
 </html>`;

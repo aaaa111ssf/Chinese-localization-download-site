@@ -3,86 +3,37 @@
 
             let files = [];
             let downloadStats = {}; // 全局下载统计
-            const typeIcons = {
-                pdf: '📄', zip: '📦', doc: '📝', img: '🖼️',
-                video: '🎬', code: '💻', default: '📎'
+            const typeIconNames = {
+                pdf: 'file', zip: 'archive', doc: 'file-text', img: 'image',
+                video: 'video', code: 'code', default: 'file'
             };
+            const uiIconPaths = {
+                file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+                'file-text': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+                archive: '<path d="M21 8v13H3V8"/><path d="M1 3h22v5H1zM10 12h4"/>',
+                image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',
+                video: '<rect x="3" y="5" width="15" height="14" rx="2"/><path d="m18 10 3-2v8l-3-2z"/>',
+                code: '<path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14"/>',
+                user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+                tag: '<path d="M20.59 13.41 11 3.83V3H4v7h.83l9.58 9.59a2 2 0 0 0 2.83 0l3.35-3.35a2 2 0 0 0 0-2.83Z"/><circle cx="7.5" cy="7.5" r="1"/>',
+                box: '<path d="m21 8-9 5-9-5 9-5 9 5Z"/><path d="m3 8 9 5 9-5M12 13v9"/>',
+                calendar: '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+                activity: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+                info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+                download: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+                close: '<path d="m6 6 12 12M18 6 6 18"/>',
+                share: '<circle cx="18" cy="5" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="19" r="2"/><path d="m8 11 8-5M8 13l8 5"/>',
+                folder: '<path d="M3 6h6l2 2h10v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
+                search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>'
+            };
+            function svgIcon(name) {
+                return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${uiIconPaths[name] || uiIconPaths.file}</svg>`;
+            }
             let currentCategory = 'all';
             let searchKeyword = '';
             let currentSort = 'default'; // default | heat | date
             let viewerImages = [];
             let viewerIndex = 0;
-
-            /* ---------- 收藏功能 ---------- */
-            let favorites = [];
-            let favFilterActive = false;
-            try {
-                favorites = JSON.parse(localStorage.getItem('sfs_favorites')) || [];
-            } catch(e) {
-                favorites = [];
-            }
-            function saveFavorites() {
-                try { localStorage.setItem('sfs_favorites', JSON.stringify(favorites)); } catch (e) {}
-            }
-            function updateFavoriteCountNodes(name, count) {
-                document.querySelectorAll('.fav-count').forEach(el => {
-                    if (el.dataset.mod === name) el.textContent = count > 0 ? String(count) : '';
-                });
-                const detailEl = document.getElementById('favCountDetail');
-                if (detailEl && currentDetailMod === name) detailEl.textContent = String(Math.max(0, count));
-            }
-            async function syncFavorite(name, action, previousFavorites) {
-                try {
-                    const response = await fetch('/api/favorites', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify({ mod: name, action }),
-                        keepalive: true,
-                        cache: 'no-store'
-                    });
-                    if (!response.ok) throw new Error('收藏同步失败');
-                    const data = await response.json();
-                    updateFavoriteCountNodes(name, Number(data.count) || 0);
-                } catch (e) {
-                    favorites = previousFavorites;
-                    saveFavorites();
-                    updateFavButtons();
-                    toast('收藏同步失败，请稍后重试');
-                }
-            }
-            function toggleFavorite(name) {
-                const previousFavorites = favorites.slice();
-                const idx = favorites.indexOf(name);
-                const action = idx === -1 ? 'add' : 'remove';
-                if (idx === -1) favorites.push(name);
-                else favorites.splice(idx, 1);
-                saveFavorites();
-                updateFavButtons();
-                syncFavorite(name, action, previousFavorites);
-            }
-            window.toggleFavorite = toggleFavorite;
-            function updateFavButtons() {
-                document.querySelectorAll('.btn-fav').forEach(btn => {
-                    const name = btn.dataset.name;
-                    if (!name) return;
-                    if (favorites.includes(name)) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                });
-            }
-            function updateFavFilterBtn() {
-                const item = document.getElementById('favDropdownItem');
-                if (!item) return;
-                if (favFilterActive) {
-                    item.classList.add('active');
-                    item.innerHTML = '\u2665 收藏';
-                } else {
-                    item.classList.remove('active');
-                    item.innerHTML = '\u2661 收藏';
-                }
-            }
 
             /* ---------- 安全转义工具 ---------- */
             function escapeHtml(str) {
@@ -202,10 +153,10 @@
                 const wrap = img.parentElement;
                 if (!wrap) return;
                 wrap.classList.add('card-image-placeholder');
-                const icon = img.dataset.icon || '📦';
+                const icon = img.dataset.icon || 'file';
                 wrap.innerHTML = `
                     <div class="card-image-fallback">
-                        <span class="fallback-icon">${icon}</span>
+                        <span class="fallback-icon">${svgIcon(icon)}</span>
                         <span class="fallback-text">暂无预览</span>
                     </div>
                 `;
@@ -339,7 +290,7 @@
                 };
 
                 const tagsHtml = safe.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
-                const icon = typeIcons[safe.type] || typeIcons.default;
+                const icon = typeIconNames[safe.type] || typeIconNames.default;
                 const slug = toSlug(file.name || '');
 
                 let imageHtml = '';
@@ -363,7 +314,7 @@
                     imageHtml = `
                         <div class="card-image-wrap card-image-placeholder" onclick="openModDetail(${index})">
                             <div class="card-image-fallback">
-                                <span class="fallback-icon">${icon}</span>
+                                <span class="fallback-icon">${svgIcon(icon)}</span>
                                 <span class="fallback-text">暂无预览</span>
                             </div>
                         </div>
@@ -376,30 +327,26 @@
                         <div class="card-body">
                             <div class="card-title">${safe.name}</div>
                             <div class="card-subtitle">
-                                <span>作者: ${safe.author}</span>
-                                <span>版本: ${safe.version}</span>
+                                <span class="card-inline-meta">${svgIcon('user')}作者: ${safe.author}</span>
+                                <span class="card-inline-meta">${svgIcon('tag')}版本: ${safe.version}</span>
                             </div>
                             <div class="card-tags">${tagsHtml}</div>
                             <div class="card-desc">${safe.desc}</div>
                             <div class="card-meta-boxes">
-                                <div class="meta-box">大小: ${safe.size}</div>
-                                <div class="meta-box">日期: ${safe.date}</div>
-                                ${safe.heat ? `<div class="meta-box meta-heat">热力: ${safe.heat}</div>` : ''}
+                                <div class="meta-box">${svgIcon('box')}<span>大小: ${safe.size}</span></div>
+                                <div class="meta-box">${svgIcon('calendar')}<span>日期: ${safe.date}</span></div>
+                                ${safe.heat ? `<div class="meta-box meta-heat">${svgIcon('activity')}<span>热力: ${safe.heat}</span></div>` : ''}
                             </div>
                         </div>
                         <div class="card-actions">
                             <div class="card-actions-secondary">
-                                <button class="btn btn-fav" data-name="${safe.name}" aria-label="收藏 ${safe.name}" title="收藏" onclick="event.stopPropagation(); toggleFavorite(this.dataset.name)">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.08 2.42-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                    <span class="fav-count" data-mod="${safe.name}"></span>
-                                </button>
                                 <button class="btn btn-share" aria-label="分享 ${safe.name}" title="分享模组" onclick="event.stopPropagation(); shareModLink(${index})">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
                                 </button>
                             </div>
                             <div class="card-actions-primary">
-                                <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">详情</button>
-                                <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">下载<span class="dl-count" data-mod="${safe.name}"></span></a>
+                                <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">${svgIcon('info')}<span>详情</span></button>
+                                <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">${svgIcon('download')}<span>下载</span></a>
                             </div>
                         </div>
                     </div>
@@ -418,10 +365,10 @@
                     link: escapeHtml(file.link || '#'),
                     type: file.type || 'default'
                 };
-                const icon = typeIcons[safe.type] || typeIcons.default;
+                const icon = typeIconNames[safe.type] || typeIconNames.default;
                 const img = validImages.length > 0
                     ? `<div class="sug-img-wrap"><img data-src="${escapeHtml(validImages[0])}" data-icon="${icon}" class="lazy-img" alt="${safe.name}预览图" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)"></div>`
-                    : `<div class="sug-img-wrap card-image-placeholder"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
+                    : `<div class="sug-img-wrap card-image-placeholder"><div class="card-image-fallback"><span class="fallback-icon">${svgIcon(icon)}</span><span class="fallback-text">暂无预览</span></div></div>`;
                 return `
                     <div class="suggestion-card">
                         ${img}
@@ -488,9 +435,6 @@
                 const sortedFiles = sortFiles(files);
 
                 sortedFiles.forEach((file, sortedIndex) => {
-                    /* 收藏筛选 */
-                    if (favFilterActive && !favorites.includes(file.name || '')) return;
-
                     const matchCategory = currentCategory === 'all' || file.category === currentCategory;
                     let matchSearch = false;
                     if (isTagSearch) {
@@ -541,7 +485,7 @@
                     const suggestions = files.filter(f => currentCategory === 'all' || f.category === currentCategory).slice(0, 5);
                     noResults.innerHTML = `
                         <div style="text-align:center;margin-bottom:30px;">
-                            <div style="font-size:3rem;margin-bottom:10px;">😕</div>
+                            <div class="no-results-icon">${svgIcon('search')}</div>
                             <div style="font-size:1.2rem;color:#111;font-weight:700;">没有找到匹配的文件</div>
                             <div style="color:#666;margin-top:8px;">请尝试其他关键词，或浏览以下热门推荐</div>
                         </div>
@@ -552,7 +496,6 @@
                 }
 
                 observeLazyImages();
-                updateFavButtons();
                 loadDownloadStats();
             }
 
@@ -588,14 +531,9 @@
                     document.querySelectorAll('.dropdown-item[data-category]').forEach(i => i.classList.remove('active'));
                     this.classList.add('active');
                     currentCategory = this.dataset.category;
-                    favFilterActive = (currentCategory === 'fav');
-                    if (favFilterActive) {
-                        currentCategory = 'all';
-                    }
                     categoryToggleText.textContent = this.textContent;
                     categoryDropdown.classList.remove('open');
                     categoryToggle.setAttribute('aria-expanded', 'false');
-                    updateFavFilterBtn();
                     renderFiles();
                 });
             });
@@ -700,8 +638,6 @@
             window.addEventListener('load', function() {
                 showModal();
             });
-            updateFavFilterBtn();
-
             /* ---------- 模组详情 ---------- */
             window.openModDetail = function(index) {
                 const file = files[index];
@@ -709,16 +645,24 @@
                 const validImages = getValidImages(file);
                 const box = document.getElementById('modDetailBox');
                 const tags = (Array.isArray(file.tags) ? file.tags : []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
-                const icon = typeIcons[file.type] || typeIcons.default;
+                const icon = typeIconNames[file.type] || typeIconNames.default;
                 const modName = file.name || '未命名模组';
                 const slug = toSlug(modName);
                 const modUrl = location.origin + '/mod/' + slug;
                 const dlCount = downloadStats[modName] || 0;
-                const heatHtml = file.heat ? ` &nbsp;|&nbsp; 热力：${escapeHtml(file.heat)}` : '';
+                const detailInfo = [
+                    ['tag', '版本', file.version || 'v1.0'],
+                    ['user', '作者', file.author || 'A Future star'],
+                    ['code', '兼容', file.compat || '1.6.00.3+'],
+                    ['box', '大小', file.size || '未知'],
+                    ['calendar', '更新', file.date || '']
+                ];
+                if (file.heat) detailInfo.push(['activity', '热力', file.heat]);
+                const detailInfoHtml = detailInfo.map(([iconName, label, value]) => `<span class="detail-info-item">${svgIcon(iconName)}<span><b>${label}</b>${escapeHtml(value)}</span></span>`).join('');
 
                 const firstImage = validImages.length > 0 
                     ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" onerror="handleImgError(this)" onload="handleImgLoad(this)">`
-                    : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${icon}</span><span class="fallback-text">暂无预览</span></div></div>`;
+                    : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${svgIcon(icon)}</span><span class="fallback-text">暂无预览</span></div></div>`;
 
                 const gallery = validImages.length > 0 ?
                     `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" alt="${escapeHtml(file.name||'模组')}预览图${i+1}" data-icon="${icon}" class="lazy-img" data-mirror-idx="0" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)" onload="handleImgLoad(this)">`).join('')}</div></div>` : '';
@@ -733,12 +677,11 @@
                     </div>
                     <div class="mod-detail-body">
                         <div class="detail-section"><h4>简介</h3><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
-                        <div class="detail-section"><h4>信息</h3><p>版本：${escapeHtml(file.version||'v1.0')} &nbsp;|&nbsp; 作者：${escapeHtml(file.author||'A Future star')} &nbsp;|&nbsp; 兼容：${escapeHtml(file.compat||'1.6.00.3+')} &nbsp;|&nbsp; 大小：${escapeHtml(file.size||'未知')} &nbsp;|&nbsp; 更新：${escapeHtml(file.date||'')}${heatHtml}</p></div>
+                        <div class="detail-section"><h4>信息</h3><div class="detail-info-grid">${detailInfoHtml}</div></div>
                         <div class="detail-section detail-stats">
                             <h4>数据</h3>
                             <div class="detail-stats-row">
                                 <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 下载 <b id="dlCountDetail">${dlCount}</b></span>
-                                <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> 收藏 <b id="favCountDetail">--</b></span>
                                 <span class="stat-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> 评分 <b id="ratingCountDetail">--</b></span>
                             </div>
                         </div>
@@ -754,12 +697,9 @@
                         ${gallery}
                     </div>
                     <div class="mod-detail-footer">
-                        <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">关闭</button>
-                        <button onclick="shareModLink(${index})" class="detail-btn detail-btn-share">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                            分享
-                        </button>
-                        <a href="${escapeHtml(file.link || '#')}" target="_blank" class="detail-btn detail-btn-primary" onclick="event.stopPropagation(); logDownload(${index})">前往下载</a>
+                        <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">${svgIcon('close')}<span>关闭</span></button>
+                        <button onclick="shareModLink(${index})" class="detail-btn detail-btn-share">${svgIcon('share')}<span>分享</span></button>
+                        <a href="${escapeHtml(file.link || '#')}" target="_blank" class="detail-btn detail-btn-primary" onclick="event.stopPropagation(); logDownload(${index})">${svgIcon('download')}<span>前往下载</span></a>
                     </div>
                 `;
                 document.getElementById('modDetailOverlay').classList.add('active');
@@ -835,9 +775,12 @@
                     .then(d => {
                         const scoreEl = document.getElementById('detailRatingScore');
                         const countEl = document.getElementById('detailRatingCount');
-                        const avg = d.average || 0;
-                        if (scoreEl) scoreEl.textContent = avg ? avg.toFixed(1) : '--';
+                        const avg = Number(d.average) || 0;
+                        const formatted = avg ? avg.toFixed(1) : '--';
+                        if (scoreEl) scoreEl.textContent = formatted;
                         if (countEl) countEl.textContent = d.count ? d.count + ' 人评分' : '暂无评分';
+                        const statEl = document.getElementById('ratingCountDetail');
+                        if (statEl) statEl.textContent = formatted;
                         const stars = document.getElementById('detailStars');
                         if (stars) renderStars(stars, avg, function(s) { submitRating(modName, s); });
                     })
@@ -860,8 +803,11 @@
                             const scoreEl = document.getElementById('detailRatingScore');
                             const countEl = document.getElementById('detailRatingCount');
                             const msgEl = document.getElementById('detailRatingMsg');
-                            if (scoreEl) scoreEl.textContent = d.average.toFixed(1);
+                            const formatted = Number(d.average).toFixed(1);
+                            if (scoreEl) scoreEl.textContent = formatted;
                             if (countEl) countEl.textContent = d.count + ' 人评分';
+                            const statEl = document.getElementById('ratingCountDetail');
+                            if (statEl) statEl.textContent = formatted;
                             if (msgEl) msgEl.textContent = '感谢你的评分！';
                             const stars = document.getElementById('detailStars');
                             if (stars) {
@@ -884,19 +830,11 @@
             let currentDetailMod = '';
             function refreshDetailStats() {
                 if (!currentDetailMod) return;
-                // 刷新下载 + 收藏统计
-                fetch('/api/stats').then(r => r.json()).then(s => {
+                // 刷新详情页下载统计（首页不显示下载数字）
+                fetch('/api/stats', { cache: 'no-store' }).then(r => r.json()).then(s => {
                     const d = (s.downloads || {})[currentDetailMod] || 0;
-                    const f = (s.favorites || {})[currentDetailMod] || 0;
                     const dlEl = document.getElementById('dlCountDetail');
-                    const favEl = document.getElementById('favCountDetail');
                     if (dlEl) dlEl.textContent = d;
-                    if (favEl) favEl.textContent = f;
-                    // 同时更新卡片上的数字
-                    document.querySelectorAll('.dl-count[data-mod="' + currentDetailMod + '"]').forEach(el => {
-                        if (d > 0) el.textContent = d;
-                    });
-                updateFavoriteCountNodes(currentDetailMod, f);
                 }).catch(() => {});
                 // 刷新评分
                 loadRating(currentDetailMod);
@@ -1004,17 +942,7 @@
                     if (resp.ok) {
                         const data = await resp.json();
                         downloadStats = data.downloads || {};
-                        const favStats = data.favorites || {};
-                        // 更新页面上的下载计数显示
-                        document.querySelectorAll('.dl-count[data-mod]').forEach(el => {
-                            const name = el.getAttribute('data-mod');
-                            if (downloadStats[name] > 0) el.textContent = downloadStats[name];
-                        });
-                        // 更新页面上的收藏计数显示
-                        document.querySelectorAll('.fav-count[data-mod]').forEach(el => {
-                            const name = el.getAttribute('data-mod');
-                            if (favStats[name] > 0) el.textContent = favStats[name];
-                        });
+
                     }
                 } catch (e) {
                     // 统计服务不可用时静默降级
@@ -1069,8 +997,6 @@
                 const name = (file.name || '').trim();
                 // 更新本地显示
                 downloadStats[name] = (downloadStats[name] || 0) + 1;
-                const el = document.querySelector('.dl-count[data-mod="' + name + '"]');
-                if (el) el.textContent = downloadStats[name];
                 // 详情弹窗下载计数同步更新
                 const dlDetailEl = document.getElementById('dlCountDetail');
                 if (dlDetailEl && currentDetailMod === name) {
