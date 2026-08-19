@@ -1096,6 +1096,7 @@
                 layoutStyle: 'grid',
                 cardRadius: 16,
                 cardGap: 20,
+                cardOpacity: 100,
                 accentColor: '#111111',
                 backgroundStyle: 'grid',
                 backgroundImage: ''
@@ -1212,6 +1213,8 @@
             const cardRadiusValue = document.getElementById('cardRadiusValue');
             const cardGapSlider = document.getElementById('settingCardGap');
             const cardGapValue = document.getElementById('cardGapValue');
+            const cardOpacitySlider = document.getElementById('settingCardOpacity');
+            const cardOpacityValue = document.getElementById('cardOpacityValue');
             const styleSelector = document.getElementById('styleSelector');
             const accentColorItem = document.getElementById('accentColorItem');
             const accentColorControl = document.getElementById('accentColorControl');
@@ -1225,6 +1228,10 @@
 
             function normalizeAccentColor(value) {
                 return /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value).toUpperCase() : DEFAULTS.accentColor;
+            }
+            function normalizeCardOpacity(value) {
+                const parsed = parseInt(value, 10);
+                return Number.isFinite(parsed) ? Math.min(100, Math.max(70, parsed)) : DEFAULTS.cardOpacity;
             }
             function getOnAccentColor(hex) {
                 const value = normalizeAccentColor(hex).slice(1);
@@ -1377,6 +1384,12 @@
                 cardGapSlider.value = settings.cardGap;
                 cardGapValue.textContent = settings.cardGap + 'px';
 
+                // 卡片透明度：保留至少 70% 表面不透明度，避免图片背景或深色模式中文字失去对比。
+                settings.cardOpacity = normalizeCardOpacity(settings.cardOpacity);
+                document.documentElement.style.setProperty('--card-surface-alpha', settings.cardOpacity + '%');
+                cardOpacitySlider.value = settings.cardOpacity;
+                cardOpacityValue.textContent = settings.cardOpacity + '%';
+
                 // 懒加载
                 lazyLoadToggle.checked = settings.lazyLoad;
             }
@@ -1490,6 +1503,12 @@
 
             cardGapSlider.addEventListener('input', function() {
                 settings.cardGap = parseInt(this.value);
+                saveSettings(settings);
+                applySettings();
+            });
+
+            cardOpacitySlider.addEventListener('input', function() {
+                settings.cardOpacity = normalizeCardOpacity(this.value);
                 saveSettings(settings);
                 applySettings();
             });
