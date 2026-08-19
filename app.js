@@ -1213,8 +1213,11 @@
             const cardGapSlider = document.getElementById('settingCardGap');
             const cardGapValue = document.getElementById('cardGapValue');
             const styleSelector = document.getElementById('styleSelector');
+            const accentColorItem = document.getElementById('accentColorItem');
+            const accentColorControl = document.getElementById('accentColorControl');
             const accentColorInput = document.getElementById('settingAccentColor');
             const accentColorValue = document.getElementById('accentColorValue');
+            const accentColorDesc = document.getElementById('accentColorDesc');
             const backgroundStyleSelector = document.getElementById('backgroundStyleSelector');
             const backgroundImageInput = document.getElementById('settingBackgroundImage');
             const clearBackgroundImageBtn = document.getElementById('clearBackgroundImage');
@@ -1231,12 +1234,24 @@
                 return (r * 0.299 + g * 0.587 + b * 0.114) > 176 ? '#111111' : '#FFFFFF';
             }
             function applyCustomStyle() {
-                const accent = normalizeAccentColor(settings.accentColor);
-                settings.accentColor = accent;
-                document.documentElement.style.setProperty('--site-accent', accent);
-                document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(accent));
-                accentColorInput.value = accent;
-                accentColorValue.textContent = accent;
+                const selectedAccent = normalizeAccentColor(settings.accentColor);
+                const colorAdjustmentLocked = Boolean(settings.darkMode);
+                // 黑夜模式固定使用高对比中性色，避免保存的浅色主题降低深色界面可读性。
+                const activeAccent = colorAdjustmentLocked ? '#FFFFFF' : selectedAccent;
+                settings.accentColor = selectedAccent;
+                document.documentElement.style.setProperty('--site-accent', activeAccent);
+                document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(activeAccent));
+                document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
+                    meta.content = colorAdjustmentLocked ? '#0D0D0D' : selectedAccent;
+                });
+                accentColorInput.value = selectedAccent;
+                accentColorValue.textContent = selectedAccent;
+                accentColorInput.disabled = colorAdjustmentLocked;
+                accentColorItem.classList.toggle('is-disabled', colorAdjustmentLocked);
+                accentColorControl.setAttribute('aria-disabled', String(colorAdjustmentLocked));
+                accentColorDesc.textContent = colorAdjustmentLocked
+                    ? '黑夜模式下已锁定为高对比配色；切回浅色模式后可调整'
+                    : '同步应用于卡片、信息区、主按钮和选中状态';
 
                 const imageReady = typeof settings.backgroundImage === 'string' && settings.backgroundImage.startsWith('data:image/');
                 const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
@@ -1367,6 +1382,7 @@
 
             // 事件绑定
             accentColorInput.addEventListener('input', function() {
+                if (settings.darkMode) return;
                 settings.accentColor = normalizeAccentColor(this.value);
                 saveSettings(settings);
                 applySettings();

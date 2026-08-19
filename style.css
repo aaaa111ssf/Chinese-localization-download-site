@@ -3255,3 +3255,270 @@ body.dark-mode .rating-submit-btn:not(:disabled):hover {
 body.dark-mode .settings-toggle input:checked + .settings-toggle-slider {
     background: var(--site-accent);
 }
+
+/* ============================================
+   全站主题色：自定义颜色统一驱动所有品牌状态
+   ============================================ */
+:root {
+    --site-accent-soft: color-mix(in srgb, var(--site-accent) 12%, transparent);
+    --site-accent-border: color-mix(in srgb, var(--site-accent) 54%, #ffffff);
+}
+:focus-visible,
+a:focus-visible,
+button:focus-visible {
+    outline-color: var(--site-accent);
+}
+.header h1 {
+    background: linear-gradient(90deg, var(--site-accent), color-mix(in srgb, var(--site-accent) 42%, #ffffff), var(--site-accent)) !important;
+    background-size: 300% 100% !important;
+}
+.title-author-link:hover,
+a:not(.detail-btn):not(.btn):not(.nav-item):hover { color: var(--site-accent); }
+.nav-item.active,
+.dropdown-item.active,
+.category-btn.active,
+.tutorial-tab.active,
+.style-btn.active,
+.dl-tab.active,
+.background-style-btn.active,
+.top-nav .nav-item.active {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+}
+.nav-item:hover,
+.dropdown-item:hover,
+.category-btn:hover,
+.tutorial-tab:hover,
+.dropdown-toggle:hover {
+    color: var(--site-accent);
+    border-color: var(--site-accent);
+}
+.search-box input:focus {
+    border-color: var(--site-accent);
+    box-shadow: 0 0 0 3px var(--site-accent-soft);
+}
+.search-btn,
+.card-actions .btn-download,
+.detail-btn-primary,
+.load-error-retry,
+.suggestion-card .sug-btn,
+.sponsor-modal-footer .modal-btn-confirm,
+.settings-reset-btn,
+.rating-submit-btn {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+}
+.search-btn:hover,
+.card-actions .btn-download:hover,
+.detail-btn-primary:hover,
+.load-error-retry:hover,
+.suggestion-card .sug-btn:hover,
+.sponsor-modal-footer .modal-btn-confirm:hover,
+.settings-reset-btn:hover,
+.rating-submit-btn:not(:disabled):hover {
+    background: var(--site-accent);
+    color: var(--site-on-accent);
+    border-color: var(--site-accent);
+    filter: brightness(0.9);
+}
+.card-actions .btn:hover,
+.rating-edit-btn:hover,
+.background-upload-btn,
+.background-upload-btn:hover,
+.detail-btn-secondary:hover,
+.detail-btn-share:hover {
+    color: var(--site-accent);
+    border-color: var(--site-accent);
+}
+.settings-toggle input:checked + .settings-toggle-slider,
+.settings-slider::-webkit-slider-thumb,
+.settings-slider::-moz-range-thumb,
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]::-moz-range-thumb {
+    background: var(--site-accent);
+}
+.settings-item-icon,
+.no-results-icon,
+.link-icon,
+.rating-score,
+.stars .star-fill,
+.star-option .star-fill { color: var(--site-accent); }
+.step-item { border-left-color: var(--site-accent); }
+.tutorial-header { border-bottom-color: var(--site-accent); }
+.highlight { background: var(--site-accent-soft); }
+body.dark-mode .background-upload-btn { color: var(--site-accent); border-color: var(--site-accent); }
+body.dark-mode .nav-item:hover,
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .category-btn:hover,
+body.dark-mode .tutorial-tab:hover,
+body.dark-mode .dropdown-toggle:hover { color: var(--site-accent); border-color: var(--site-accent); }
+
+/* ============================================
+   卡片操作区：稳定三段式，不随内容宽度裁切
+   ============================================ */
+.card-actions {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: 8px;
+}
+.card-actions-secondary {
+    display: flex;
+    width: 44px;
+    min-width: 44px;
+}
+.card-actions-secondary .btn-share {
+    width: 44px;
+    min-width: 44px;
+    min-height: 42px;
+    padding: 0;
+}
+.card-actions-primary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+    min-width: 0;
+    gap: 8px;
+}
+.card-actions-primary .btn {
+    min-width: 0;
+    min-height: 42px;
+    padding: 8px 10px;
+    white-space: nowrap;
+    overflow: visible;
+}
+.card-actions-primary .btn span { overflow: hidden; text-overflow: ellipsis; }
+body.layout-list .card-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px 14px 12px 0;
+}
+body.layout-list .card-actions-secondary { display: none; }
+body.layout-list .card-actions-primary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+    width: 100%;
+}
+@media (max-width: 768px) {
+    .card-actions {
+        grid-template-columns: 44px minmax(0, 1fr);
+        width: 100%;
+        padding: 0 14px 14px;
+        gap: 8px;
+    }
+    .card-actions-secondary { display: flex; }
+    .card-actions-primary { width: auto; gap: 8px; }
+    body.layout-list .card-actions {
+        grid-template-columns: 44px minmax(0, 1fr);
+        padding: 0 14px 14px;
+    }
+    body.layout-list .card-actions-secondary { display: flex; }
+    body.layout-list .card-actions-primary { width: auto; }
+}
+@media (max-width: 380px) {
+    .card-actions { padding-left: 12px; padding-right: 12px; gap: 6px; }
+    .card-actions-primary { gap: 6px; }
+    .card-actions-primary .btn { padding: 8px 7px; gap: 4px; font-size: 0.78rem; }
+}
+
+/* 主题标题使用纯色文字渐变，避免部分移动内核对 color-mix 裁剪不一致。 */
+.header h1 {
+    background: var(--site-accent) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+}
+.card-tags .tag {
+    background: var(--site-accent-soft);
+    color: var(--site-accent);
+}
+.card-inline-meta .ui-icon,
+.meta-box .ui-icon,
+.detail-info-item .ui-icon { color: var(--site-accent); }
+
+
+/* ============================================
+   主题表面层：浅色模式下卡片与信息区随主题色联动
+   ============================================ */
+:root {
+    --site-surface: color-mix(in srgb, #ffffff 88%, var(--site-accent));
+    --site-surface-subtle: color-mix(in srgb, #ffffff 80%, var(--site-accent));
+    --site-surface-muted: color-mix(in srgb, #ffffff 70%, var(--site-accent));
+    --site-surface-border: color-mix(in srgb, #ffffff 72%, var(--site-accent));
+}
+body:not(.dark-mode) .file-card,
+body:not(.dark-mode) .suggestion-card,
+body:not(.dark-mode) .tutorial-card {
+    background: var(--site-surface);
+    border-color: var(--site-surface-border);
+}
+body:not(.dark-mode) .file-card:hover,
+body:not(.dark-mode) .suggestion-card:hover {
+    border-color: var(--site-accent);
+}
+body:not(.dark-mode) .card-image-wrap,
+body:not(.dark-mode) .card-image-placeholder,
+body:not(.dark-mode) .suggestion-card .sug-img-wrap {
+    background: var(--site-surface-muted);
+}
+body:not(.dark-mode) .card-image-wrap::before {
+    background: linear-gradient(90deg, transparent, var(--site-surface-border) 50%, transparent);
+}
+body:not(.dark-mode) .meta-box,
+body:not(.dark-mode) .detail-info-item,
+body:not(.dark-mode) .rating-editor {
+    background: var(--site-surface-subtle);
+    border-color: var(--site-surface-border);
+}
+body:not(.dark-mode) .card-actions .btn:not(.btn-download),
+body:not(.dark-mode) .rating-edit-btn,
+body:not(.dark-mode) .rating-cancel-btn,
+body:not(.dark-mode) .rating-editor-close {
+    background: var(--site-surface);
+    border-color: var(--site-surface-border);
+}
+body:not(.dark-mode) .toolbar-stat,
+body:not(.dark-mode) .stats span,
+body:not(.dark-mode) .top-nav,
+body:not(.dark-mode) .dropdown-toggle,
+body:not(.dark-mode) .dropdown-menu,
+body:not(.dark-mode) .search-box input {
+    background-color: var(--site-surface);
+    border-color: var(--site-surface-border);
+}
+
+/* 黑夜模式锁定调色：保留已保存的颜色，但不让其影响深色高对比界面。 */
+#accentColorItem.is-disabled { opacity: 0.62; }
+#accentColorItem.is-disabled .settings-item-label::after {
+    content: '已锁定';
+    display: inline-block;
+    margin-left: 7px;
+    padding: 1px 5px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    vertical-align: 1px;
+}
+.color-picker-control[aria-disabled="true"],
+.color-picker-control[aria-disabled="true"] input {
+    cursor: not-allowed;
+}
+.color-picker-control[aria-disabled="true"] input {
+    filter: grayscale(1);
+    pointer-events: none;
+}
+body.dark-mode #accentColorItem {
+    opacity: 0.72;
+}
+body.dark-mode #accentColorItem .settings-item-desc {
+    color: #8c8c9b;
+}
+body.dark-mode .color-picker-control[aria-disabled="true"] {
+    background: #171724;
+    border-color: #303044;
+    color: #a3a3b4;
+}
