@@ -1582,11 +1582,43 @@
             document.head.appendChild(dynamicStyle);
 
             // 事件绑定
-            accentColorInput.addEventListener('input', function() {
+            function saveAccentColor(value) {
                 if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
-                settings.accentColor = normalizeAccentColor(this.value);
+                settings.accentColor = normalizeAccentColor(value);
                 saveSettings(settings);
                 applySettings();
+            }
+
+            accentColorInput.addEventListener('input', function() {
+                saveAccentColor(this.value);
+            });
+            // 部分 Android 浏览器只会在关闭系统调色盘后触发 change，因此保留该事件作为回退。
+            accentColorInput.addEventListener('change', function() {
+                saveAccentColor(this.value);
+            });
+
+            function openAccentColorPicker(event) {
+                if (event) event.preventDefault();
+                if (accentColorInput.disabled) {
+                    toast(settings.darkMode
+                        ? '黑夜模式下主题颜色已锁定；切回浅色模式后可调整'
+                        : '图片背景下主题颜色已锁定；切回网格或纯色背景后可调整');
+                    return;
+                }
+                try {
+                    if (typeof accentColorInput.showPicker === 'function') {
+                        accentColorInput.showPicker();
+                        return;
+                    }
+                } catch (error) {
+                    // 若浏览器拒绝 showPicker，继续使用原生 click 回退。
+                }
+                accentColorInput.click();
+            }
+
+            accentColorControl.addEventListener('click', openAccentColorPicker);
+            accentColorControl.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' || event.key === ' ') openAccentColorPicker(event);
             });
 
             backgroundStyleSelector.querySelectorAll('.background-style-btn').forEach(btn => {
