@@ -3700,15 +3700,21 @@ body.dark-mode .settings-toggle input:checked + .settings-toggle-slider::before 
 /* 下载方式选择在窄抽屉内独立换行，保持模式说明完整可读。 */
 .settings-download-mode {
     flex-wrap: wrap;
+    align-items: flex-start;
     gap: 12px;
 }
 .download-mode-selector {
-    min-width: 276px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
 }
 .download-mode-selector .style-btn {
-    flex: 1;
+    width: 100%;
+    min-width: 0;
     white-space: nowrap;
-    padding-inline: 8px;
+    padding-inline: 6px;
 }
 .download-mode-note {
     width: 100%;
@@ -3726,5 +3732,11 @@ body.dark-mode .download-mode-note {
     }
     .download-mode-selector {
         width: 100%;
+        gap: 4px;
+    }
+    .download-mode-selector .style-btn {
+        padding: 9px 2px;
+        font-size: 0.74rem;
+        letter-spacing: -0.02em;
     }
 }

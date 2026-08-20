@@ -304,10 +304,14 @@
                 return INSTALLER_SCHEME + '?' + params.toString();
             }
 
+            function isAndroidBrowser() {
+                return /Android/i.test(navigator.userAgent || '');
+            }
+
             function getDownloadLabel(file, fallbackLabel) {
                 const mode = getDownloadMode();
                 const hasDirectLink = Boolean(getAutoInstallPayload(file));
-                if (mode === 'auto') return hasDirectLink ? '自动安装' : '蓝奏云下载';
+                if (mode === 'auto') return hasDirectLink ? (isAndroidBrowser() ? '自动安装' : '自动安装（仅 Android）') : '蓝奏云下载';
                 if (mode === 'direct') return hasDirectLink ? '直链下载' : '蓝奏云下载';
                 return '蓝奏云下载';
             }
@@ -374,6 +378,11 @@
                     toast('此资源未配置安全直链，已改用蓝奏云下载');
                     logDownload(index);
                     openExternalDownload(file.link);
+                    return false;
+                }
+
+                if (!isAndroidBrowser()) {
+                    toast('自动安装仅支持 Android 手机浏览器，请改用直链下载或蓝奏云下载');
                     return false;
                 }
 
