@@ -452,7 +452,7 @@
                             </div>
                             <div class="card-actions-primary">
                                 <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">${svgIcon('info')}<span>详情</span></button>
-                                <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="btn btn-download" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></a>
+                                <button type="button" class="btn btn-download" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                             </div>
                         </div>
                     </div>
@@ -487,7 +487,7 @@
                                 <span>作者: ${safe.author}</span>
                             </div>
                         </div>
-                        <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="sug-btn" onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></a>
+                        <button type="button" class="sug-btn" onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                     </div>
                 `;
             }
@@ -805,7 +805,7 @@
                     <div class="mod-detail-footer">
                         <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">${svgIcon('close')}<span>关闭</span></button>
                         <button onclick="shareModLink(${index})" class="detail-btn detail-btn-share">${svgIcon('share')}<span>分享</span></button>
-                        <a href="${escapeHtml(file.link || '#')}" target="_blank" rel="noopener noreferrer" class="detail-btn detail-btn-primary" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></a>
+                        <button type="button" class="detail-btn detail-btn-primary" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                     </div>
                 `;
                 document.getElementById('modDetailOverlay').classList.add('active');
