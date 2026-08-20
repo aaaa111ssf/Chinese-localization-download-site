@@ -313,8 +313,19 @@
             }
 
             function openExternalDownload(url) {
-                const opened = window.open(url || '#', '_blank', 'noopener');
-                if (!opened) window.location.href = url || '#';
+                const target = String(url || '').trim();
+                if (!target) {
+                    toast('下载地址无效');
+                    return false;
+                }
+                // 不使用 noopener 特性参数：部分浏览器会成功打开新页却返回 null，旧逻辑会因此再次改写当前页。
+                const opened = window.open(target, '_blank');
+                if (!opened) {
+                    toast('浏览器阻止了新下载页面，请允许弹出窗口后重试');
+                    return false;
+                }
+                try { opened.opener = null; } catch (e) {}
+                return true;
             }
 
             function updateDownloadLabels() {
@@ -374,7 +385,7 @@
                     document.removeEventListener('visibilitychange', onVisibilityChange);
                 });
                 logDownload(index);
-                window.location.href = buildInstallerUrl(file, payload);
+                if (!openExternalDownload(buildInstallerUrl(file, payload))) return false;
                 window.setTimeout(() => {
                     if (!appOpened && document.visibilityState === 'visible') {
                         toast('未检测到安装助手，请先安装 SFS 汉化模组安装助手，或改用直链下载');
