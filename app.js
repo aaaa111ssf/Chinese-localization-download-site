@@ -1011,6 +1011,7 @@
                 clearTimeout(t._timer);
                 t._timer = setTimeout(function() { t.style.opacity = '0'; }, 2200);
             }
+            window.sfsToast = toast;
 
             /* ---------- 图片查看器 ---------- */
             window.openImgViewer = function(fileIdx, imgIdx) {
@@ -1219,6 +1220,9 @@
             'use strict';
 
             const STORAGE_KEY = 'sfs_site_settings';
+            const toast = typeof window.sfsToast === 'function'
+                ? window.sfsToast
+                : function(message) { console.info('[SFS]', message); };
 
             // 默认设置
             const DEFAULTS = {
