@@ -258,6 +258,125 @@
                 document.querySelectorAll('img[data-src]').forEach(img => imgObserver.observe(img));
             }
 
+            /* ---------- 下载方式与 Android 安装助手 ---------- */
+            const SITE_SETTINGS_KEY = 'sfs_site_settings';
+            const INSTALLER_SCHEME = 'sfsmodinstaller://install';
+            const INSTALLER_DIRECT_HOSTS = ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org'];
+
+            function getDownloadMode() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(SITE_SETTINGS_KEY) || '{}');
+                    if (['direct', 'auto', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
+                    // 兼容旧版“手动”设置：旧手动下载即蓝奏云下载。
+                    return saved.downloadMode === 'manual' ? 'lanzou' : 'direct';
+                } catch (e) {
+                    return 'direct';
+                }
+            }
+
+            function isAllowedInstallerSource(parsed) {
+                if (parsed.protocol !== 'https:' || !INSTALLER_DIRECT_HOSTS.includes(parsed.hostname.toLowerCase())) return false;
+                return parsed.hostname.toLowerCase() !== 'nasyt.dpdns.org' || /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
+            }
+
+            function getAutoInstallPayload(file) {
+                const installType = String(file && file.installType || '').toLowerCase();
+                const installUrl = String(file && file.installUrl || '').trim();
+                const sha256 = String(file && file.sha256 || '').trim();
+                if (!file || !file.name || !installUrl || !['parts', 'textures'].includes(installType)) return null;
+                try {
+                    if (!isAllowedInstallerSource(new URL(installUrl))) return null;
+                } catch (e) {
+                    return null;
+                }
+                if (sha256 && !/^[a-f0-9]{64}$/i.test(sha256)) return null;
+                return { installType, installUrl, sha256 };
+            }
+
+            function buildInstallerUrl(file, payload) {
+                const params = new URLSearchParams({
+                    name: String(file.name).slice(0, 120),
+                    url: payload.installUrl,
+                    type: payload.installType
+                });
+                if (payload.sha256) params.set('sha256', payload.sha256.toLowerCase());
+                return INSTALLER_SCHEME + '?' + params.toString();
+            }
+
+            function getDownloadLabel(file, fallbackLabel) {
+                const mode = getDownloadMode();
+                const hasDirectLink = Boolean(getAutoInstallPayload(file));
+                if (mode === 'auto') return hasDirectLink ? '自动安装' : '蓝奏云下载';
+                if (mode === 'direct') return hasDirectLink ? '直链下载' : '蓝奏云下载';
+                return '蓝奏云下载';
+            }
+
+            function openExternalDownload(url) {
+                const opened = window.open(url || '#', '_blank', 'noopener');
+                if (!opened) window.location.href = url || '#';
+            }
+
+            function updateDownloadLabels() {
+                document.querySelectorAll('[data-download-label]').forEach(label => {
+                    const index = Number(label.dataset.downloadLabel);
+                    label.textContent = getDownloadLabel(files[index], label.dataset.manualLabel);
+                });
+            }
+
+            window.addEventListener('sfs-download-mode-change', updateDownloadLabels);
+
+            window.handleModDownload = function(index, event) {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const file = files[index];
+                if (!file) return false;
+                const mode = getDownloadMode();
+                const payload = getAutoInstallPayload(file);
+
+                if (mode === 'lanzou') {
+                    logDownload(index);
+                    openExternalDownload(file.link);
+                    return false;
+                }
+
+                if (mode === 'direct') {
+                    if (payload) {
+                        logDownload(index);
+                        openExternalDownload(payload.installUrl);
+                    } else {
+                        toast('此资源未配置安全直链，已改用蓝奏云下载');
+                        logDownload(index);
+                        openExternalDownload(file.link);
+                    }
+                    return false;
+                }
+
+                if (!payload) {
+                    toast('此资源未配置安全直链，已改用蓝奏云下载');
+                    logDownload(index);
+                    openExternalDownload(file.link);
+                    return false;
+                }
+
+                let appOpened = false;
+                const markOpened = () => { appOpened = true; };
+                window.addEventListener('blur', markOpened, { once: true });
+                document.addEventListener('visibilitychange', function onVisibilityChange() {
+                    if (document.visibilityState === 'hidden') appOpened = true;
+                    document.removeEventListener('visibilitychange', onVisibilityChange);
+                });
+                logDownload(index);
+                window.location.href = buildInstallerUrl(file, payload);
+                window.setTimeout(() => {
+                    if (!appOpened && document.visibilityState === 'visible') {
+                        toast('未检测到安装助手，请先安装 SFS 汉化模组安装助手，或改用直链下载');
+                    }
+                }, 1400);
+                return false;
+            };
+
             /* ---------- 渲染：主卡片（截图风格） ---------- */
             function createModCard(file, index) {
                 const validImages = getValidImages(file);
@@ -333,7 +452,7 @@
                             </div>
                             <div class="card-actions-primary">
                                 <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">${svgIcon('info')}<span>详情</span></button>
-                                <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="btn btn-download" onclick="event.stopPropagation(); logDownload(${index})">${svgIcon('download')}<span>下载</span></a>
+                                <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="btn btn-download" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></a>
                             </div>
                         </div>
                     </div>
@@ -368,7 +487,7 @@
                                 <span>作者: ${safe.author}</span>
                             </div>
                         </div>
-                        <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="sug-btn">下载</a>
+                        <a href="${safe.link}" target="_blank" rel="noopener noreferrer" class="sug-btn" onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></a>
                     </div>
                 `;
             }
@@ -475,7 +594,7 @@
                             <div style="color:#666;margin-top:8px;">请尝试其他关键词，或浏览以下热门推荐</div>
                         </div>
                         <div class="suggestion-grid">
-                            ${suggestions.map((file, idx) => createCompactCard(file, idx)).join('')}
+                            ${suggestions.map(file => createCompactCard(file, files.indexOf(file))).join('')}
                         </div>
                     `;
                 }
@@ -686,7 +805,7 @@
                     <div class="mod-detail-footer">
                         <button onclick="closeModDetail()" class="detail-btn detail-btn-secondary">${svgIcon('close')}<span>关闭</span></button>
                         <button onclick="shareModLink(${index})" class="detail-btn detail-btn-share">${svgIcon('share')}<span>分享</span></button>
-                        <a href="${escapeHtml(file.link || '#')}" target="_blank" class="detail-btn detail-btn-primary" onclick="event.stopPropagation(); logDownload(${index})">${svgIcon('download')}<span>前往下载</span></a>
+                        <a href="${escapeHtml(file.link || '#')}" target="_blank" rel="noopener noreferrer" class="detail-btn detail-btn-primary" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></a>
                     </div>
                 `;
                 document.getElementById('modDetailOverlay').classList.add('active');
@@ -1099,7 +1218,8 @@
                 cardOpacity: 100,
                 accentColor: '#111111',
                 backgroundStyle: 'grid',
-                backgroundImage: ''
+                backgroundImage: '',
+                downloadMode: 'direct'
             };
 
             // 读取设置
@@ -1225,6 +1345,9 @@
             const backgroundImageInput = document.getElementById('settingBackgroundImage');
             const clearBackgroundImageBtn = document.getElementById('clearBackgroundImage');
             const backgroundUploadStatus = document.getElementById('backgroundUploadStatus');
+            const downloadModeSelector = document.getElementById('downloadModeSelector');
+            const downloadModeDesc = document.getElementById('downloadModeDesc');
+            const downloadModeNote = document.getElementById('downloadModeNote');
 
             function normalizeAccentColor(value) {
                 return /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value).toUpperCase() : DEFAULTS.accentColor;
@@ -1392,6 +1515,35 @@
 
                 // 懒加载
                 lazyLoadToggle.checked = settings.lazyLoad;
+
+                // 下载方式
+                if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
+                    settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
+                }
+                if (downloadModeSelector) {
+                    downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
+                        const active = btn.dataset.downloadMode === settings.downloadMode;
+                        btn.classList.toggle('active', active);
+                        btn.setAttribute('aria-checked', String(active));
+                    });
+                    const messages = {
+                        direct: {
+                            desc: '从固定 HTTPS 直链直接下载 ZIP 文件',
+                            note: '直链下载会在浏览器中直接获取文件；未配置安全直链的资源将回退到蓝奏云。'
+                        },
+                        auto: {
+                            desc: '由安装助手下载、校验、解压并写入对应目录',
+                            note: '自动安装仅限 Android，需安装 SFS 汉化模组安装助手；不满足条件时回退到蓝奏云。'
+                        },
+                        lanzou: {
+                            desc: '打开原蓝奏云分享页后手动下载',
+                            note: '适用于未安装助手或希望使用原网盘下载方式的情况。'
+                        }
+                    };
+                    downloadModeDesc.textContent = messages[settings.downloadMode].desc;
+                    downloadModeNote.textContent = messages[settings.downloadMode].note;
+                    window.dispatchEvent(new Event('sfs-download-mode-change'));
+                }
             }
 
             // 创建动态样式标签
@@ -1518,6 +1670,19 @@
                     settings.layoutStyle = this.dataset.style;
                     saveSettings(settings);
                     applySettings();
+                });
+            });
+
+            downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'direct';
+                    saveSettings(settings);
+                    applySettings();
+                    if (settings.downloadMode === 'auto') {
+                        toast('已选择自动安装，请确认已安装 SFS 汉化模组安装助手');
+                    } else if (settings.downloadMode === 'direct') {
+                        toast('已选择直链下载，将直接下载 ZIP 文件');
+                    }
                 });
             });
 

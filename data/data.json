@@ -18,7 +18,10 @@
     "version": "v1.5",
     "author": "SFS.S9",
     "heat": "22.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/soWf8H9h/",
+    "sha256": ""
   },
   {
     "name": "Procedural Parts-1.5-程序化部件",
@@ -39,7 +42,10 @@
     "version": "v1.5",
     "author": "SFS.S9",
     "heat": "22.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/JAMve10e/",
+    "sha256": ""
   },
   {
     "name": "Procedural Engines-程序化引擎",
@@ -60,7 +66,10 @@
     "version": "v1.5",
     "author": "SFS.S9",
     "heat": "22.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/CShxVhPu/",
+    "sha256": ""
   },
   {
     "name": "Aerodynamic Parts-空气动力部件",
@@ -81,7 +90,10 @@
     "version": "v1.5",
     "author": "SFS.S9",
     "heat": "22.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/a96jrumi/",
+    "sha256": ""
   },
   {
     "name": "可重复使用部件和支持系统",
@@ -102,7 +114,10 @@
     "version": "v1.5",
     "author": "SFS.S9",
     "heat": "22.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/G3HTD3BC/",
+    "sha256": ""
   },
   {
     "name": "程序化部件（旧）",
@@ -123,7 +138,10 @@
     "version": "v1.5",
     "author": "SFS.S9",
     "heat": "22.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/D8b9Bh3C/",
+    "sha256": ""
   },
   {
     "name": "IPS",
@@ -142,7 +160,10 @@
     "version": "v1.1 汉化",
     "author": "Eternity",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/xVYu9wD3/",
+    "sha256": ""
   },
   {
     "name": "Pic系列模组",
@@ -161,7 +182,10 @@
     "version": "v1.1 修复",
     "author": "Pico Space Industries",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Ca4r5Ooy/",
+    "sha256": ""
   },
   {
     "name": "原版套件",
@@ -180,7 +204,10 @@
     "version": "v1.0 汉化",
     "author": "Sam",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/HIyufGZA/",
+    "sha256": ""
   },
   {
     "name": "可部署部件",
@@ -199,7 +226,10 @@
     "version": "v1.0 汉化",
     "author": "SFS Theta",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/mqJV75y8/",
+    "sha256": ""
   },
   {
     "name": "新视野-汉化-修复完成",
@@ -218,7 +248,10 @@
     "version": "v1.1 汉化",
     "author": "Mac",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/CM4zghsL/",
+    "sha256": ""
   },
   {
     "name": "殖民地v0.2.1",
@@ -239,7 +272,10 @@
     "version": "v0.2.1 汉化",
     "author": "QMSP",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/RaQZXqAF/",
+    "sha256": ""
   },
   {
     "name": "实用包Fix fix",
@@ -258,7 +294,10 @@
     "version": "v1.0",
     "author": "PicoSpace",
     "heat": "11.9万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/ZDTmhjn9/",
+    "sha256": ""
   },
   {
     "name": "原版+",
@@ -277,7 +316,10 @@
     "version": "v1.0 汉化",
     "author": "InvinteX",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/ngEwXKDV/",
+    "sha256": ""
   },
   {
     "name": "Hyptix 的字体",
@@ -296,7 +338,10 @@
     "version": "v1.0 汉化",
     "author": "HyptixFonts",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/FGpb9G39/",
+    "sha256": ""
   },
   {
     "name": "字母数字符号",
@@ -315,7 +360,10 @@
     "version": "v1.0 汉化",
     "author": "Roshan",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/yrY3QGz6/",
+    "sha256": ""
   },
   {
     "name": "TTS电力",
@@ -335,7 +383,10 @@
     "version": "v1.0 汉化",
     "author": "TSS XingYi",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/zwcaWOPd/",
+    "sha256": ""
   },
   {
     "name": "着陆垫",
@@ -354,7 +405,10 @@
     "version": "v1.0 汉化",
     "author": "sfsupgraderocket",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/bvBnO0EM/",
+    "sha256": ""
   },
   {
     "name": "坎巴拉太空飞行模拟器",
@@ -374,7 +428,10 @@
     "version": "v1.0 汉化",
     "author": "Mac",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/kQO4VhK9/",
+    "sha256": ""
   },
   {
     "name": "海龙号",
@@ -393,7 +450,10 @@
     "version": "v1.0 汉化",
     "author": "Mac",
     "heat": "12.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/aMWidC3k/",
+    "sha256": ""
   },
   {
     "name": "电力系统",
@@ -414,7 +474,10 @@
     "version": "v1.0",
     "author": "VerdiX",
     "heat": "8.9万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/v0rzicyT/",
+    "sha256": ""
   },
   {
     "name": "电子号",
@@ -434,7 +497,10 @@
     "version": "v2.1",
     "author": "SenchQ",
     "heat": "19.8万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/w0DSBhBU/",
+    "sha256": ""
   },
   {
     "name": "新一代燃料",
@@ -456,7 +522,10 @@
     "version": "v1.1",
     "author": "Ludwig",
     "heat": "15.2万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/4SKGxane/",
+    "sha256": ""
   },
   {
     "name": "曲率引擎",
@@ -478,7 +547,10 @@
     "version": "v1.0",
     "author": "Gremlin",
     "heat": "18.7万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/vg75VyFO/",
+    "sha256": ""
   },
   {
     "name": "核能引擎",
@@ -499,7 +571,10 @@
     "version": "v1.2",
     "author": "TSS XingYi",
     "heat": "22.1万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/TMrOCYCh/",
+    "sha256": ""
   },
   {
     "name": "减速伞",
@@ -519,7 +594,10 @@
     "version": "v1.0",
     "author": "VerdiX",
     "heat": "9.3万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/E2tiAys8/",
+    "sha256": ""
   },
   {
     "name": "阿波罗计划【整合部件】",
@@ -540,7 +618,10 @@
     "version": "v1.0",
     "author": "brioche",
     "heat": "31.4万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/MImgOzFU/",
+    "sha256": ""
   },
   {
     "name": "生命支持系统",
@@ -560,7 +641,10 @@
     "version": "v1.0.1",
     "author": "QMSP",
     "heat": "7.8万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Y1K3pyyb/",
+    "sha256": ""
   },
   {
     "name": "航天航空星舰包",
@@ -581,7 +665,10 @@
     "version": "v1.6",
     "author": "PrimeAero",
     "heat": "28.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Uy1Y87aR/",
+    "sha256": ""
   },
   {
     "name": "半真实发动机",
@@ -602,7 +689,10 @@
     "version": "v1.6.2",
     "author": "PicoSpace",
     "heat": "14.2万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/NRirpX2Q/",
+    "sha256": ""
   },
   {
     "name": "半真实航天器",
@@ -623,7 +713,10 @@
     "version": "v1.6.4",
     "author": "PicoSpace",
     "heat": "11.0万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/KyNZQU4H/",
+    "sha256": ""
   },
   {
     "name": "异域套装",
@@ -645,7 +738,10 @@
     "version": "v1.6",
     "author": "PicoSpace",
     "heat": "10.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/FpZtLWnb/",
+    "sha256": ""
   },
   {
     "name": "杂项",
@@ -664,7 +760,10 @@
     "version": "v1.0",
     "author": "grew",
     "heat": "5.4万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Zh3Rj3GW/",
+    "sha256": ""
   },
   {
     "name": "超频模式",
@@ -685,7 +784,10 @@
     "version": "v1.6",
     "author": "PicoSpace",
     "heat": "9.1万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/S7OypZ4v/",
+    "sha256": ""
   },
   {
     "name": "助推器+",
@@ -706,7 +808,10 @@
     "version": "v1.6",
     "author": "PicoSpace",
     "heat": "8.7万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/vw4pbpdp/",
+    "sha256": ""
   },
   {
     "name": "额外现代运载火箭",
@@ -727,7 +832,10 @@
     "version": "v1.6.3",
     "author": "PicoSpace",
     "heat": "12.3万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/uy1MYdTS/",
+    "sha256": ""
   },
   {
     "name": "半真实着陆器引擎+",
@@ -748,7 +856,10 @@
     "version": "v1.6.1",
     "author": "PicoSpace",
     "heat": "7.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/cdIa87bl/",
+    "sha256": ""
   },
   {
     "name": "现成-星级",
@@ -769,7 +880,10 @@
     "version": "v1.0.0",
     "author": "Lemniscate Biscuit",
     "heat": "6.8万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/pNFFJ6O8/",
+    "sha256": ""
   },
   {
     "name": "通讯系统",
@@ -788,7 +902,10 @@
     "version": "Beta6",
     "author": "Lemniscate Biscuit",
     "heat": "4.2万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/UL3kQ8bf/",
+    "sha256": ""
   },
   {
     "name": "新曙光",
@@ -809,7 +926,10 @@
     "version": "v0.1.1.2",
     "author": "QMSP",
     "heat": "5.9万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/olw8Xsh8/",
+    "sha256": ""
   },
   {
     "name": "RL10复刻版",
@@ -830,7 +950,10 @@
     "version": "v1.6",
     "author": "Lemniscate Biscuit",
     "heat": "13.1万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/r0C3GqAU/",
+    "sha256": ""
   },
   {
     "name": "探索者终极套装",
@@ -851,7 +974,10 @@
     "version": "v1.0.3",
     "author": "QMSP",
     "heat": "16.4万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/KHJtb9t1/",
+    "sha256": ""
   },
   {
     "name": "隔热砖",
@@ -871,7 +997,10 @@
     "version": "v1.0",
     "author": "NeptuneSky",
     "heat": "5.1万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/YGLusk7Q/",
+    "sha256": ""
   },
   {
     "name": "霍比特核引擎Fix",
@@ -891,7 +1020,10 @@
     "version": "v1.0",
     "author": "Hopiter",
     "heat": "19.8万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/PU5I33IL/",
+    "sha256": ""
   },
   {
     "name": "激光 大炮 核弹",
@@ -912,7 +1044,10 @@
     "version": "v1.0",
     "author": "Gunno",
     "heat": "25.6万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Ju2UdtiI/",
+    "sha256": ""
   },
   {
     "name": "lurins的东西",
@@ -933,7 +1068,10 @@
     "version": "v1.0",
     "author": "Lurin",
     "heat": "8.3万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/RPCbhwj9/",
+    "sha256": ""
   },
   {
     "name": "Mac的原版风格发动机",
@@ -952,7 +1090,10 @@
     "version": "v1.0.5",
     "author": "Mac",
     "heat": "11.7万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/F7aAFdtA/",
+    "sha256": ""
   },
   {
     "name": "米勒的新增内容",
@@ -971,7 +1112,10 @@
     "version": "v1.01",
     "author": "Miller",
     "heat": "7.4万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/wdEmdkT5/",
+    "sha256": ""
   },
   {
     "name": "奇异果引擎",
@@ -990,7 +1134,10 @@
     "version": "v1.4",
     "author": "jaconos",
     "heat": "9.9万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/7zEh7enq/",
+    "sha256": ""
   },
   {
     "name": "路虎",
@@ -1009,7 +1156,10 @@
     "version": "v1.0.1",
     "author": "Defender",
     "heat": "17.2万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/IEoqTiFJ/",
+    "sha256": ""
   },
   {
     "name": "战斧火箭+SpaceX引擎+部件",
@@ -1028,7 +1178,10 @@
     "version": "v1.0",
     "author": "ARHLOE",
     "heat": "20.1万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Z166UQM2/",
+    "sha256": ""
   },
   {
     "name": "霍皮特的空间站与基地部件Fix",
@@ -1047,7 +1200,10 @@
     "version": "v1.0",
     "author": "Hopiter",
     "heat": "10.3万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/fkZezupW/",
+    "sha256": ""
   },
   {
     "name": "海王星的模仿者",
@@ -1066,7 +1222,10 @@
     "version": "v1.0",
     "author": "Neptune",
     "heat": "8.8万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/6uuGN5ew/",
+    "sha256": ""
   },
   {
     "name": "海王星的杂项",
@@ -1085,7 +1244,10 @@
     "version": "v1.0",
     "author": "Neptune",
     "heat": "6.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/aUWFmZ9F/",
+    "sha256": ""
   },
   {
     "name": "圆周率引擎",
@@ -1104,7 +1266,10 @@
     "version": "v1.0",
     "author": "QMSP",
     "heat": "13.3万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/bRrkd5a1/",
+    "sha256": ""
   },
   {
     "name": "真实对接口",
@@ -1123,7 +1288,10 @@
     "version": "v1.0",
     "author": "RealDock",
     "heat": "7.1万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/iKdXkcuf/",
+    "sha256": ""
   },
   {
     "name": "物理零件",
@@ -1142,7 +1310,10 @@
     "version": "v1.0",
     "author": "Wave",
     "heat": "9.4万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Wkm1wBXJ/",
+    "sha256": ""
   },
   {
     "name": "未来科技&星舰",
@@ -1161,7 +1332,10 @@
     "version": "v1.0",
     "author": "rtfg",
     "heat": "15.7万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/BG5ahhe3/",
+    "sha256": ""
   },
   {
     "name": "万福玛丽亚",
@@ -1180,7 +1354,10 @@
     "version": "v1.0",
     "author": "Maria",
     "heat": "8.2万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/1QCd8Awu/",
+    "sha256": ""
   },
   {
     "name": "立方星",
@@ -1199,7 +1376,10 @@
     "version": "v1.0",
     "author": "PicoSpace",
     "heat": "7.6万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/aW4RR9Tn/",
+    "sha256": ""
   },
   {
     "name": "近-远未来科技",
@@ -1218,7 +1398,10 @@
     "version": "v1.0",
     "author": "NearFar",
     "heat": "12.8万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/k26luK4f/",
+    "sha256": ""
   },
   {
     "name": "等离子与离子推进技术",
@@ -1237,7 +1420,10 @@
     "version": "v1.0",
     "author": "TSS XingYi",
     "heat": "14.4万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/zsDMdgJK/",
+    "sha256": ""
   },
   {
     "name": "ShareSpace巨型包",
@@ -1256,7 +1442,10 @@
     "version": "v1.0",
     "author": "ShareSpace",
     "heat": "5.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/XFsMoI2n/",
+    "sha256": ""
   },
   {
     "name": "SDSA",
@@ -1275,7 +1464,10 @@
     "version": "v1.0",
     "author": "SDSA",
     "heat": "4.8万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/z1BIA1Vw/",
+    "sha256": ""
   },
   {
     "name": "QMSP的机械",
@@ -1294,7 +1486,10 @@
     "version": "v1.0",
     "author": "QMSP",
     "heat": "6.7万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/dV4aqMCh/",
+    "sha256": ""
   },
   {
     "name": "AEPCont.1.4 AEP续集",
@@ -1313,7 +1508,10 @@
     "version": "v1.4",
     "author": "Lemniscate Biscuit",
     "heat": "9.0万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/tEJVLJK8/",
+    "sha256": ""
   },
   {
     "name": "ACEv2.0 低温发动机",
@@ -1332,7 +1530,10 @@
     "version": "v2.0",
     "author": "Lemniscate Biscuit",
     "heat": "10.2万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/ZlEY7jEi/",
+    "sha256": ""
   },
   {
     "name": "星舰涂装包",
@@ -1353,7 +1554,10 @@
     "version": "v1.0",
     "author": "Model",
     "heat": "22.3万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/JREUuNJ8/",
+    "sha256": ""
   },
   {
     "name": "最大的涂装包",
@@ -1372,7 +1576,10 @@
     "version": "v1.0",
     "author": "TYavaJ",
     "heat": "18.9万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/Z9cDOt8T/",
+    "sha256": ""
   },
   {
     "name": "中国航天标志合集",
@@ -1391,7 +1598,10 @@
     "version": "v1.0",
     "author": "CN_UwU",
     "heat": "16.7万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/zakj1jZ7/",
+    "sha256": ""
   },
   {
     "name": "国旗涂装包",
@@ -1412,7 +1622,10 @@
     "version": "v1.0",
     "author": "Frostblue44",
     "heat": "12.1万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/1BMDUkUk/",
+    "sha256": ""
   },
   {
     "name": "高清涂装包",
@@ -1433,7 +1646,10 @@
     "version": "v1.0",
     "author": "SFS-Gamer",
     "heat": "14.5万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/z5Rlc2n7/",
+    "sha256": ""
   },
   {
     "name": "金属符号涂装",
@@ -1454,6 +1670,9 @@
     "version": "v1.0",
     "author": "Dr. Stark Miller",
     "heat": "11.3万",
-    "compat": "1.6.00.3+"
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/221192eC/",
+    "sha256": ""
   }
 ]

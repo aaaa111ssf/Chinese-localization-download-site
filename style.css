@@ -3691,3 +3691,35 @@ body.dark-mode .settings-toggle input:checked + .settings-toggle-slider::before 
     background: #10131c;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.72);
 }
+
+/* 下载方式选择在窄抽屉内独立换行，保持模式说明完整可读。 */
+.settings-download-mode {
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.download-mode-selector {
+    min-width: 276px;
+}
+.download-mode-selector .style-btn {
+    flex: 1;
+    white-space: nowrap;
+    padding-inline: 8px;
+}
+.download-mode-note {
+    width: 100%;
+    margin: -2px 0 0;
+    color: #596173;
+    font-size: 0.76rem;
+    line-height: 1.55;
+}
+body.dark-mode .download-mode-note {
+    color: #bcc4d5;
+}
+@media (max-width: 420px) {
+    .settings-download-mode .settings-item-left {
+        width: 100%;
+    }
+    .download-mode-selector {
+        width: 100%;
+    }
+}
