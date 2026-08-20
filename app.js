@@ -262,6 +262,7 @@
             const SITE_SETTINGS_KEY = 'sfs_site_settings';
             const INSTALLER_SCHEME = 'sfsmodinstaller://install';
             const INSTALLER_DIRECT_HOSTS = ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org'];
+            let downloadNavigationLockedUntil = 0;
 
             function getDownloadMode() {
                 try {
@@ -328,8 +329,13 @@
             window.handleModDownload = function(index, event) {
                 if (event) {
                     event.preventDefault();
+                    event.stopImmediatePropagation();
                     event.stopPropagation();
                 }
+                const now = Date.now();
+                if (now < downloadNavigationLockedUntil) return false;
+                // 同一点击在浏览器、卡片父级或内联事件中重复传播时，只允许第一条路径执行。
+                downloadNavigationLockedUntil = now + 1200;
                 const file = files[index];
                 if (!file) return false;
                 const mode = getDownloadMode();
@@ -761,7 +767,7 @@
                 ];
                 const detailInfoHtml = detailInfo.map(([iconName, label, value]) => `<span class="detail-info-item">${svgIcon(iconName)}<span><b>${label}</b>${escapeHtml(value)}</span></span>`).join('');
 
-                const firstImage = validImages.length > 0 
+                const firstImage = validImages.length > 0
                     ? `<img data-src="${escapeHtml(validImages[0])}" alt="${escapeHtml(file.name||'模组')}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" loading="lazy" decoding="async" onerror="handleImgError(this)" onload="handleImgLoad(this)">`
                     : `<div style="height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;"><div class="card-image-fallback"><span class="fallback-icon">${svgIcon(icon)}</span><span class="fallback-text">暂无预览</span></div></div>`;
 
