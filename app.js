@@ -1246,6 +1246,8 @@
                 cardGap: 20,
                 cardOpacity: 100,
                 accentColor: '#111111',
+                colorTheme: 'solid',
+                titleGradient: true,
                 backgroundStyle: 'grid',
                 backgroundImage: '',
                 downloadMode: 'direct'
@@ -1350,6 +1352,7 @@
 
             const darkModeToggle = document.getElementById('settingDarkMode');
             const animationsToggle = document.getElementById('settingAnimations');
+            const titleGradientToggle = document.getElementById('settingTitleGradient');
             const compactToggle = document.getElementById('settingCompact');
             const lazyLoadToggle = document.getElementById('settingLazyLoad');
             const cardWidthSlider = document.getElementById('settingCardWidth');
@@ -1370,6 +1373,15 @@
             const accentColorInput = document.getElementById('settingAccentColor');
             const accentColorValue = document.getElementById('accentColorValue');
             const accentColorDesc = document.getElementById('accentColorDesc');
+            const customPaletteItem = document.getElementById('customPaletteItem');
+            const customPaletteDesc = document.getElementById('customPaletteDesc');
+            const customColorPicker = document.getElementById('customColorPicker');
+            const customColorPreview = document.getElementById('customColorPreview');
+            const customHexInput = document.getElementById('customHexInput');
+            const colorSurface = document.getElementById('colorSurface');
+            const colorSurfaceThumb = document.getElementById('colorSurfaceThumb');
+            const hueSlider = document.getElementById('hueSlider');
+            const themePresetRow = document.getElementById('themePresetRow');
             const backgroundStyleSelector = document.getElementById('backgroundStyleSelector');
             const backgroundImageInput = document.getElementById('settingBackgroundImage');
             const clearBackgroundImageBtn = document.getElementById('clearBackgroundImage');
@@ -1392,6 +1404,31 @@
                 const b = parseInt(value.slice(4, 6), 16);
                 return (r * 0.299 + g * 0.587 + b * 0.114) > 176 ? '#111111' : '#FFFFFF';
             }
+            function hexToHsv(hex) {
+                const value = normalizeAccentColor(hex).slice(1);
+                const rgb = [0, 2, 4].map(offset => parseInt(value.slice(offset, offset + 2), 16) / 255);
+                const max = Math.max(...rgb);
+                const min = Math.min(...rgb);
+                const delta = max - min;
+                let hue = 0;
+                if (delta) {
+                    if (max === rgb[0]) hue = 60 * (((rgb[1] - rgb[2]) / delta) % 6);
+                    else if (max === rgb[1]) hue = 60 * ((rgb[2] - rgb[0]) / delta + 2);
+                    else hue = 60 * ((rgb[0] - rgb[1]) / delta + 4);
+                }
+                return {
+                    h: (hue + 360) % 360,
+                    s: max === 0 ? 0 : (delta / max) * 100,
+                    v: max * 100
+                };
+            }
+            function hsvToHex(h, s, v) {
+                const chroma = (v / 100) * (s / 100);
+                const x = chroma * (1 - Math.abs((h / 60) % 2 - 1));
+                const m = v / 100 - chroma;
+                const channels = h < 60 ? [chroma, x, 0] : h < 120 ? [x, chroma, 0] : h < 180 ? [0, chroma, x] : h < 240 ? [0, x, chroma] : h < 300 ? [x, 0, chroma] : [chroma, 0, x];
+                return '#' + channels.map(channel => Math.round((channel + m) * 255).toString(16).padStart(2, '0')).join('').toUpperCase();
+            }
             function hasCustomBackgroundImage() {
                 return typeof settings.backgroundImage === 'string' && settings.backgroundImage.startsWith('data:image/');
             }
@@ -1401,11 +1438,14 @@
                 const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
                 const imageColorLocked = activeBackground === 'image';
                 const colorAdjustmentLocked = Boolean(settings.darkMode || imageColorLocked);
+                const rainbowActive = settings.colorTheme === 'rainbow' && !colorAdjustmentLocked;
                 // 深色模式和图片背景均使用中性色，避免已保存的高饱和主题色破坏阅读对比。
-                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : selectedAccent;
+                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : rainbowActive ? '#7C3AED' : selectedAccent;
                 settings.accentColor = selectedAccent;
                 document.documentElement.style.setProperty('--site-accent', activeAccent);
                 document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(activeAccent));
+                document.body.classList.toggle('rainbow-theme', rainbowActive);
+                document.body.classList.toggle('title-gradient-disabled', !settings.titleGradient);
                 document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
                     meta.content = settings.darkMode ? '#0D0D0D' : activeAccent;
                 });
@@ -1415,6 +1455,33 @@
                 accentColorItem.classList.toggle('is-disabled', colorAdjustmentLocked);
                 accentColorItem.classList.toggle('is-image-locked', imageColorLocked);
                 accentColorControl.setAttribute('aria-disabled', String(colorAdjustmentLocked));
+                titleGradientToggle.checked = Boolean(settings.titleGradient);
+                customPaletteItem.classList.toggle('is-disabled', colorAdjustmentLocked);
+                customColorPicker.setAttribute('aria-disabled', String(colorAdjustmentLocked));
+                customHexInput.disabled = colorAdjustmentLocked;
+                hueSlider.disabled = colorAdjustmentLocked;
+                const hsv = hexToHsv(selectedAccent);
+                colorSurface.style.setProperty('--picker-hue', String(Math.round(hsv.h)));
+                colorSurfaceThumb.style.left = hsv.s + '%';
+                colorSurfaceThumb.style.top = (100 - hsv.v) + '%';
+                colorSurface.setAttribute('aria-valuetext', `饱和度 ${Math.round(hsv.s)}%，明度 ${Math.round(hsv.v)}%`);
+                hueSlider.value = String(Math.round(hsv.h));
+                customHexInput.value = selectedAccent;
+                customColorPreview.style.background = rainbowActive ? 'linear-gradient(135deg, #ff4d6d, #ffbe0b, #00c853, #00b4d8, #7b2cbf)' : selectedAccent;
+                customPaletteDesc.textContent = colorAdjustmentLocked
+                    ? (settings.darkMode ? '黑夜模式下已锁定为高对比配色' : '图片背景下已锁定为中性色')
+                    : rainbowActive ? '彩虹配色已启用；点选其他色块可切回单色主题' : '无需浏览器系统取色器，拖动即可选择颜色';
+                const activePreset = rainbowActive
+                    ? 'rainbow'
+                    : settings.colorTheme === 'solid' && selectedAccent === '#111111'
+                        ? 'ink'
+                        : settings.colorTheme;
+                themePresetRow.querySelectorAll('[data-theme-preset]').forEach(btn => {
+                    const active = btn.dataset.themePreset === activePreset;
+                    btn.classList.toggle('active', active);
+                    btn.setAttribute('aria-checked', String(active));
+                    btn.disabled = colorAdjustmentLocked;
+                });
                 accentColorDesc.textContent = settings.darkMode
                     ? '黑夜模式下已锁定为高对比配色；切回浅色模式后可调整'
                     : imageColorLocked
@@ -1580,6 +1647,7 @@
             function saveAccentColor(value) {
                 if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
                 settings.accentColor = normalizeAccentColor(value);
+                settings.colorTheme = 'solid';
                 saveSettings(settings);
                 applySettings();
             }
@@ -1614,6 +1682,57 @@
             accentColorControl.addEventListener('click', openAccentColorPicker);
             accentColorControl.addEventListener('keydown', function(event) {
                 if (event.key === 'Enter' || event.key === ' ') openAccentColorPicker(event);
+            });
+
+            function updateCustomColorFromSurface(clientX, clientY) {
+                if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
+                const rect = colorSurface.getBoundingClientRect();
+                const saturation = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+                const brightness = Math.max(0, Math.min(100, (1 - (clientY - rect.top) / rect.height) * 100));
+                saveAccentColor(hsvToHex(Number(hueSlider.value), saturation, brightness));
+            }
+            colorSurface.addEventListener('pointerdown', function(event) {
+                event.preventDefault();
+                colorSurface.setPointerCapture(event.pointerId);
+                updateCustomColorFromSurface(event.clientX, event.clientY);
+            });
+            colorSurface.addEventListener('pointermove', function(event) {
+                if (colorSurface.hasPointerCapture(event.pointerId)) updateCustomColorFromSurface(event.clientX, event.clientY);
+            });
+            colorSurface.addEventListener('keydown', function(event) {
+                const hsv = hexToHsv(settings.accentColor);
+                const step = event.shiftKey ? 10 : 2;
+                if (event.key === 'ArrowLeft') hsv.s -= step;
+                else if (event.key === 'ArrowRight') hsv.s += step;
+                else if (event.key === 'ArrowUp') hsv.v += step;
+                else if (event.key === 'ArrowDown') hsv.v -= step;
+                else return;
+                event.preventDefault();
+                saveAccentColor(hsvToHex(Number(hueSlider.value), Math.max(0, Math.min(100, hsv.s)), Math.max(0, Math.min(100, hsv.v))));
+            });
+            hueSlider.addEventListener('input', function() {
+                const hsv = hexToHsv(settings.accentColor);
+                saveAccentColor(hsvToHex(Number(this.value), hsv.s, hsv.v));
+            });
+            customHexInput.addEventListener('change', function() {
+                const candidate = String(this.value || '').trim();
+                if (/^#[0-9a-f]{6}$/i.test(candidate)) saveAccentColor(candidate);
+                else {
+                    this.value = normalizeAccentColor(settings.accentColor);
+                    toast('请输入 #RRGGBB 格式的颜色，例如 #2563EB');
+                }
+            });
+            customHexInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') this.blur();
+            });
+            themePresetRow.querySelectorAll('[data-theme-preset]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
+                    settings.accentColor = normalizeAccentColor(this.dataset.color);
+                    settings.colorTheme = this.dataset.themePreset === 'rainbow' ? 'rainbow' : this.dataset.themePreset;
+                    saveSettings(settings);
+                    applySettings();
+                });
             });
 
             backgroundStyleSelector.querySelectorAll('.background-style-btn').forEach(btn => {
@@ -1670,6 +1789,12 @@
 
             animationsToggle.addEventListener('change', function() {
                 settings.animations = this.checked;
+                saveSettings(settings);
+                applySettings();
+            });
+
+            titleGradientToggle.addEventListener('change', function() {
+                settings.titleGradient = this.checked;
                 saveSettings(settings);
                 applySettings();
             });

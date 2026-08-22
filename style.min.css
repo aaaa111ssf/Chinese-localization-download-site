@@ -3111,6 +3111,155 @@ body.dark-mode .background-style-selector,
 body.dark-mode .background-upload-btn,
 body.dark-mode .background-clear-btn { background: #1c1c2e; border-color: #2a2a4a; color: #aaa; }
 body.dark-mode .background-upload-btn { color: #ddd; border-color: #555; }
+
+/* 不依赖浏览器原生 <input type=color> 的自定义调色盘。 */
+.custom-palette-item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+}
+.custom-palette-heading { width: 100%; }
+.custom-color-picker {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+    touch-action: none;
+}
+.custom-color-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.color-preview-swatch {
+    width: 38px;
+    height: 34px;
+    flex: 0 0 auto;
+    border: 2px solid #fff;
+    outline: 1px solid #d9dee7;
+    border-radius: 9px;
+    background: #111;
+    cursor: default;
+}
+.custom-hex-input {
+    min-width: 0;
+    width: 100%;
+    height: 34px;
+    border: 1px solid #d9dee7;
+    border-radius: 9px;
+    padding: 0 10px;
+    background: #fff;
+    color: #252525;
+    font: 700 0.84rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+.custom-hex-input:focus { border-color: var(--site-accent); outline: 2px solid color-mix(in srgb, var(--site-accent) 22%, transparent); }
+.color-surface {
+    position: relative;
+    width: 100%;
+    height: 148px;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: crosshair;
+    background:
+        linear-gradient(to top, #000, transparent),
+        linear-gradient(to right, #fff, hsl(var(--picker-hue, 0) 100% 50%));
+    touch-action: none;
+}
+.color-surface-thumb {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.38), 0 1px 3px rgba(0,0,0,.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+.hue-slider {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 12px;
+    margin: 12px 0 10px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+    outline: none;
+}
+.hue-slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 19px;
+    height: 19px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.38), 0 1px 3px rgba(0,0,0,.25);
+}
+.hue-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.38), 0 1px 3px rgba(0,0,0,.25);
+}
+.theme-preset-row {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+}
+.theme-preset-swatch {
+    position: relative;
+    aspect-ratio: 1;
+    min-height: 32px;
+    border: 2px solid #fff;
+    outline: 1px solid #d9dee7;
+    border-radius: 50%;
+    cursor: pointer;
+    background: #111;
+    transition: transform 140ms ease-out, outline-color 140ms ease-out;
+}
+.theme-preset-swatch:hover { transform: translateY(-1px); }
+.theme-preset-swatch:active { transform: scale(.94); }
+.theme-preset-swatch.active { outline: 3px solid var(--site-accent); outline-offset: 2px; }
+.theme-preset-swatch:nth-child(1) { background: #111111; }
+.theme-preset-swatch:nth-child(2) { background: #0F766E; }
+.theme-preset-swatch:nth-child(3) { background: #2563EB; }
+.theme-preset-swatch:nth-child(4) { background: #7C3AED; }
+.theme-preset-swatch:nth-child(5) { background: #DB2777; }
+.theme-preset-swatch:nth-child(6) { background: #EA580C; }
+.theme-preset-swatch.rainbow-preset-swatch { background: conic-gradient(#ff4d6d, #ffbe0b, #00c853, #00b4d8, #7b2cbf, #ff4d6d); }
+.custom-palette-item.is-disabled { opacity: .62; }
+.custom-color-picker[aria-disabled="true"] { filter: grayscale(.92); }
+.custom-color-picker[aria-disabled="true"] .color-surface { cursor: not-allowed; }
+.custom-color-picker button:disabled,
+.custom-color-picker input:disabled { cursor: not-allowed; }
+body.dark-mode .custom-color-picker { background: #171724; border-color: #303044; }
+body.dark-mode .custom-hex-input { background: #10101a; border-color: #303044; color: #e2e2ee; }
+body.title-gradient-disabled .header h1 {
+    background: var(--site-accent) !important;
+    background-size: auto !important;
+    animation: none !important;
+}
+body.rainbow-theme:not(.title-gradient-disabled) .header h1 {
+    background: linear-gradient(90deg, #ff4d6d, #ffbe0b, #00c853, #00b4d8, #7b2cbf, #ff4d6d) !important;
+    background-size: 300% 100% !important;
+    animation: titleGradient 10s ease infinite !important;
+}
+body.rainbow-theme .top-nav .nav-item.active,
+body.rainbow-theme .dropdown-item.active,
+body.rainbow-theme .search-btn,
+body.rainbow-theme .card-actions .btn-download,
+body.rainbow-theme .detail-btn-primary,
+body.rainbow-theme .settings-reset-btn {
+    background: linear-gradient(110deg, #ff4d6d, #ffbe0b, #00b4d8, #7b2cbf) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
 @media (max-width: 520px) {
     body.background-grid { background-size: 24px 24px; }
     .custom-background-item,
@@ -3120,6 +3269,9 @@ body.dark-mode .background-upload-btn { color: #ddd; border-color: #555; }
     .background-style-btn,
     .background-upload-btn,
     .background-clear-btn { flex: 1; }
+    .custom-color-picker { padding: 9px; }
+    .color-surface { height: 134px; }
+    .theme-preset-row { gap: 7px; }
 }
 
 /* ============================================
@@ -3599,6 +3751,85 @@ body:not(.dark-mode) .settings-float-btn:hover svg { fill: currentColor; }
 body:not(.dark-mode) .announce-float-btn .announce-badge { background: var(--site-accent); }
 body:not(.dark-mode) .settings-slider {
     background: var(--site-surface-border);
+}
+
+/* 液体玻璃：不支持 backdrop-filter 的浏览器继续使用上方不透明主题表面。 */
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    body:not(.dark-mode) .settings-panel,
+    body:not(.dark-mode) .announce-panel,
+    body:not(.dark-mode) .sponsor-modal-box {
+        background: linear-gradient(145deg, rgba(255,255,255,.82), rgba(248,250,252,.64)) !important;
+        border-color: rgba(255,255,255,.78) !important;
+        box-shadow: -18px 0 48px rgba(15,23,42,.13), inset 0 1px 0 rgba(255,255,255,.88);
+        -webkit-backdrop-filter: blur(22px) saturate(145%);
+        backdrop-filter: blur(22px) saturate(145%);
+    }
+    body:not(.dark-mode) .settings-item,
+    body:not(.dark-mode) .announce-item,
+    body:not(.dark-mode) .sponsor-image-item {
+        background: linear-gradient(135deg, rgba(255,255,255,.70), rgba(255,255,255,.48)) !important;
+        border-color: rgba(255,255,255,.74) !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 8px 18px rgba(15,23,42,.045);
+        -webkit-backdrop-filter: blur(12px) saturate(135%);
+        backdrop-filter: blur(12px) saturate(135%);
+    }
+    body:not(.dark-mode) .settings-float-btn,
+    body:not(.dark-mode) .announce-float-btn,
+    body:not(.dark-mode) .sponsor-float-btn,
+    body:not(.dark-mode) .back-to-top-btn,
+    body:not(.dark-mode) .settings-panel-close,
+    body:not(.dark-mode) .announce-close-btn {
+        background: rgba(255,255,255,.64) !important;
+        border-color: rgba(255,255,255,.86) !important;
+        box-shadow: 0 10px 26px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.92);
+        -webkit-backdrop-filter: blur(14px) saturate(150%);
+        backdrop-filter: blur(14px) saturate(150%);
+    }
+    body:not(.dark-mode) .settings-item:hover,
+    body:not(.dark-mode) .announce-item:hover {
+        background: linear-gradient(135deg, rgba(255,255,255,.88), rgba(255,255,255,.62)) !important;
+        box-shadow: 0 12px 28px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.92);
+    }
+    body.dark-mode .settings-panel,
+    body.dark-mode .announce-panel,
+    body.dark-mode .sponsor-modal-box {
+        background: linear-gradient(145deg, rgba(24,24,35,.86), rgba(13,13,20,.70)) !important;
+        border-color: rgba(255,255,255,.11) !important;
+        box-shadow: -18px 0 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.07);
+        -webkit-backdrop-filter: blur(22px) saturate(120%);
+        backdrop-filter: blur(22px) saturate(120%);
+    }
+    body.dark-mode .settings-item,
+    body.dark-mode .announce-item,
+    body.dark-mode .sponsor-image-item {
+        background: linear-gradient(135deg, rgba(40,40,56,.72), rgba(23,23,34,.62)) !important;
+        border-color: rgba(255,255,255,.08) !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 8px 18px rgba(0,0,0,.15);
+        -webkit-backdrop-filter: blur(12px) saturate(115%);
+        backdrop-filter: blur(12px) saturate(115%);
+    }
+    body.dark-mode .settings-float-btn,
+    body.dark-mode .announce-float-btn,
+    body.dark-mode .sponsor-float-btn,
+    body.dark-mode .back-to-top-btn,
+    body.dark-mode .settings-panel-close,
+    body.dark-mode .announce-close-btn {
+        background: rgba(28,28,42,.70) !important;
+        border-color: rgba(255,255,255,.12) !important;
+        box-shadow: 0 10px 26px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.08);
+        -webkit-backdrop-filter: blur(14px) saturate(120%);
+        backdrop-filter: blur(14px) saturate(120%);
+    }
+}
+@media (max-width: 480px) {
+    @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+        .settings-panel,
+        .announce-panel,
+        .sponsor-modal-box { -webkit-backdrop-filter: blur(16px) saturate(130%); backdrop-filter: blur(16px) saturate(130%); }
+        .settings-item,
+        .announce-item,
+        .sponsor-image-item { -webkit-backdrop-filter: blur(8px) saturate(120%); backdrop-filter: blur(8px) saturate(120%); }
+    }
 }
 
 /* 列表模式：桌面端将详情与下载改为纵向完整操作，避免窄侧栏裁切文字。 */
