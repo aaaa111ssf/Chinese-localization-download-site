@@ -3011,6 +3011,36 @@ body.dark-mode.background-grid {
 body.dark-mode.background-image {
     background-image: linear-gradient(rgb(13 13 13 / var(--background-image-overlay)), rgb(13 13 13 / var(--background-image-overlay))), var(--custom-background-image);
 }
+/* 彩虹预设只给背景贴图上色；所有按钮、标题和表面继续使用紫色主题变量。 */
+body.rainbow-theme:not(.dark-mode).background-image {
+    background-image:
+        linear-gradient(rgb(245 247 251 / var(--background-image-overlay)), rgb(245 247 251 / var(--background-image-overlay))),
+        linear-gradient(128deg, rgba(255, 77, 109, .42), rgba(255, 190, 11, .30), rgba(0, 200, 83, .28), rgba(0, 180, 216, .30), rgba(123, 44, 191, .38)),
+        var(--custom-background-image);
+    background-size: cover, cover, var(--custom-background-fit);
+    background-position: center, center, center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-attachment: fixed, fixed, fixed;
+}
+body.rainbow-theme .top-nav .nav-item.active,
+body.rainbow-theme .dropdown-item.active,
+body.rainbow-theme .search-btn,
+body.rainbow-theme .card-actions .btn-download,
+body.rainbow-theme .detail-btn-primary,
+body.rainbow-theme .load-error-retry,
+body.rainbow-theme .settings-reset-btn,
+body.rainbow-theme .dl-tab.active,
+body.rainbow-theme .style-btn.active,
+body.rainbow-theme .background-style-btn.active,
+body.rainbow-theme .background-source-btn.active,
+body.rainbow-theme .background-fit-btn.active,
+body.rainbow-theme .settings-toggle input:checked + .settings-toggle-slider {
+    background: linear-gradient(110deg, #ff4d6d, #ffbe0b, #00c853, #00b4d8, #7b2cbf) !important;
+    background-size: 240% 100% !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+body.rainbow-theme .theme-preset-swatch.active { outline-color: #ff4d6d; }
 .top-nav .nav-item.active,
 .dropdown-item.active,
 .search-btn,

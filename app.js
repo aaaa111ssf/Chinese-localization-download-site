@@ -1506,16 +1506,16 @@
                 const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
                 const imageColorLocked = activeBackground === 'image';
                 const colorAdjustmentLocked = Boolean(settings.darkMode || imageColorLocked);
-                const rainbowActive = settings.colorTheme === 'rainbow' && !colorAdjustmentLocked;
+                const rainbowThemeActive = settings.colorTheme === 'rainbow' && !colorAdjustmentLocked;
                 // 深色模式和图片背景均使用中性色，避免已保存的高饱和主题色破坏阅读对比。
-                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : selectedAccent;
+                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : rainbowThemeActive ? '#7C3AED' : selectedAccent;
                 settings.accentColor = selectedAccent;
                 document.documentElement.style.setProperty('--site-accent', activeAccent);
                 document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(activeAccent));
-                document.body.classList.toggle('rainbow-theme', rainbowActive);
+                document.body.classList.toggle('rainbow-theme', rainbowThemeActive);
                 document.body.classList.toggle('title-gradient-disabled', !settings.titleGradient);
                 document.body.classList.toggle('liquid-glass', Boolean(settings.liquidGlass));
-                renderRainbowTitle(rainbowActive && settings.titleGradient);
+                renderRainbowTitle(rainbowThemeActive && settings.titleGradient);
                 document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
                     meta.content = settings.darkMode ? '#0D0D0D' : activeAccent;
                 });
@@ -1538,11 +1538,11 @@
                 colorSurface.setAttribute('aria-valuetext', `饱和度 ${Math.round(hsv.s)}%，明度 ${Math.round(hsv.v)}%`);
                 hueSlider.value = String(Math.round(hsv.h));
                 customHexInput.value = selectedAccent;
-                customColorPreview.style.background = rainbowActive ? 'linear-gradient(135deg, #ff4d6d, #ffbe0b, #00c853, #00b4d8, #7b2cbf)' : selectedAccent;
+                customColorPreview.style.background = rainbowThemeActive ? 'linear-gradient(135deg, #ff4d6d, #ffbe0b, #00c853, #00b4d8, #7b2cbf)' : selectedAccent;
                 customPaletteDesc.textContent = colorAdjustmentLocked
                     ? (settings.darkMode ? '黑夜模式下已锁定为高对比配色' : '图片背景下已锁定为中性色')
-                    : rainbowActive ? '彩虹配色已启用；点选其他色块可切回单色主题' : '无需浏览器系统取色器，拖动即可选择颜色';
-                const activePreset = rainbowActive
+                    : rainbowThemeActive ? '全站彩虹主题已启用；标题、主按钮和选中状态统一使用彩虹配色' : '无需浏览器系统取色器，拖动即可选择颜色';
+                const activePreset = rainbowThemeActive
                     ? 'rainbow'
                     : settings.colorTheme === 'solid' && selectedAccent === '#111111'
                         ? 'ink'
