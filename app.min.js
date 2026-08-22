@@ -267,7 +267,7 @@
             function getDownloadMode() {
                 try {
                     const saved = JSON.parse(localStorage.getItem(SITE_SETTINGS_KEY) || '{}');
-                    if (['direct', 'auto', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
+                    if (['direct', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
                     // 兼容旧版“手动”设置：旧手动下载即蓝奏云下载。
                     return saved.downloadMode === 'manual' ? 'lanzou' : 'direct';
                 } catch (e) {
@@ -311,7 +311,6 @@
             function getDownloadLabel(file, fallbackLabel) {
                 const mode = getDownloadMode();
                 const hasDirectLink = Boolean(getAutoInstallPayload(file));
-                if (mode === 'auto') return hasDirectLink ? (isAndroidBrowser() ? '自动安装' : '自动安装（仅 Android）') : '蓝奏云下载';
                 if (mode === 'direct') return hasDirectLink ? '直链下载' : '蓝奏云下载';
                 return '蓝奏云下载';
             }
@@ -1547,7 +1546,7 @@
                 lazyLoadToggle.checked = settings.lazyLoad;
 
                 // 下载方式
-                if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
+                if (!['direct', 'lanzou'].includes(settings.downloadMode)) {
                     settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
                 }
                 if (downloadModeSelector) {
@@ -1561,13 +1560,9 @@
                             desc: '从固定 HTTPS 直链直接下载 ZIP 文件',
                             note: '直链下载会在浏览器中直接获取文件；未配置安全直链的资源将回退到蓝奏云。'
                         },
-                        auto: {
-                            desc: '由安装助手下载、校验、解压并写入对应目录',
-                            note: '自动安装仅限 Android，需安装 SFS 汉化模组安装助手；不满足条件时回退到蓝奏云。'
-                        },
                         lanzou: {
                             desc: '打开原蓝奏云分享页后手动下载',
-                            note: '适用于未安装助手或希望使用原网盘下载方式的情况。'
+                            note: '自动安装正在制作中，敬请期待；当前可使用直链下载或蓝奏云下载。'
                         }
                     };
                     downloadModeDesc.textContent = messages[settings.downloadMode].desc;
@@ -1737,12 +1732,14 @@
 
             downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
                 btn.addEventListener('click', function() {
+                    if (this.dataset.downloadMode === 'auto') {
+                        toast('自动安装正在制作中，敬请期待');
+                        return;
+                    }
                     settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'direct';
                     saveSettings(settings);
                     applySettings();
-                    if (settings.downloadMode === 'auto') {
-                        toast('已选择自动安装，请确认已安装 SFS 汉化模组安装助手');
-                    } else if (settings.downloadMode === 'direct') {
+                    if (settings.downloadMode === 'direct') {
                         toast('已选择直链下载，将直接下载 ZIP 文件');
                     }
                 });

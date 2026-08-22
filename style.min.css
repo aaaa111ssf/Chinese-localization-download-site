@@ -3720,6 +3720,13 @@ body.dark-mode .settings-toggle input:checked + .settings-toggle-slider::before 
     white-space: nowrap;
     padding-inline: 6px;
 }
+.download-mode-selector .style-btn.is-coming-soon:disabled {
+    cursor: not-allowed;
+    opacity: 0.56;
+    color: var(--text-secondary, #6b7280);
+    background: var(--surface-muted, #f3f4f6);
+    border-style: dashed;
+}
 .download-mode-note {
     width: 100%;
     margin: -2px 0 0;
