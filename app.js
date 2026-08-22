@@ -1249,9 +1249,9 @@
                 colorTheme: 'solid',
                 titleGradient: true,
                 liquidGlass: false,
-                backgroundStyle: 'grid',
+                backgroundStyle: 'image',
                 backgroundImage: '',
-                backgroundSource: 'local',
+                backgroundSource: 'default',
                 backgroundFit: 'cover',
                 backgroundOverlay: 82,
                 downloadMode: 'direct'
@@ -1405,6 +1405,8 @@
             const downloadModeSelector = document.getElementById('downloadModeSelector');
             const downloadModeDesc = document.getElementById('downloadModeDesc');
             const downloadModeNote = document.getElementById('downloadModeNote');
+            const DEFAULT_DESKTOP_BACKGROUND = 'assets/backgrounds/default-desktop.webp';
+            const DEFAULT_MOBILE_BACKGROUND = 'assets/backgrounds/default-mobile.webp';
 
             function normalizeAccentColor(value) {
                 return /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value).toUpperCase() : DEFAULTS.accentColor;
@@ -1483,6 +1485,11 @@
             function hasCustomBackgroundImage() {
                 return Boolean(getSafeBackgroundImage(settings.backgroundImage));
             }
+            function getDefaultBackgroundPreviewUrl() {
+                return window.matchMedia('(max-width: 768px)').matches
+                    ? DEFAULT_MOBILE_BACKGROUND
+                    : DEFAULT_DESKTOP_BACKGROUND;
+            }
             function normalizeBackgroundFit(value) {
                 return value === 'contain' ? 'contain' : 'cover';
             }
@@ -1492,8 +1499,10 @@
             }
             function applyCustomStyle() {
                 const selectedAccent = normalizeAccentColor(settings.accentColor);
+                settings.backgroundSource = ['default', 'local', 'url'].includes(settings.backgroundSource) ? settings.backgroundSource : 'default';
                 const imageUrl = getSafeBackgroundImage(settings.backgroundImage);
-                const imageReady = Boolean(imageUrl);
+                const usesDefaultBackground = settings.backgroundSource === 'default';
+                const imageReady = usesDefaultBackground || Boolean(imageUrl);
                 const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
                 const imageColorLocked = activeBackground === 'image';
                 const colorAdjustmentLocked = Boolean(settings.darkMode || imageColorLocked);
@@ -1556,16 +1565,15 @@
                 document.documentElement.style.setProperty('--custom-background-fit', settings.backgroundFit);
                 document.documentElement.style.setProperty('--background-image-overlay', String(settings.backgroundOverlay / 100));
                 if (activeBackground === 'image') {
-                    const safeUrl = imageUrl.replace(/"/g, '%22');
-                    document.documentElement.style.setProperty('--custom-background-image', 'url("' + safeUrl + '")');
+                    const safeUrl = usesDefaultBackground ? 'var(--default-background-image)' : 'url("' + imageUrl.replace(/"/g, '%22') + '")';
+                    document.documentElement.style.setProperty('--custom-background-image', safeUrl);
                 } else {
                     document.documentElement.style.removeProperty('--custom-background-image');
                 }
                 backgroundStyleSelector.querySelectorAll('.background-style-btn').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.background === activeBackground);
                 });
-                clearBackgroundImageBtn.disabled = !imageReady;
-                settings.backgroundSource = settings.backgroundSource === 'url' ? 'url' : 'local';
+                clearBackgroundImageBtn.disabled = !imageReady || usesDefaultBackground;
                 backgroundSourceTabs.querySelectorAll('[data-background-source]').forEach(btn => {
                     const active = btn.dataset.backgroundSource === settings.backgroundSource;
                     btn.classList.toggle('active', active);
@@ -1573,16 +1581,21 @@
                 });
                 backgroundUrlRow.hidden = settings.backgroundSource !== 'url';
                 backgroundUrlInput.value = settings.backgroundSource === 'url' && imageReady ? imageUrl : '';
-                backgroundSourceDesc.textContent = settings.backgroundSource === 'url'
+                backgroundSourceDesc.textContent = settings.backgroundSource === 'default'
+                    ? '已按设备使用横屏或竖屏默认壁纸；可随时改为本地图片或链接'
+                    : settings.backgroundSource === 'url'
                     ? '仅接受公开 HTTPS 图片地址；提交前会检查图片能否加载'
-                    : '从本机选择 JPG、PNG 或 WebP 图片，建议不超过 1.5MB';
+                    : '从本机选择 JPG、PNG 或 WebP 图片；文件大小不再限制';
                 backgroundPreview.classList.toggle('has-image', imageReady);
-                backgroundPreview.style.backgroundImage = imageReady ? 'url("' + imageUrl.replace(/"/g, '%22') + '")' : '';
+                const previewUrl = usesDefaultBackground ? getDefaultBackgroundPreviewUrl() : imageUrl;
+                backgroundPreview.style.backgroundImage = imageReady ? 'url("' + previewUrl.replace(/"/g, '%22') + '")' : '';
                 backgroundPreview.style.backgroundSize = settings.backgroundFit;
                 backgroundPreviewEmpty.hidden = imageReady;
-                backgroundUploadStatus.textContent = imageReady
-                    ? (settings.backgroundSource === 'url' ? '当前使用 HTTPS 图片链接，可随时移除或改为本地图片' : '当前图片仅保存在此浏览器，可随时移除或更换')
-                    : '支持 JPG、PNG、WebP，建议不超过 1.5MB';
+                backgroundUploadStatus.textContent = usesDefaultBackground
+                    ? '当前使用设备适配的默认壁纸；本地图片文件大小不再限制'
+                    : imageReady
+                        ? (settings.backgroundSource === 'url' ? '当前使用 HTTPS 图片链接，可随时移除或改为本地图片' : '当前图片仅保存在此浏览器，可随时移除或更换')
+                        : '支持 JPG、PNG、WebP；文件大小不再限制';
                 backgroundFitSelector.querySelectorAll('[data-background-fit]').forEach(btn => {
                     const active = btn.dataset.backgroundFit === settings.backgroundFit;
                     btn.classList.toggle('active', active);
@@ -1829,7 +1842,7 @@
             backgroundStyleSelector.querySelectorAll('.background-style-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const nextStyle = this.dataset.background;
-                    if (nextStyle === 'image' && !hasCustomBackgroundImage()) {
+                    if (nextStyle === 'image' && settings.backgroundSource !== 'default' && !hasCustomBackgroundImage()) {
                         if (settings.backgroundSource === 'url') {
                             backgroundUrlInput.focus();
                             toast('请先粘贴公开 HTTPS 图片地址并点击“应用”');
@@ -1853,10 +1866,6 @@
                     toast('请选择 JPG、PNG 或 WebP 图片');
                     return;
                 }
-                if (file.size > 1.5 * 1024 * 1024) {
-                    toast('背景图片请控制在 1.5MB 以内');
-                    return;
-                }
                 const reader = new FileReader();
                 reader.onload = function() {
                     settings.backgroundImage = String(reader.result || '');
@@ -1872,16 +1881,20 @@
 
             clearBackgroundImageBtn.addEventListener('click', function() {
                 settings.backgroundImage = '';
-                settings.backgroundSource = 'local';
-                settings.backgroundStyle = 'grid';
+                settings.backgroundSource = 'default';
+                settings.backgroundStyle = 'image';
                 saveSettings(settings);
                 applySettings();
-                toast('已移除自定义背景图片');
+                toast('已恢复设备适配的默认壁纸');
             });
 
             backgroundSourceTabs.querySelectorAll('[data-background-source]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    settings.backgroundSource = this.dataset.backgroundSource === 'url' ? 'url' : 'local';
+                    settings.backgroundSource = ['default', 'url'].includes(this.dataset.backgroundSource) ? this.dataset.backgroundSource : 'local';
+                    if (settings.backgroundSource === 'default') {
+                        settings.backgroundImage = '';
+                        settings.backgroundStyle = 'image';
+                    }
                     saveSettings(settings);
                     applySettings();
                 });
