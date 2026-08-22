@@ -1248,8 +1248,12 @@
                 accentColor: '#111111',
                 colorTheme: 'solid',
                 titleGradient: true,
+                liquidGlass: false,
                 backgroundStyle: 'grid',
                 backgroundImage: '',
+                backgroundSource: 'local',
+                backgroundFit: 'cover',
+                backgroundOverlay: 82,
                 downloadMode: 'direct'
             };
 
@@ -1353,6 +1357,7 @@
             const darkModeToggle = document.getElementById('settingDarkMode');
             const animationsToggle = document.getElementById('settingAnimations');
             const titleGradientToggle = document.getElementById('settingTitleGradient');
+            const liquidGlassToggle = document.getElementById('settingLiquidGlass');
             const compactToggle = document.getElementById('settingCompact');
             const lazyLoadToggle = document.getElementById('settingLazyLoad');
             const cardWidthSlider = document.getElementById('settingCardWidth');
@@ -1382,10 +1387,21 @@
             const colorSurfaceThumb = document.getElementById('colorSurfaceThumb');
             const hueSlider = document.getElementById('hueSlider');
             const themePresetRow = document.getElementById('themePresetRow');
+            const siteTitle = document.querySelector('.header h1');
             const backgroundStyleSelector = document.getElementById('backgroundStyleSelector');
             const backgroundImageInput = document.getElementById('settingBackgroundImage');
             const clearBackgroundImageBtn = document.getElementById('clearBackgroundImage');
             const backgroundUploadStatus = document.getElementById('backgroundUploadStatus');
+            const backgroundSourceTabs = document.getElementById('backgroundSourceTabs');
+            const backgroundSourceDesc = document.getElementById('backgroundSourceDesc');
+            const backgroundUrlRow = document.getElementById('backgroundUrlRow');
+            const backgroundUrlInput = document.getElementById('settingBackgroundUrl');
+            const applyBackgroundUrlBtn = document.getElementById('applyBackgroundUrl');
+            const backgroundPreview = document.getElementById('backgroundPreview');
+            const backgroundPreviewEmpty = document.getElementById('backgroundPreviewEmpty');
+            const backgroundFitSelector = document.getElementById('backgroundFitSelector');
+            const backgroundOverlaySlider = document.getElementById('settingBackgroundOverlay');
+            const backgroundOverlayValue = document.getElementById('backgroundOverlayValue');
             const downloadModeSelector = document.getElementById('downloadModeSelector');
             const downloadModeDesc = document.getElementById('downloadModeDesc');
             const downloadModeNote = document.getElementById('downloadModeNote');
@@ -1429,23 +1445,68 @@
                 const channels = h < 60 ? [chroma, x, 0] : h < 120 ? [x, chroma, 0] : h < 180 ? [0, chroma, x] : h < 240 ? [0, x, chroma] : h < 300 ? [x, 0, chroma] : [chroma, 0, x];
                 return '#' + channels.map(channel => Math.round((channel + m) * 255).toString(16).padStart(2, '0')).join('').toUpperCase();
             }
+            function renderRainbowTitle(enabled) {
+                if (!siteTitle) return;
+                if (!siteTitle.dataset.plainTitle) siteTitle.dataset.plainTitle = siteTitle.textContent || '';
+                const plainTitle = siteTitle.dataset.plainTitle;
+                if (!enabled) {
+                    if (siteTitle.classList.contains('title-rainbow-text')) {
+                        siteTitle.textContent = plainTitle;
+                        siteTitle.classList.remove('title-rainbow-text');
+                    }
+                    return;
+                }
+                if (siteTitle.classList.contains('title-rainbow-text')) return;
+                const colors = ['#FF4D6D', '#FF8A3D', '#FFC107', '#63C741', '#00A8E8', '#6671FF', '#A855F7'];
+                const fragment = document.createDocumentFragment();
+                Array.from(plainTitle).forEach((character, index) => {
+                    const span = document.createElement('span');
+                    span.className = 'title-rainbow-char';
+                    span.style.color = colors[index % colors.length];
+                    span.textContent = character === ' ' ? '\u00A0' : character;
+                    fragment.appendChild(span);
+                });
+                siteTitle.textContent = '';
+                siteTitle.appendChild(fragment);
+                siteTitle.classList.add('title-rainbow-text');
+            }
+            function getSafeBackgroundImage(value) {
+                const source = String(value || '').trim();
+                if (source.startsWith('data:image/')) return source;
+                try {
+                    const url = new URL(source);
+                    return url.protocol === 'https:' ? url.href : '';
+                } catch (error) {
+                    return '';
+                }
+            }
             function hasCustomBackgroundImage() {
-                return typeof settings.backgroundImage === 'string' && settings.backgroundImage.startsWith('data:image/');
+                return Boolean(getSafeBackgroundImage(settings.backgroundImage));
+            }
+            function normalizeBackgroundFit(value) {
+                return value === 'contain' ? 'contain' : 'cover';
+            }
+            function normalizeBackgroundOverlay(value) {
+                const parsed = parseInt(value, 10);
+                return Number.isFinite(parsed) ? Math.min(92, Math.max(45, parsed)) : DEFAULTS.backgroundOverlay;
             }
             function applyCustomStyle() {
                 const selectedAccent = normalizeAccentColor(settings.accentColor);
-                const imageReady = hasCustomBackgroundImage();
+                const imageUrl = getSafeBackgroundImage(settings.backgroundImage);
+                const imageReady = Boolean(imageUrl);
                 const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
                 const imageColorLocked = activeBackground === 'image';
                 const colorAdjustmentLocked = Boolean(settings.darkMode || imageColorLocked);
                 const rainbowActive = settings.colorTheme === 'rainbow' && !colorAdjustmentLocked;
                 // 深色模式和图片背景均使用中性色，避免已保存的高饱和主题色破坏阅读对比。
-                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : rainbowActive ? '#7C3AED' : selectedAccent;
+                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : selectedAccent;
                 settings.accentColor = selectedAccent;
                 document.documentElement.style.setProperty('--site-accent', activeAccent);
                 document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(activeAccent));
                 document.body.classList.toggle('rainbow-theme', rainbowActive);
                 document.body.classList.toggle('title-gradient-disabled', !settings.titleGradient);
+                document.body.classList.toggle('liquid-glass', Boolean(settings.liquidGlass));
+                renderRainbowTitle(rainbowActive && settings.titleGradient);
                 document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
                     meta.content = settings.darkMode ? '#0D0D0D' : activeAccent;
                 });
@@ -1456,6 +1517,7 @@
                 accentColorItem.classList.toggle('is-image-locked', imageColorLocked);
                 accentColorControl.setAttribute('aria-disabled', String(colorAdjustmentLocked));
                 titleGradientToggle.checked = Boolean(settings.titleGradient);
+                liquidGlassToggle.checked = Boolean(settings.liquidGlass);
                 customPaletteItem.classList.toggle('is-disabled', colorAdjustmentLocked);
                 customColorPicker.setAttribute('aria-disabled', String(colorAdjustmentLocked));
                 customHexInput.disabled = colorAdjustmentLocked;
@@ -1489,8 +1551,12 @@
                         : '同步应用于卡片、设置、公告、赞助和主按钮';
                 document.body.classList.remove('background-plain', 'background-grid', 'background-image');
                 document.body.classList.add('background-' + activeBackground);
+                settings.backgroundFit = normalizeBackgroundFit(settings.backgroundFit);
+                settings.backgroundOverlay = normalizeBackgroundOverlay(settings.backgroundOverlay);
+                document.documentElement.style.setProperty('--custom-background-fit', settings.backgroundFit);
+                document.documentElement.style.setProperty('--background-image-overlay', String(settings.backgroundOverlay / 100));
                 if (activeBackground === 'image') {
-                    const safeUrl = settings.backgroundImage.replace(/"/g, '%22');
+                    const safeUrl = imageUrl.replace(/"/g, '%22');
                     document.documentElement.style.setProperty('--custom-background-image', 'url("' + safeUrl + '")');
                 } else {
                     document.documentElement.style.removeProperty('--custom-background-image');
@@ -1499,7 +1565,31 @@
                     btn.classList.toggle('active', btn.dataset.background === activeBackground);
                 });
                 clearBackgroundImageBtn.disabled = !imageReady;
-                backgroundUploadStatus.textContent = imageReady ? '当前图片仅保存在此浏览器，可随时移除或更换' : '支持 JPG、PNG、WebP，建议不超过 1.5MB';
+                settings.backgroundSource = settings.backgroundSource === 'url' ? 'url' : 'local';
+                backgroundSourceTabs.querySelectorAll('[data-background-source]').forEach(btn => {
+                    const active = btn.dataset.backgroundSource === settings.backgroundSource;
+                    btn.classList.toggle('active', active);
+                    btn.setAttribute('aria-checked', String(active));
+                });
+                backgroundUrlRow.hidden = settings.backgroundSource !== 'url';
+                backgroundUrlInput.value = settings.backgroundSource === 'url' && imageReady ? imageUrl : '';
+                backgroundSourceDesc.textContent = settings.backgroundSource === 'url'
+                    ? '仅接受公开 HTTPS 图片地址；提交前会检查图片能否加载'
+                    : '从本机选择 JPG、PNG 或 WebP 图片，建议不超过 1.5MB';
+                backgroundPreview.classList.toggle('has-image', imageReady);
+                backgroundPreview.style.backgroundImage = imageReady ? 'url("' + imageUrl.replace(/"/g, '%22') + '")' : '';
+                backgroundPreview.style.backgroundSize = settings.backgroundFit;
+                backgroundPreviewEmpty.hidden = imageReady;
+                backgroundUploadStatus.textContent = imageReady
+                    ? (settings.backgroundSource === 'url' ? '当前使用 HTTPS 图片链接，可随时移除或改为本地图片' : '当前图片仅保存在此浏览器，可随时移除或更换')
+                    : '支持 JPG、PNG、WebP，建议不超过 1.5MB';
+                backgroundFitSelector.querySelectorAll('[data-background-fit]').forEach(btn => {
+                    const active = btn.dataset.backgroundFit === settings.backgroundFit;
+                    btn.classList.toggle('active', active);
+                    btn.setAttribute('aria-checked', String(active));
+                });
+                backgroundOverlaySlider.value = settings.backgroundOverlay;
+                backgroundOverlayValue.textContent = settings.backgroundOverlay + '%';
             }
 
             // 打开/关闭面板
@@ -1730,6 +1820,7 @@
                     if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
                     settings.accentColor = normalizeAccentColor(this.dataset.color);
                     settings.colorTheme = this.dataset.themePreset === 'rainbow' ? 'rainbow' : this.dataset.themePreset;
+                    if (settings.colorTheme === 'rainbow') settings.titleGradient = true;
                     saveSettings(settings);
                     applySettings();
                 });
@@ -1738,8 +1829,13 @@
             backgroundStyleSelector.querySelectorAll('.background-style-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const nextStyle = this.dataset.background;
-                    if (nextStyle === 'image' && !(settings.backgroundImage || '').startsWith('data:image/')) {
-                        backgroundImageInput.click();
+                    if (nextStyle === 'image' && !hasCustomBackgroundImage()) {
+                        if (settings.backgroundSource === 'url') {
+                            backgroundUrlInput.focus();
+                            toast('请先粘贴公开 HTTPS 图片地址并点击“应用”');
+                        } else {
+                            backgroundImageInput.click();
+                        }
                         return;
                     }
                     settings.backgroundStyle = nextStyle;
@@ -1764,6 +1860,7 @@
                 const reader = new FileReader();
                 reader.onload = function() {
                     settings.backgroundImage = String(reader.result || '');
+                    settings.backgroundSource = 'local';
                     settings.backgroundStyle = 'image';
                     saveSettings(settings);
                     applySettings();
@@ -1775,10 +1872,67 @@
 
             clearBackgroundImageBtn.addEventListener('click', function() {
                 settings.backgroundImage = '';
+                settings.backgroundSource = 'local';
                 settings.backgroundStyle = 'grid';
                 saveSettings(settings);
                 applySettings();
                 toast('已移除自定义背景图片');
+            });
+
+            backgroundSourceTabs.querySelectorAll('[data-background-source]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    settings.backgroundSource = this.dataset.backgroundSource === 'url' ? 'url' : 'local';
+                    saveSettings(settings);
+                    applySettings();
+                });
+            });
+            function applyBackgroundUrl() {
+                const candidate = getSafeBackgroundImage(backgroundUrlInput.value);
+                if (!candidate) {
+                    toast('请输入可公开访问的 HTTPS 图片地址');
+                    return;
+                }
+                applyBackgroundUrlBtn.disabled = true;
+                applyBackgroundUrlBtn.textContent = '检查中';
+                const probe = new Image();
+                let settled = false;
+                const finish = function(success) {
+                    if (settled) return;
+                    settled = true;
+                    window.clearTimeout(timeout);
+                    applyBackgroundUrlBtn.disabled = false;
+                    applyBackgroundUrlBtn.textContent = '应用';
+                    if (!success) {
+                        toast('该图片地址无法加载，请检查链接是否公开可访问');
+                        return;
+                    }
+                    settings.backgroundImage = candidate;
+                    settings.backgroundSource = 'url';
+                    settings.backgroundStyle = 'image';
+                    saveSettings(settings);
+                    applySettings();
+                    toast('已应用图片链接背景');
+                };
+                const timeout = window.setTimeout(() => finish(false), 10000);
+                probe.onload = () => finish(true);
+                probe.onerror = () => finish(false);
+                probe.src = candidate;
+            }
+            applyBackgroundUrlBtn.addEventListener('click', applyBackgroundUrl);
+            backgroundUrlInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') applyBackgroundUrl();
+            });
+            backgroundFitSelector.querySelectorAll('[data-background-fit]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    settings.backgroundFit = normalizeBackgroundFit(this.dataset.backgroundFit);
+                    saveSettings(settings);
+                    applySettings();
+                });
+            });
+            backgroundOverlaySlider.addEventListener('input', function() {
+                settings.backgroundOverlay = normalizeBackgroundOverlay(this.value);
+                saveSettings(settings);
+                applySettings();
             });
 
             darkModeToggle.addEventListener('change', function() {
@@ -1795,6 +1949,12 @@
 
             titleGradientToggle.addEventListener('change', function() {
                 settings.titleGradient = this.checked;
+                saveSettings(settings);
+                applySettings();
+            });
+
+            liquidGlassToggle.addEventListener('change', function() {
+                settings.liquidGlass = this.checked;
                 saveSettings(settings);
                 applySettings();
             });
