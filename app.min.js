@@ -6,7 +6,6 @@
             let fileSearchIndex = new WeakMap();
             let dateSortedFiles = null;
             let searchRenderTimer = 0;
-            const STATIC_DATA_VERSION = '20260824-performance1';
             const typeIconNames = {
                 pdf: 'file', zip: 'archive', doc: 'file-text', img: 'image',
                 video: 'video', code: 'code', default: 'file'
@@ -1126,7 +1125,7 @@
                 console.warn('缓存读取失败:', e);
             }
 
-            fetch('data/data.json?v=' + STATIC_DATA_VERSION, { cache: 'force-cache' })
+            fetch('data/data.json?v=20260824-recovery1', { cache: 'force-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
@@ -1323,7 +1322,7 @@
             }
 
             // 单独加载公告（在 renderAnnouncements 定义后调用，避免作用域问题）
-            fetch('data/announce.json?v=' + STATIC_DATA_VERSION, { cache: 'force-cache' })
+            fetch('data/announce.json?v=20260824-recovery1', { cache: 'force-cache' })
                 .then(r => r.ok ? r.json() : [])
                 .then(data => {
                     if (Array.isArray(data) && data.length) renderAnnouncements(data);
