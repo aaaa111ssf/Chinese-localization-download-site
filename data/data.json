@@ -1,5 +1,29 @@
 [
   {
+    "name": "猎鹰九号-V2",
+    "type": "zip",
+    "size": "3.1MB",
+    "date": "2026-08-24",
+    "desc": "已完成的猎鹰系列自定义部件 提升你的游戏体验-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/i0wOL44anuhe",
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/125.webp"
+    ],
+    "version": "v1.5",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Pw4LTNSE/",
+    "sha256": ""
+  },
+  {
     "name": "无人船 OCISILY",
     "type": "zip",
     "size": "1.2MB",
@@ -1461,7 +1485,7 @@
     "size": "2.8MB",
     "date": "2026-6-10",
     "desc": "未发布的模组 新增星舰未来变体和未来科技",
-    "link": "https://wwaqu.lanzoub.com/iud1v3t2vdqf",
+    "link": "https://wwaqu.lanzoub.com/iZuZd44anu9g",
     "tags": [
       "部件"
     ],
@@ -1470,11 +1494,11 @@
       "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/44.webp"
     ],
     "version": "v1.0",
-    "author": "rtfg",
+    "author": "jsudo",
     "heat": "15.7万",
     "compat": "1.6.00.3+",
     "installType": "parts",
-    "installUrl": "https://nasyt.dpdns.org/sd/BG5ahhe3/",
+    "installUrl": "https://nasyt.dpdns.org/sd/hN750lSv/",
     "sha256": ""
   },
   {
