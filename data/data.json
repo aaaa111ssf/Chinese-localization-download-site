@@ -1,5 +1,168 @@
 [
   {
+    "name": "无人船 OCISILY",
+    "type": "zip",
+    "size": "1.2MB",
+    "date": "2026-08-24",
+    "desc": "SpaceX公式用于回收火箭的回收船-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iC0uO44anueb",
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/124.webp"
+    ],
+    "version": "v1.5",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/CqHOBDlb/",
+    "sha256": ""
+  },
+  {
+    "name": "Mechazila",
+    "type": "zip",
+    "size": "3.6MB",
+    "date": "2026-08-24",
+    "desc": "筷子夹火箭的筷子-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iPlYG44antwd",
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/123.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/72Yrqfnp/",
+    "sha256": ""
+  },
+  {
+    "name": "颜色部件",
+    "type": "zip",
+    "size": "0.3MB",
+    "date": "2026-08-24",
+    "desc": "给部件上色吧",
+    "link": "https://wwaqu.lanzoub.com/i7uQV44antsj",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/122.webp"
+    ],
+    "version": "v1.5",
+    "author": "QMSP",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/yqbMUbRD/",
+    "sha256": ""
+  },
+  {
+    "name": "反应轮",
+    "type": "zip",
+    "size": "0.1MB",
+    "date": "2026-08-24",
+    "desc": "卫星和其他轨道设备需要在没有地方可以释放角动量的情况下控制自身的旋转 为此，它们使用了一种高扭矩电机和飞轮的组合，这种组合被称为反应轮",
+    "link": "https://wwaqu.lanzoub.com/iqTbo44antof",
+    "tags": [
+      "实用",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/121.webp"
+    ],
+    "version": "v1.5",
+    "author": "Bob Frank",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/2PM3KJXK/",
+    "sha256": ""
+  },
+  {
+    "name": "生命支持系统",
+    "type": "zip",
+    "size": "3.4MB",
+    "date": "2026-08-24",
+    "desc": "添加了氧气和食物，载入舱消耗氧气食物的特点。",
+    "link": "https://wwaqu.lanzoub.com/iKj8944antne",
+    "tags": [
+      "资源",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/120.webp"
+    ],
+    "version": "v1.4",
+    "author": "QMSP",
+    "heat": "7.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/9KJTxaId/",
+    "sha256": ""
+  },
+  {
+    "name": "固态助推器",
+    "type": "zip",
+    "size": "0.8MB",
+    "date": "2026-08-24",
+    "desc": "固态助推器",
+    "link": "https://wwaqu.lanzoub.com/iGT6t44antfg",
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/119.webp"
+    ],
+    "version": "v1.5",
+    "author": "NeptuneSky",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/iklRITbL/",
+    "sha256": ""
+  },
+  {
+    "name": "V3星舰部件包",
+    "type": "zip",
+    "size": "13.1MB",
+    "date": "2026-08-24",
+    "desc": "星舰部件包-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iDqoq44al3zi",
+    "tags": [
+      "实用",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/118.webp"
+    ],
+    "version": "v1.5",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/JGfpuh4D/",
+    "sha256": ""
+  },
+  {
     "name": "S9 PACK",
     "type": "zip",
     "size": "14.9MB",
@@ -624,29 +787,6 @@
     "sha256": ""
   },
   {
-    "name": "生命支持系统",
-    "type": "zip",
-    "size": "0.1MB",
-    "date": "2026-05-16",
-    "desc": "添加了氧气和食物，载入舱消耗氧气食物的特点。",
-    "link": "https://wwaqu.lanzoub.com/ipWLH3rsbu1g",
-    "tags": [
-      "资源",
-      "汉化"
-    ],
-    "category": "function",
-    "images": [
-      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/14.webp"
-    ],
-    "version": "v1.0.1",
-    "author": "QMSP",
-    "heat": "7.8万",
-    "compat": "1.6.00.3+",
-    "installType": "parts",
-    "installUrl": "https://nasyt.dpdns.org/sd/Y1K3pyyb/",
-    "sha256": ""
-  },
-  {
     "name": "航天航空星舰包",
     "type": "zip",
     "size": "11.9MB",
@@ -875,7 +1015,7 @@
     ],
     "category": "engine",
     "images": [
-      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/24.webp"
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/117.webp"
     ],
     "version": "v1.0.0",
     "author": "Lemniscate Biscuit",
