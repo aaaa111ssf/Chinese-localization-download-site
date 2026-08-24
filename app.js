@@ -2,6 +2,11 @@
             'use strict';
 
             let files = [];
+            let fileIndexMap = new Map();
+            let fileSearchIndex = new WeakMap();
+            let dateSortedFiles = null;
+            let searchRenderTimer = 0;
+            const STATIC_DATA_VERSION = '20260824-performance1';
             const typeIconNames = {
                 pdf: 'file', zip: 'archive', doc: 'file-text', img: 'image',
                 video: 'video', code: 'code', default: 'file'
@@ -85,10 +90,10 @@
 
             /* ---------- 排序 ---------- */
             function sortFiles(list) {
-                const arr = list.slice();
-                if (currentSort === 'date') {
-                    arr.sort((a, b) => parseDate(b.date) - parseDate(a.date));
-                }
+                if (currentSort !== 'date') return list;
+                if (list === files && dateSortedFiles) return dateSortedFiles;
+                const arr = list.slice().sort((a, b) => parseDate(b.date) - parseDate(a.date));
+                if (list === files) dateSortedFiles = arr;
                 return arr;
             }
 
@@ -240,7 +245,7 @@
                             obs.unobserve(img);
                         }
                     });
-                }, { rootMargin: '200px 0px', threshold: 0.01 });
+                }, { rootMargin: '240px 0px', threshold: 0.01 });
             } else {
                 imgObserver = null;
             }
@@ -557,9 +562,7 @@
                 }
 
                 /* 使用 DocumentFragment 批量构建卡片，减少回流 */
-                const fragment = document.createDocumentFragment();
-                let cardsHtml = '';
-                const cardIndices = [];
+                const cardsHtml = [];
 
                 const sortedFiles = sortFiles(files);
 
@@ -569,21 +572,21 @@
                     if (isTagSearch) {
                         matchSearch = tagQuery && Array.isArray(file.tags) && file.tags.some(t => t.toLowerCase().includes(tagQuery));
                     } else if (lowerFilter) {
-                        const searchText = ((file.name || '') + ' ' + (file.desc || '') + ' ' + (Array.isArray(file.tags) ? file.tags.join(' ') : '')).toLowerCase();
+                        const searchText = fileSearchIndex.get(file) || '';
                         matchSearch = searchText.includes(lowerFilter) || matchPinyinInitials(file.name || '', lowerFilter);
                     } else {
                         matchSearch = true;
                     }
                     if (matchCategory && matchSearch) {
                         visibleCount++;
-                        const index = files.indexOf(file);
-                        cardsHtml += createModCard(file, index);
+                        const index = fileIndexMap.get(file);
+                        cardsHtml.push(createModCard(file, index));
                     }
                 });
 
                 /* 一次性写入 DOM */
-                if (cardsHtml) {
-                    grid.innerHTML = cardsHtml;
+                if (cardsHtml.length) {
+                    grid.innerHTML = cardsHtml.join('');
                     grid.style.display = 'grid';
                     armAllImgTimeouts();
                 } else {
@@ -630,7 +633,12 @@
             /* ---------- 事件绑定 ---------- */
             document.getElementById('searchInput').addEventListener('input', function(e) {
                 searchKeyword = e.target.value;
-                renderFiles();
+                // 输入过程只在用户短暂停顿后重新构建卡片，避免移动端逐字符刷新整张列表。
+                if (searchRenderTimer) clearTimeout(searchRenderTimer);
+                searchRenderTimer = window.setTimeout(function() {
+                    searchRenderTimer = 0;
+                    renderFiles();
+                }, 120);
             });
 
             // 下拉菜单
@@ -1089,6 +1097,13 @@
                 } else {
                     throw new Error('数据格式错误');
                 }
+                fileIndexMap = new Map();
+                fileSearchIndex = new WeakMap();
+                dateSortedFiles = null;
+                files.forEach(function(file, index) {
+                    fileIndexMap.set(file, index);
+                    fileSearchIndex.set(file, ((file.name || '') + ' ' + (file.desc || '') + ' ' + (Array.isArray(file.tags) ? file.tags.join(' ') : '')).toLowerCase());
+                });
             }
 
             function handleDataError() {
@@ -1111,7 +1126,7 @@
                 console.warn('缓存读取失败:', e);
             }
 
-            fetch('data/data.json?v=20260818g')
+            fetch('data/data.json?v=' + STATIC_DATA_VERSION, { cache: 'force-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
@@ -1308,7 +1323,7 @@
             }
 
             // 单独加载公告（在 renderAnnouncements 定义后调用，避免作用域问题）
-            fetch('data/announce.json?v=' + Date.now())
+            fetch('data/announce.json?v=' + STATIC_DATA_VERSION, { cache: 'force-cache' })
                 .then(r => r.ok ? r.json() : [])
                 .then(data => {
                     if (Array.isArray(data) && data.length) renderAnnouncements(data);
@@ -2064,8 +2079,14 @@
             var btn = document.getElementById('backToTopBtn');
             var scrollThreshold = 300;
 
+            var scrollFramePending = false;
+            var backToTopVisible = false;
+
             function toggleVisibility() {
-                if (window.scrollY > scrollThreshold) {
+                var shouldShow = window.scrollY > scrollThreshold;
+                if (shouldShow === backToTopVisible) return;
+                backToTopVisible = shouldShow;
+                if (shouldShow) {
                     btn.classList.add('visible');
                 } else {
                     btn.classList.remove('visible');
@@ -2076,7 +2097,14 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
-            window.addEventListener('scroll', toggleVisibility, { passive: true });
+            window.addEventListener('scroll', function() {
+                if (scrollFramePending) return;
+                scrollFramePending = true;
+                window.requestAnimationFrame(function() {
+                    scrollFramePending = false;
+                    toggleVisibility();
+                });
+            }, { passive: true });
             toggleVisibility();
 
         })();

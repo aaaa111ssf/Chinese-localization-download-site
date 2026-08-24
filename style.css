@@ -450,17 +450,18 @@
         }
 
         /* 懒加载淡入 */
-        img[data-src] {
-            opacity: 0;
-            filter: blur(20px);
-            transform: scale(1.1);
-        }
-        img.loaded {
-            opacity: 1;
-            filter: blur(0);
-            transform: scale(1);
-            transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
-        }
+img[data-src] {
+    opacity: 0;
+}
+img.loaded {
+    opacity: 1;
+    transition: opacity .22s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+    .card-image-wrap::before,
+    .loading-spinner { animation: none !important; }
+    img.loaded { transition: none; }
+}
 
         /* 图片加载失败/无图片时的回退占位 */
         .card-image-placeholder {
@@ -2503,24 +2504,28 @@
             line-height: 1.6;
             margin-bottom: 14px;
         }
-        .about-us-links {
-            display: flex;
-            gap: 10px;
-        }
-        .about-us-link {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+.about-us-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.about-us-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
             padding: 12px 14px;
             border-radius: 12px;
             border: 1px solid #eee;
             background: #fafafa;
             text-decoration: none;
             color: #333;
-            font-size: 0.85rem;
-            font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: center;
+    overflow-wrap: anywhere;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
@@ -2531,10 +2536,15 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
-        .about-us-link .link-icon {
-            font-size: 1.2rem;
-            line-height: 1;
-        }
+.about-us-link .link-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+.about-us-link .brand-icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+}
 
         body.dark-mode .about-us-section { border-top-color: #2a2a2a; }
         body.dark-mode .about-us-section .about-desc { color: #777; }
@@ -2600,17 +2610,53 @@
             border: 1px solid #e8e8e8;
             background: #f0f0f0;
         }
-        .about-avatar-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #333;
-        }
-        body.dark-mode .credits-avatar,
-        body.dark-mode .about-avatar {
+.about-avatar-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+}
+.about-person-heading {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+}
+.about-role-badge,
+.credits-role {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--site-accent) 10%, transparent);
+    color: var(--site-accent);
+    font-size: 0.66rem;
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 3px 7px;
+}
+.about-group-link {
+    grid-column: 1 / -1;
+    border-color: color-mix(in srgb, var(--site-accent) 45%, #dfe3e8);
+}
+.credits-person {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+}
+body.dark-mode .credits-avatar,
+body.dark-mode .about-avatar {
             border-color: #2a2a2a;
             background: #1a1a1a;
         }
-        body.dark-mode .about-avatar-name { color: #ddd; }
+body.dark-mode .about-avatar-name { color: #ddd; }
+body.dark-mode .about-role-badge,
+body.dark-mode .credits-role {
+    background: color-mix(in srgb, var(--site-accent) 26%, transparent);
+    color: #fff;
+}
         body.dark-mode .about-us-link {
             background: #1a1a1a;
             border-color: #2a2a2a;
@@ -2623,7 +2669,7 @@
         }
 
         /* 设置面板响应式：手机端与公告栏一致，保留左侧遮罩区域而非全屏覆盖。 */
-        @media (max-width: 480px) {
+        @media (max-width: 620px) {
             .settings-panel {
                 width: min(360px, 90vw);
                 max-width: 90vw;
@@ -2632,7 +2678,8 @@
             .announce-float-btn { top: 66px; right: 12px; width: 40px; height: 40px; }
             .settings-float-btn { top: 12px; right: 12px; width: 40px; height: 40px; }
             .back-to-top-btn { right: 15px; bottom: 140px; width: 42px; height: 42px; }
-            .about-us-links { flex-direction: column; }
+            .about-us-links { grid-template-columns: 1fr; }
+            .about-group-link { grid-column: auto; }
             .sponsor-float-btn { right: 12px; bottom: 70px; padding: 8px 12px; font-size: 0.78rem; }
             .container { padding: 12px; }
             .top-nav { gap: 4px; padding: 6px; }
