@@ -1,39 +1,50 @@
-// POST /api/log - 记录一次下载（KV 计数 + D1 下载记录）
-import { json } from '../_lib.js';
+// POST /api/log - 记录一次下载（KV 计数 + D1 下载记录）。
+// 正常用户下载不受阻断；仅限制跨站 POST 和同一 IP 的短时间批量刷量。
+import { consumeRateLimit, getIpHash, isSameOriginWrite, isValidModName, json } from '../_lib.js';
+
+const LOG_WINDOW_SECONDS = 30;
+const LOG_LIMIT_PER_WINDOW = 8;
 
 export async function onRequestPost(context) {
+    if (!isSameOriginWrite(context.request)) {
+        return json({ error: '仅允许由本站页面提交下载记录' }, { status: 403 });
+    }
+
+    const rate = await consumeRateLimit(context, 'download-log', LOG_WINDOW_SECONDS, LOG_LIMIT_PER_WINDOW);
+    if (!rate.allowed) {
+        return json(
+            { error: '请求过于频繁，请稍后再试' },
+            { status: 429, 'Retry-After': String(rate.retryAfter), 'Cache-Control': 'no-store' }
+        );
+    }
+
     const { SFS, SFS_DB } = context.env;
     let body;
     try {
         body = await context.request.json();
-    } catch (e) {
+    } catch (error) {
         return json({ error: '无效的 JSON' }, { status: 400 });
     }
-    const modName = (body.mod || '').trim();
-    if (!modName) return json({ error: '缺少 mod 参数' }, { status: 400 });
 
-    // KV 计数
+    const modName = String(body.mod || '').trim();
+    if (!isValidModName(modName)) {
+        return json({ error: '无效的模组名称' }, { status: 400 });
+    }
+
     const key = 'mod:' + modName;
     const current = await SFS.get(key);
-    const newCount = (parseInt(current) || 0) + 1;
+    const newCount = (Number.parseInt(current, 10) || 0) + 1;
     await SFS.put(key, String(newCount));
 
-    // D1 下载记录（用于最近下载榜）
     if (SFS_DB) {
-        const ip = context.request.headers.get('CF-Connecting-IP') || '';
-        let ipHash = '';
-        if (ip) {
-            let h = 0;
-            for (let i = 0; i < ip.length; i++) h = ((h << 5) - h + ip.charCodeAt(i)) | 0;
-            ipHash = (h >>> 0).toString(36);
-        }
+        const ipHash = getIpHash(context.request);
         const ua = (context.request.headers.get('User-Agent') || '').slice(0, 200);
         try {
             await SFS_DB.prepare(
                 'INSERT INTO downloads (mod_name, ip_hash, ua, created_at) VALUES (?, ?, ?, datetime(\'now\'))'
             ).bind(modName, ipHash, ua).run();
-        } catch (e) {
-            // D1 不可用时不影响计数
+        } catch (error) {
+            // D1 不可用时不影响用户下载和 KV 计数。
         }
     }
 

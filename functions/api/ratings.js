@@ -1,12 +1,15 @@
 // GET /api/ratings?mod=模组名 -> { average, count, myScore }
 // POST /api/ratings { mod, score } -> 提交/更新评分
-import { getUserKey, ensureUserCookie, json } from '../_lib.js';
+import { consumeRateLimit, getUserKey, ensureUserCookie, isSameOriginWrite, isValidModName, json } from '../_lib.js';
+
+const RATING_WINDOW_SECONDS = 60;
+const RATING_LIMIT_PER_WINDOW = 5;
 
 export async function onRequestGet(context) {
     const { SFS_DB } = context.env;
     const url = new URL(context.request.url);
-    const mod = url.searchParams.get('mod');
-    if (!mod) return json({ error: '缺少 mod 参数' }, { status: 400 });
+    const mod = (url.searchParams.get('mod') || '').trim();
+    if (!isValidModName(mod)) return json({ error: '无效的模组名称' }, { status: 400 });
 
     const userKey = getUserKey(context.request);
     const [summary, mine] = await Promise.all([
@@ -26,6 +29,18 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
+    if (!isSameOriginWrite(context.request)) {
+        return json({ error: '仅允许由本站页面提交评分' }, { status: 403 });
+    }
+
+    const rate = await consumeRateLimit(context, 'ratings', RATING_WINDOW_SECONDS, RATING_LIMIT_PER_WINDOW);
+    if (!rate.allowed) {
+        return json(
+            { error: '评分操作过于频繁，请稍后再试' },
+            { status: 429, 'Retry-After': String(rate.retryAfter), 'Cache-Control': 'no-store' }
+        );
+    }
+
     const { SFS_DB } = context.env;
     let body;
     try {
@@ -33,12 +48,12 @@ export async function onRequestPost(context) {
     } catch (e) {
         return json({ error: '无效的 JSON' }, { status: 400 });
     }
-    const mod = (body.mod || '').trim();
-    const score = parseInt(body.score, 10);
-    if (!mod) return json({ error: '缺少 mod 参数' }, { status: 400 });
+    const mod = String(body.mod || '').trim();
+    const score = Number.parseInt(body.score, 10);
+    if (!isValidModName(mod)) return json({ error: '无效的模组名称' }, { status: 400 });
     if (!score || score < 1 || score > 5) return json({ error: '评分需在 1-5 之间' }, { status: 400 });
 
-    // 先生成 cookie，再用同一个 cookie 生成 userKey，避免首次评分按 IP、后续评分按 cookie 导致重复用户。
+    // 首次评分即使用即将写入的 cookie，避免首次按 IP、后续按 cookie 产生重复记录。
     const cookie = ensureUserCookie(context.request);
     const userKey = getUserKey(context.request, cookie || '');
 
@@ -53,9 +68,8 @@ export async function onRequestPost(context) {
         'SELECT COUNT(*) as count, AVG(score) as avg FROM ratings WHERE mod_name = ?'
     ).bind(mod).first();
 
-    const headers = {};
+    const headers = { 'Cache-Control': 'no-store' };
     if (cookie) headers['Set-Cookie'] = cookie;
-    headers['Cache-Control'] = 'no-store';
 
     return json({
         ok: true,
