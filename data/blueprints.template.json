@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "blueprints": [
+    {
+      "id": "blueprint-unique-id",
+      "name": "蓝图名称",
+      "desc": "简要说明这个蓝图的用途、火箭或飞行器类型，以及导入前注意事项。",
+      "link": "https://你的下载链接",
+      "images": [
+        "https://你的预览图链接.webp"
+      ],
+      "tags": [
+        "配套蓝图",
+        "分类标签"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "文件大小，例如 1.2MB",
+      "date": "YYYY-MM-DD",
+      "requirements": [
+        {
+          "name": "所需模组名称",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    }
+  ]
+}

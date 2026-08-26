@@ -2,6 +2,9 @@
             'use strict';
 
             let files = [];
+            let blueprints = [];
+            let blueprintIndexMap = new Map();
+            let pendingBlueprintDownload = null;
             let fileIndexMap = new Map();
             let fileSearchIndex = new WeakMap();
             let dateSortedFiles = null;
@@ -214,7 +217,7 @@
             /* ---------- 工具 ---------- */
             function checkAndRemoveModalOpen() {
                 const anyActive = document.querySelector(
-                    '.modal-overlay.active, .img-viewer-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active, .dl-history-overlay.active'
+                    '.modal-overlay.active, .img-viewer-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active, .dl-history-overlay.active, .blueprint-dependency-overlay.active'
                 );
                 if (!anyActive) document.body.classList.remove('modal-open');
             }
@@ -334,6 +337,130 @@
                 try { opened.opener = null; } catch (e) {}
                 return true;
             }
+
+            function getBlueprintRequirements(blueprint) {
+                if (!blueprint || !Array.isArray(blueprint.requirements)) return [];
+                return blueprint.requirements
+                    .filter(item => item && typeof item.name === 'string' && item.name.trim())
+                    .map(item => ({ name: item.name.trim(), note: String(item.note || '').trim() }));
+            }
+
+            function createBlueprintCard(blueprint, index) {
+                const safe = {
+                    id: escapeJs(blueprint.id || blueprint.name || String(index)),
+                    name: escapeHtml(blueprint.name || '未命名蓝图'),
+                    desc: escapeHtml(blueprint.desc || '暂无蓝图说明'),
+                    size: escapeHtml(blueprint.size || '未知'),
+                    date: escapeHtml(blueprint.date || ''),
+                    format: escapeHtml(blueprint.format || '蓝图 ZIP'),
+                    tags: Array.isArray(blueprint.tags) ? blueprint.tags : []
+                };
+                const validImages = getValidImages(blueprint);
+                const requirements = getBlueprintRequirements(blueprint);
+                const tagsHtml = safe.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+                const requirementHtml = requirements.length
+                    ? requirements.map(requirement => `<span class="blueprint-requirement-chip">${svgIcon('box')}需要：${escapeHtml(requirement.name)}</span>`).join('')
+                    : `<span class="blueprint-requirement-chip">${svgIcon('info')}无额外模组依赖</span>`;
+                const imageHtml = validImages.length
+                    ? `<div class="card-image-wrap blueprint-image-wrap"><img src="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img loaded" data-icon="archive" data-mirror-idx="0" loading="eager" decoding="async" onerror="handleImgError(this)" onload="handleImgLoad(this)"></div>`
+                    : `<div class="card-image-wrap card-image-placeholder blueprint-image-wrap"><div class="card-image-fallback"><span class="fallback-icon">${svgIcon('archive')}</span><span class="fallback-text">暂无预览</span></div></div>`;
+
+                return `
+                    <article class="file-card blueprint-card">
+                        ${imageHtml}
+                        <div class="card-body">
+                            <div class="card-title">${safe.name}</div>
+                            <div class="card-subtitle"><span class="card-inline-meta">${svgIcon('tag')}类型：${safe.format}</span></div>
+                            <div class="card-tags">${tagsHtml}</div>
+                            <div class="card-desc">${safe.desc}</div>
+                            <div class="blueprint-card-requirements">${requirementHtml}</div>
+                            <div class="card-meta-boxes">
+                                <div class="meta-box">${svgIcon('box')}<span>大小: ${safe.size}</span></div>
+                                <div class="meta-box">${svgIcon('calendar')}<span>日期: ${safe.date}</span></div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <div class="card-actions-secondary"></div>
+                            <div class="card-actions-primary">
+                                <button type="button" class="btn btn-detail" onclick="openBlueprintDependency('${safe.id}', event)">${svgIcon('info')}<span>所需模组</span></button>
+                                <button type="button" class="btn btn-download" onclick="openBlueprintDependency('${safe.id}', event)">${svgIcon('download')}<span>下载蓝图</span></button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }
+
+            function renderBlueprints() {
+                const grid = document.getElementById('blueprintGrid');
+                const empty = document.getElementById('blueprintEmpty');
+                if (!grid || !empty) return;
+                if (!blueprints.length) {
+                    grid.innerHTML = '';
+                    empty.hidden = false;
+                    return;
+                }
+                empty.hidden = true;
+                grid.innerHTML = blueprints.map(createBlueprintCard).join('');
+                armAllImgTimeouts();
+            }
+
+            window.openBlueprintDependency = function(id, event) {
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                const blueprint = blueprintIndexMap.get(String(id));
+                if (!blueprint) return;
+                pendingBlueprintDownload = blueprint;
+                const requirements = getBlueprintRequirements(blueprint);
+                const nameEl = document.getElementById('blueprintDependencyTitle');
+                const descEl = document.getElementById('blueprintDependencyDesc');
+                const requirementsEl = document.getElementById('blueprintRequirements');
+                if (nameEl) nameEl.textContent = '“' + (blueprint.name || '该蓝图') + '”需要以下模组';
+                if (descEl) descEl.textContent = requirements.length ? '请先下载并安装所列模组，再导入蓝图。' : '该蓝图未标记额外模组依赖。';
+                if (requirementsEl) {
+                    requirementsEl.innerHTML = requirements.length
+                        ? requirements.map(requirement => `<div class="blueprint-requirement-row"><div><strong>${escapeHtml(requirement.name)}</strong><span>${escapeHtml(requirement.note || '需先下载并安装该模组')}</span></div><button type="button" onclick="openRequiredMod('${escapeJs(requirement.name)}')">查看模组</button></div>`).join('')
+                        : `<div class="blueprint-requirement-row blueprint-requirement-free"><div><strong>无需额外模组</strong><span>可以继续下载并导入蓝图。</span></div></div>`;
+                }
+                const overlay = document.getElementById('blueprintDependencyOverlay');
+                overlay.classList.add('active');
+                overlay.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-open');
+            };
+
+            window.closeBlueprintDependency = function() {
+                const overlay = document.getElementById('blueprintDependencyOverlay');
+                if (overlay) {
+                    overlay.classList.remove('active');
+                    overlay.setAttribute('aria-hidden', 'true');
+                }
+                pendingBlueprintDownload = null;
+                checkAndRemoveModalOpen();
+            };
+
+            window.continueBlueprintDownload = function() {
+                const blueprint = pendingBlueprintDownload;
+                if (!blueprint) return;
+                const url = String(blueprint.link || '').trim();
+                if (!url) {
+                    toast('该蓝图暂未配置下载地址');
+                    return;
+                }
+                closeBlueprintDependency();
+                if (openExternalDownload(url)) addDlHistory('蓝图 · ' + (blueprint.name || '未命名蓝图'));
+            };
+
+            window.openRequiredMod = function(name) {
+                closeBlueprintDependency();
+                const modsNav = document.querySelector('.nav-item[data-page="mods"]');
+                if (modsNav) modsNav.click();
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) searchInput.value = name;
+                searchKeyword = name;
+                renderFiles();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
 
             function updateDownloadLabels() {
                 document.querySelectorAll('[data-download-label]').forEach(label => {
@@ -717,21 +844,37 @@
                     const grid = document.getElementById('fileGrid');
                     const tutorialSection = document.getElementById('tutorialSection');
                     const aboutPage = document.getElementById('aboutPage');
+                    const blueprintPage = document.getElementById('blueprintPage');
+                    const toolbar = document.querySelector('.toolbar');
                     const footer = document.querySelector('.footer');
                     if (page === 'mods') {
                         grid.style.display = 'grid';
                         tutorialSection.style.display = 'none';
                         aboutPage.style.display = 'none';
+                        blueprintPage.style.display = 'none';
+                        if (toolbar) toolbar.style.display = 'flex';
                         if (footer) footer.style.display = 'grid';
+                    } else if (page === 'blueprints') {
+                        grid.style.display = 'none';
+                        tutorialSection.style.display = 'none';
+                        aboutPage.style.display = 'none';
+                        blueprintPage.style.display = 'block';
+                        if (toolbar) toolbar.style.display = 'none';
+                        if (footer) footer.style.display = 'grid';
+                        renderBlueprints();
                     } else if (page === 'tutorial') {
                         grid.style.display = 'none';
                         tutorialSection.style.display = 'block';
                         aboutPage.style.display = 'none';
+                        blueprintPage.style.display = 'none';
+                        if (toolbar) toolbar.style.display = 'flex';
                         if (footer) footer.style.display = 'grid';
                     } else if (page === 'about') {
                         grid.style.display = 'none';
                         tutorialSection.style.display = 'none';
                         aboutPage.style.display = 'block';
+                        blueprintPage.style.display = 'none';
+                        if (toolbar) toolbar.style.display = 'flex';
                         if (footer) footer.style.display = 'grid';
                     }
                 });
@@ -1112,6 +1255,15 @@
                 document.getElementById('totalCount').textContent = '—';
             }
 
+            function setBlueprints(data) {
+                const list = Array.isArray(data) ? data : (data && Array.isArray(data.blueprints) ? data.blueprints : []);
+                blueprints = list.filter(item => item && typeof item === 'object' && item.name && item.link);
+                blueprintIndexMap = new Map();
+                blueprints.forEach(function(blueprint, index) {
+                    blueprintIndexMap.set(String(blueprint.id || blueprint.name || index), blueprint);
+                });
+            }
+
             // 优先从本地缓存读取并立即渲染
             let cacheLoaded = false;
             try {
@@ -1149,6 +1301,21 @@
                     if (!cacheLoaded) {
                         handleDataError();
                     }
+                });
+
+            fetch('data/blueprints.json?v=20260826-blueprints1', { cache: 'force-cache' })
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    setBlueprints(data);
+                    renderBlueprints();
+                })
+                .catch(err => {
+                    console.warn('蓝图数据加载失败:', err);
+                    setBlueprints([]);
+                    renderBlueprints();
                 });
 
             // 记录下载

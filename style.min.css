@@ -4155,3 +4155,65 @@ body.dark-mode .download-mode-note {
         height: 30px;
     }
 }
+
+/* ---------- 模组配套蓝图下载 ---------- */
+.blueprint-page { margin: 24px 0 38px; }
+.blueprint-page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding: 25px 28px; margin-bottom: 22px; border: 1px solid rgba(59, 130, 246, 0.22); border-radius: 18px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.11), rgba(147, 51, 234, 0.08)); }
+.blueprint-page-head h2 { margin: 4px 0 8px; font-size: 1.55rem; color: var(--site-accent, #4f46e5); }
+.blueprint-page-head p { margin: 0; color: #5b6476; line-height: 1.65; }
+.blueprint-eyebrow { display: block; font-size: 0.68rem; letter-spacing: 0.14em; font-weight: 800; color: var(--site-accent, #4f46e5); }
+.blueprint-head-icon { flex: 0 0 auto; width: 48px; height: 48px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #fff; background: var(--site-accent, #4f46e5); box-shadow: 0 10px 24px rgba(79, 70, 229, 0.25); }
+.blueprint-head-icon svg { width: 25px; height: 25px; }
+.blueprint-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--card-gap, 20px); }
+.blueprint-card { border-top: 3px solid var(--site-accent, #4f46e5); }
+.blueprint-image-wrap::after { content: '配套蓝图'; position: absolute; left: 10px; top: 10px; z-index: 2; border-radius: 999px; padding: 4px 8px; background: rgba(15, 23, 42, 0.72); color: #fff; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.04em; }
+.blueprint-card-requirements { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 4px; }
+.blueprint-requirement-chip { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; padding: 5px 8px; border-radius: 8px; background: rgba(245, 158, 11, 0.11); color: #9a5c00; font-size: 0.74rem; font-weight: 700; }
+.blueprint-requirement-chip .ui-icon { width: 14px; height: 14px; flex: 0 0 auto; }
+.blueprint-empty { padding: 40px 20px; text-align: center; color: #64748b; background: rgba(148, 163, 184, 0.08); border: 1px dashed rgba(100, 116, 139, 0.35); border-radius: 16px; }
+.blueprint-dependency-overlay { position: fixed; inset: 0; z-index: 10060; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(15, 23, 42, 0.62); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; }
+.blueprint-dependency-overlay.active { opacity: 1; visibility: visible; }
+.blueprint-dependency-dialog { width: min(100%, 460px); padding: 25px; border-radius: 20px; background: #fff; box-shadow: 0 24px 80px rgba(15, 23, 42, 0.35); transform: translateY(12px) scale(0.98); transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1); }
+.blueprint-dependency-overlay.active .blueprint-dependency-dialog { transform: translateY(0) scale(1); }
+.blueprint-dependency-icon { width: 43px; height: 43px; border-radius: 13px; display: flex; align-items: center; justify-content: center; color: #b45309; background: #fef3c7; margin-bottom: 16px; }
+.blueprint-dependency-icon svg { width: 24px; height: 24px; }
+.blueprint-dependency-copy h3 { margin: 4px 0 7px; color: #172033; font-size: 1.2rem; }
+.blueprint-dependency-copy p { margin: 0; color: #667085; line-height: 1.6; }
+.blueprint-requirements { margin: 18px 0 12px; display: grid; gap: 9px; }
+.blueprint-requirement-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px; border: 1px solid #f4d99d; border-radius: 12px; background: #fffaf0; }
+.blueprint-requirement-row strong, .blueprint-requirement-row span { display: block; }
+.blueprint-requirement-row strong { color: #7c4a03; font-size: 0.9rem; }
+.blueprint-requirement-row span { margin-top: 3px; color: #a16b18; font-size: 0.76rem; }
+.blueprint-requirement-row button { flex: 0 0 auto; border: 0; border-radius: 9px; padding: 7px 9px; color: #fff; background: #b7791f; font-size: 0.76rem; font-weight: 700; }
+.blueprint-requirement-free { border-color: #bbf7d0; background: #f0fdf4; }
+.blueprint-requirement-free strong { color: #166534; }
+.blueprint-requirement-free span { color: #4b7c59; }
+.blueprint-dependency-tip { margin: 0 0 18px; color: #7b8494; font-size: 0.78rem; line-height: 1.55; }
+.blueprint-dependency-actions { display: flex; justify-content: flex-end; gap: 9px; }
+.blueprint-dependency-actions button { border: 0; border-radius: 10px; padding: 10px 14px; font-weight: 800; font-size: 0.84rem; }
+.blueprint-cancel-btn { color: #475467; background: #edf0f4; }
+.blueprint-continue-btn { color: #fff; background: var(--site-accent, #4f46e5); }
+body.dark-mode .blueprint-page-head { border-color: rgba(129, 140, 248, 0.32); background: linear-gradient(135deg, rgba(79, 70, 229, 0.25), rgba(147, 51, 234, 0.15)); }
+body.dark-mode .blueprint-page-head p { color: #b7c0d0; }
+body.dark-mode .blueprint-page-head h2 { color: #c7d2fe; }
+body.dark-mode .blueprint-requirement-chip { color: #fcd34d; background: rgba(245, 158, 11, 0.17); }
+body.dark-mode .blueprint-empty { color: #aab4c5; background: rgba(148, 163, 184, 0.1); }
+body.dark-mode .blueprint-dependency-dialog { background: #182033; }
+body.dark-mode .blueprint-dependency-copy h3 { color: #f8fafc; }
+body.dark-mode .blueprint-dependency-copy p, body.dark-mode .blueprint-dependency-tip { color: #aeb9cb; }
+body.dark-mode .blueprint-requirement-row { border-color: rgba(245, 158, 11, 0.35); background: rgba(245, 158, 11, 0.11); }
+body.dark-mode .blueprint-requirement-row strong { color: #fcd34d; }
+body.dark-mode .blueprint-requirement-row span { color: #f5d08a; }
+@media (max-width: 620px) {
+    .blueprint-page { margin-top: 16px; }
+    .blueprint-page-head { padding: 19px; gap: 13px; border-radius: 15px; }
+    .blueprint-page-head h2 { font-size: 1.25rem; }
+    .blueprint-page-head p { font-size: 0.83rem; }
+    .blueprint-head-icon { width: 40px; height: 40px; border-radius: 12px; }
+    .blueprint-grid { grid-template-columns: 1fr; }
+    .blueprint-dependency-overlay { align-items: flex-end; padding: 0; }
+    .blueprint-dependency-dialog { width: 100%; border-radius: 20px 20px 0 0; padding: 21px 18px calc(21px + env(safe-area-inset-bottom)); }
+    .blueprint-dependency-actions button { flex: 1; }
+    .blueprint-requirement-row { align-items: flex-start; flex-direction: column; }
+    .blueprint-requirement-row button { width: 100%; }
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "blueprints": [
+    {
+      "id": "falcon-heavy-v2",
+      "name": "猎鹰重型 V2 配套蓝图",
+      "desc": "适配猎鹰九号-V2模组的猎鹰重型火箭蓝图。下载并导入前，请先安装所需模组。",
+      "link": "https://wwaqu.lanzoub.com/i6YQ244mulli",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/125.webp"
+      ],
+      "tags": [
+        "配套蓝图",
+        "猎鹰重型",
+        "SpaceX"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1.9KB",
+      "date": "2026-08-26",
+      "requirements": [
+        {
+          "name": "猎鹰九号-V2",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    }
+  ]
+}

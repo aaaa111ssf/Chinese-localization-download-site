@@ -1,8 +1,9 @@
-const CACHE_VERSION = 'sfs-v8';
+const CACHE_VERSION = 'sfs-v9-blueprints';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/data/data.json',
+  '/data/blueprints.json',
   '/data/announce.json',
   '/android-chrome-192x192.png',
   '/android-chrome-512x512.png',
