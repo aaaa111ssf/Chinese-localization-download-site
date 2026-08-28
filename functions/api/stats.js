@@ -17,9 +17,9 @@ export async function onRequestGet(context) {
 
     return json({ downloads: stats }, {
         'Cache-Control': 'no-store'
-    });
+    }, context.request);
 }
 
-export async function onRequestOptions() {
-    return json({});
+export async function onRequestOptions(context) {
+    return json({}, { status: 204 }, context.request);
 }

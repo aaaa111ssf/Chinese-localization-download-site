@@ -19,9 +19,9 @@ export async function onRequestGet(context) {
         ).bind(limit).all();
     }
 
-    return json({ records: rows.results || [] });
+    return json({ records: rows.results || [] }, {}, context.request);
 }
 
-export async function onRequestOptions() {
-    return json({});
+export async function onRequestOptions(context) {
+    return json({}, { status: 204 }, context.request);
 }

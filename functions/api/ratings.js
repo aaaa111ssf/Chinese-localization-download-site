@@ -9,7 +9,7 @@ export async function onRequestGet(context) {
     const { SFS_DB } = context.env;
     const url = new URL(context.request.url);
     const mod = (url.searchParams.get('mod') || '').trim();
-    if (!isValidModName(mod)) return json({ error: '无效的模组名称' }, { status: 400 });
+    if (!isValidModName(mod)) return json({ error: '无效的模组名称' }, { status: 400 }, context.request);
 
     const userKey = getUserKey(context.request);
     const [summary, mine] = await Promise.all([
@@ -25,19 +25,20 @@ export async function onRequestGet(context) {
         count: summary.count || 0,
         average: summary.avg ? Math.round(summary.avg * 10) / 10 : 0,
         myScore: mine ? mine.score : 0
-    }, { 'Cache-Control': 'no-store' });
+    }, { 'Cache-Control': 'no-store' }, context.request);
 }
 
 export async function onRequestPost(context) {
     if (!isSameOriginWrite(context.request)) {
-        return json({ error: '仅允许由本站页面提交评分' }, { status: 403 });
+        return json({ error: '仅允许由本站页面提交评分' }, { status: 403 }, context.request);
     }
 
     const rate = await consumeRateLimit(context, 'ratings', RATING_WINDOW_SECONDS, RATING_LIMIT_PER_WINDOW);
     if (!rate.allowed) {
         return json(
             { error: '评分操作过于频繁，请稍后再试' },
-            { status: 429, 'Retry-After': String(rate.retryAfter), 'Cache-Control': 'no-store' }
+            { status: 429, 'Retry-After': String(rate.retryAfter), 'Cache-Control': 'no-store' },
+            context.request
         );
     }
 
@@ -46,12 +47,12 @@ export async function onRequestPost(context) {
     try {
         body = await context.request.json();
     } catch (e) {
-        return json({ error: '无效的 JSON' }, { status: 400 });
+        return json({ error: '无效的 JSON' }, { status: 400 }, context.request);
     }
     const mod = String(body.mod || '').trim();
     const score = Number.parseInt(body.score, 10);
-    if (!isValidModName(mod)) return json({ error: '无效的模组名称' }, { status: 400 });
-    if (!score || score < 1 || score > 5) return json({ error: '评分需在 1-5 之间' }, { status: 400 });
+    if (!isValidModName(mod)) return json({ error: '无效的模组名称' }, { status: 400 }, context.request);
+    if (!score || score < 1 || score > 5) return json({ error: '评分需在 1-5 之间' }, { status: 400 }, context.request);
 
     // 首次评分即使用即将写入的 cookie，避免首次按 IP、后续按 cookie 产生重复记录。
     const cookie = ensureUserCookie(context.request);
@@ -76,9 +77,9 @@ export async function onRequestPost(context) {
         count: summary.count || 0,
         average: summary.avg ? Math.round(summary.avg * 10) / 10 : 0,
         myScore: score
-    }, headers);
+    }, headers, context.request);
 }
 
-export async function onRequestOptions() {
-    return json({});
+export async function onRequestOptions(context) {
+    return json({}, { status: 204 }, context.request);
 }
