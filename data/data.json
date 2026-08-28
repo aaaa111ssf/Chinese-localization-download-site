@@ -24,6 +24,115 @@
     "sha256": ""
   },
   {
+    "name": "程序化部件",
+    "type": "zip",
+    "size": "2.2",
+    "date": "2026-08-28",
+    "desc": "它提供了多个可调节的部件 使您更容易构建蓝图",
+    "link": "https://wwaqu.lanzoub.com/iKyMR451t0kf",
+    "tags": [
+      "汉化",
+      "调节",
+      "实用"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/114.webp"
+    ],
+    "version": "1.4.6",
+    "author": "SFS.S9",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/1sALcu0P/",
+    "sha256": ""
+  },
+  {
+    "name": "程序化引擎",
+    "type": "zip",
+    "size": "7.8",
+    "date": "2026-08-28",
+    "desc": "它提供可调节尺寸、推力和 LSP 的发动机 使您的火箭或飞行器获得更好的制动性能",
+    "link": "https://wwaqu.lanzoub.com/icaDq451t5wh",
+    "tags": [
+      "调节",
+      "汉化",
+      "实用"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/113.webp"
+    ],
+    "version": "1.4.6",
+    "author": "SFS.S9",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/njw0We7x/",
+    "sha256": ""
+  },
+  {
+    "name": "Dah(Vanilla)真空发动机 - TM",
+    "type": "zip",
+    "size": "1.2",
+    "date": "2026-08-28",
+    "desc": "与基础游戏中的泰动机非常相似的发动机 但配备了真空尾焰",
+    "link": "https://wwaqu.lanzoub.com/ipV58451t3ng",
+    "tags": [
+      "尾焰"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/130.webp"
+    ],
+    "version": "1.1",
+    "author": "Dahzito",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/LmvI43oB/",
+    "sha256": ""
+  },
+  {
+    "name": "3D 格栅翼",
+    "type": "zip",
+    "size": "4.9",
+    "date": "2026-08-28",
+    "desc": "3D 格栅翼",
+    "link": "https://wwaqu.lanzoub.com/iajnF451t3fi",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/112.webp"
+    ],
+    "version": "1.4.6",
+    "author": "SFS.S9",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/@s/BG21O7XR",
+    "sha256": ""
+  },
+  {
+    "name": "程序化着陆腿",
+    "type": "zip",
+    "size": "6.7",
+    "date": "2026-08-28",
+    "desc": "它主要提供类似猎鹰9的流线型3D着陆腿",
+    "link": "https://wwaqu.lanzoub.com/iALOL451t18j",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/111.webp"
+    ],
+    "version": "1.4.6",
+    "author": "SFS.S9",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/IJ80OX1J/",
+    "sha256": ""
+  },
+  {
     "name": "猎鹰九号-V2",
     "type": "zip",
     "size": "3.1MB",
