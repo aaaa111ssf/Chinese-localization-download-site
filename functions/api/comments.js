@@ -11,7 +11,7 @@ export async function onRequestGet(context) {
         .filter(Boolean)
         .slice(0, 100);
 
-    if (slugs.length === 0) return json({});
+    if (slugs.length === 0) return json({}, {}, context.request);
 
     // 评论路径统一为 /mod/slug
     const paths = slugs.map(s => '/mod/' + s);
@@ -28,13 +28,13 @@ export async function onRequestGet(context) {
         for (const row of result.results || []) {
             countMap[row.url] = row.count;
         }
-        return json(countMap, { 'Cache-Control': 'public, max-age=60, s-maxage=60' });
+        return json(countMap, { 'Cache-Control': 'public, max-age=60, s-maxage=60' }, context.request);
     } catch (e) {
         // 表未初始化（Waline 未部署）时降级为空
-        return json({});
+        return json({}, {}, context.request);
     }
 }
 
-export async function onRequestOptions() {
-    return json({});
+export async function onRequestOptions(context) {
+    return json({}, { status: 204 }, context.request);
 }

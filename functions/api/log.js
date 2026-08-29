@@ -7,14 +7,15 @@ const LOG_LIMIT_PER_WINDOW = 8;
 
 export async function onRequestPost(context) {
     if (!isSameOriginWrite(context.request)) {
-        return json({ error: '仅允许由本站页面提交下载记录' }, { status: 403 });
+        return json({ error: '仅允许由本站页面提交下载记录' }, { status: 403 }, context.request);
     }
 
     const rate = await consumeRateLimit(context, 'download-log', LOG_WINDOW_SECONDS, LOG_LIMIT_PER_WINDOW);
     if (!rate.allowed) {
         return json(
             { error: '请求过于频繁，请稍后再试' },
-            { status: 429, 'Retry-After': String(rate.retryAfter), 'Cache-Control': 'no-store' }
+            { status: 429, 'Retry-After': String(rate.retryAfter), 'Cache-Control': 'no-store' },
+            context.request
         );
     }
 
@@ -23,12 +24,12 @@ export async function onRequestPost(context) {
     try {
         body = await context.request.json();
     } catch (error) {
-        return json({ error: '无效的 JSON' }, { status: 400 });
+        return json({ error: '无效的 JSON' }, { status: 400 }, context.request);
     }
 
     const modName = String(body.mod || '').trim();
     if (!isValidModName(modName)) {
-        return json({ error: '无效的模组名称' }, { status: 400 });
+        return json({ error: '无效的模组名称' }, { status: 400 }, context.request);
     }
 
     const key = 'mod:' + modName;
@@ -48,9 +49,9 @@ export async function onRequestPost(context) {
         }
     }
 
-    return json({ ok: true, count: newCount }, { 'Cache-Control': 'no-store' });
+    return json({ ok: true, count: newCount }, { 'Cache-Control': 'no-store' }, context.request);
 }
 
-export async function onRequestOptions() {
-    return json({});
+export async function onRequestOptions(context) {
+    return json({}, { status: 204 }, context.request);
 }

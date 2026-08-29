@@ -28,12 +28,26 @@ export function ensureUserCookie(request) {
     return `sfs_uid=${uid}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`;
 }
 
-// 写入接口仅接受由当前站点页面发起的 POST。公开 GET 接口不受此规则影响。
+// 写入接口仅接受由本站同源页面或下列受信域名发起的 POST。
+// 公开 GET 接口不受此规则影响。
+const ALLOWED_ORIGINS = new Set([
+    'https://sfszhmod.pages.dev',
+    'https://sfs-cn-mod.pages.dev',
+    'https://sfscnmod.7813.cc.cd',
+    'https://sfs-mod.izako.cc'
+]);
+
+function isAllowedOrigin(origin) {
+    return Boolean(origin && ALLOWED_ORIGINS.has(origin));
+}
+
 export function isSameOriginWrite(request) {
     const origin = request.headers.get('Origin') || request.headers.get('Referer');
     if (!origin) return false;
     try {
-        return new URL(origin).origin === new URL(request.url).origin;
+        const requestOrigin = new URL(request.url).origin;
+        const sourceOrigin = new URL(origin).origin;
+        return sourceOrigin === requestOrigin || isAllowedOrigin(sourceOrigin);
     } catch (error) {
         return false;
     }
@@ -64,21 +78,27 @@ export async function consumeRateLimit(context, bucket, windowSeconds, maxReques
     return { allowed: true, retryAfter };
 }
 
-export function corsHeaders() {
-    return {
-        // API 仅供本站同源页面使用；不要再用 '*' 让其他站点的浏览器脚本读取接口。
-        'Access-Control-Allow-Origin': 'https://sfszhmod.pages.dev',
+export function corsHeaders(request) {
+    const headers = {
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Vary': 'Origin',
         'Content-Type': 'application/json; charset=utf-8'
     };
+
+    const origin = request?.headers.get('Origin');
+    if (isAllowedOrigin(origin)) {
+        headers['Access-Control-Allow-Origin'] = origin;
+    }
+
+    return headers;
 }
 
-export function json(data, options = {}) {
+export function json(data, options = {}, request) {
     const { status = 200, ...headers } = options;
-    return new Response(JSON.stringify(data), {
+    const body = status === 204 ? null : JSON.stringify(data);
+    return new Response(body, {
         status,
-        headers: { ...corsHeaders(), ...headers }
+        headers: { ...corsHeaders(request), ...headers }
     });
 }
