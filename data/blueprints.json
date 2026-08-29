@@ -86,7 +86,9 @@
       "name": "新视野配套蓝图",
       "desc": "新视野配套蓝图",
       "link": "https://wwaqu.lanzoub.com/iVmhU457w85c",
-      "images": [],
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/135.webp"
+      ],
       "tags": [],
       "format": "蓝图 ZIP",
       "size": "46KB",
