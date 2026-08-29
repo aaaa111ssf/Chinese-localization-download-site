@@ -23,6 +23,80 @@
           "note": "需先下载并安装该模组"
         }
       ]
+    },
+    {
+      "id": "falcon-9",
+      "name": "Falcon 9",
+      "desc": "适配猎鹰九号-V2模组的猎鹰9火箭蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iUbw7456gmaj",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/131.webp"
+      ],
+      "tags": [],
+      "format": "蓝图 ZIP",
+      "size": "1.3KB",
+      "date": "2026-08-29",
+      "requirements": [
+        {
+          "name": "猎鹰九号-V2",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-mechazila-v2",
+      "name": "BP - Mechazila V2",
+      "desc": "发射台",
+      "link": "https://wwaqu.lanzoub.com/ie5cb456gm8h",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/132.webp"
+      ],
+      "tags": [],
+      "format": "蓝图 ZIP",
+      "size": "0.6KB",
+      "date": "2026-08-29",
+      "requirements": [
+        {
+          "name": "Mechazila",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "v1-1",
+      "name": "阿波罗配套蓝图v1.1",
+      "desc": "阿波罗配套蓝图v1.1 by AFS",
+      "link": "https://wwaqu.lanzoub.com/iZ7Ir457w82j",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/134.webp"
+      ],
+      "tags": [],
+      "format": "蓝图 ZIP",
+      "size": "43KB",
+      "date": "2026-08-29",
+      "requirements": [
+        {
+          "name": "阿波罗计划【整合部件】",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "xinshiye",
+      "name": "新视野配套蓝图",
+      "desc": "新视野配套蓝图",
+      "link": "https://wwaqu.lanzoub.com/iVmhU457w85c",
+      "images": [],
+      "tags": [],
+      "format": "蓝图 ZIP",
+      "size": "46KB",
+      "date": "2026-08-29",
+      "requirements": [
+        {
+          "name": "新视野-汉化-修复完成",
+          "note": "需先下载并安装该模组"
+        }
+      ]
     }
   ]
 }
