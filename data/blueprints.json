@@ -44,6 +44,25 @@
       ]
     },
     {
+      "id": "V3-9",
+      "name": "星舰V3",
+      "desc": "星舰V3蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iAUc7456gm9i",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/118.webp"
+      ],
+      "tags": [],
+      "format": "蓝图 ZIP",
+      "size": "1.3KB",
+      "date": "2026-08-29",
+      "requirements": [
+        {
+          "name": "V3星舰部件包",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
       "id": "bp-mechazila-v2",
       "name": "BP - Mechazila V2",
       "desc": "发射台",
