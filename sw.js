@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v12-scrollbar';
+const CACHE_VERSION = 'sfs-v13-icons-dll';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',

@@ -345,7 +345,11 @@
                 const installType = String(file && file.installType || '').toLowerCase();
                 const installUrl = String(file && file.installUrl || '').trim();
                 const sha256 = String(file && file.sha256 || '').trim();
-                if (!file || !file.name || !installUrl || !['parts', 'textures'].includes(installType)) return null;
+                // installType 里必须带上 dll：否则 DLL 模组永远拿不到 installUrl，
+                // 「下载方式」选直链也会被判定成「未配置安全直链」而回落蓝奏云，
+                // 表现就是 DLL 无法在直链 / 蓝奏云之间切换。
+                // DLL 是 PC 专用、移动端在更前面就被拦截，所以不会走到 Android 安装助手。
+                if (!file || !file.name || !installUrl || !['parts', 'textures', 'dll'].includes(installType)) return null;
                 try {
                     if (!isAllowedInstallerSource(new URL(installUrl))) return null;
                 } catch (e) {
@@ -1613,7 +1617,7 @@
                 console.warn('缓存读取失败:', e);
             }
 
-            fetch('data/data.json?v=20260918-dll1', { cache: 'force-cache' })
+            fetch('data/data.json?v=20260919-dll2', { cache: 'force-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();

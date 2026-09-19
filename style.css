@@ -43,6 +43,14 @@
             color: #111;
             min-height: 100vh;
             padding: 20px;
+            /* 沉浸式小白条 / 刘海屏：内容避让安全区，背景（含背景图）铺满到屏幕物理边缘，
+               这样底部手势条与顶部刘海区域显示的就是页面自身背景，而不是系统留出的白边。
+               不支持 env() 的旧浏览器会忽略下面这行，回落到上一行的 padding: 20px。 */
+            padding:
+                calc(20px + env(safe-area-inset-top, 0px))
+                calc(20px + env(safe-area-inset-right, 0px))
+                calc(20px + env(safe-area-inset-bottom, 0px))
+                calc(20px + env(safe-area-inset-left, 0px));
             overflow-x: hidden;
         }
 
@@ -52,6 +60,8 @@
             display: flex;
             flex-direction: column;
             min-height: calc(100vh - 40px);
+            /* 安全区会吃掉一部分可用高度，这里同步扣除，避免多出一小段滚动 */
+            min-height: calc(100vh - 40px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
             width: 100%;
         }
 
@@ -1410,6 +1420,12 @@ img.loaded {
             align-items: center;
             gap: 6px;
         }
+        .sponsor-float-btn svg {
+            /* 与公告 / 设置 / 回到顶部统一为 20px，否则四个悬浮按钮图标大小不一 */
+            width: 20px;
+            height: 20px;
+            flex: 0 0 20px;
+        }
         .sponsor-float-btn:hover {
             transform: translateY(-2px);
             border-color: #000;
@@ -1671,6 +1687,8 @@ img.loaded {
         .announce-panel.active { transform: translate3d(0, 0, 0); }
         .announce-panel-header {
             padding: 20px 24px 16px;
+            /* 全屏 / 刘海屏下让标题与关闭按钮避开状态栏 */
+            padding-top: calc(20px + env(safe-area-inset-top, 0px));
             border-bottom: 1px solid #eee;
             display: flex;
             align-items: center;
@@ -1787,8 +1805,8 @@ img.loaded {
             border-color: #999;
         }
         .settings-float-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: #333;
             transition: fill 0.3s;
         }
@@ -1834,6 +1852,8 @@ img.loaded {
             align-items: center;
             justify-content: space-between;
             padding: 20px 24px;
+            /* 全屏 / 刘海屏下让标题与关闭按钮避开状态栏 */
+            padding-top: calc(20px + env(safe-area-inset-top, 0px));
             border-bottom: 1px solid #eee;
             flex-shrink: 0;
         }
@@ -1903,11 +1923,19 @@ img.loaded {
             display: flex;
             align-items: center;
             gap: 10px;
+            /* 允许自身在 .settings-item 里收缩，否则右侧开关会被挤出去 */
+            min-width: 0;
         }
         .settings-item-icon {
             font-size: 1.1rem;
             width: 32px;
             height: 32px;
+            /* 关键：固定 32px 不参与伸缩。
+               之前只有 width 没有 flex，作为 flex 子项会被长文案压窄
+               （实测被压到 22px / 24.13px / 28.05px 等），导致：
+               ① 底框大小不一 ② 非整数宽度让图标落在半像素上而发虚 ③ 视觉重心不齐 */
+            flex: 0 0 32px;
+            min-width: 32px;
             border-radius: 8px;
             background: #fff;
             border: 1px solid #eee;
@@ -1915,6 +1943,8 @@ img.loaded {
             align-items: center;
             justify-content: center;
         }
+        /* 文案容器可收缩，改为让文字换行，而不是去挤图标 */
+        .settings-item-left > div:last-child { min-width: 0; }
         .settings-item-label {
             font-size: 0.9rem;
             color: #333;
@@ -2453,8 +2483,8 @@ img.loaded {
             border-color: #999;
         }
         .back-to-top-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: #333;
             transition: fill 0.3s;
         }
@@ -2709,6 +2739,13 @@ body.dark-mode .credits-role {
         button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
         @media (max-width: 640px) {
             body { padding: 12px; }
+            body {
+                padding:
+                    calc(12px + env(safe-area-inset-top, 0px))
+                    calc(12px + env(safe-area-inset-right, 0px))
+                    calc(12px + env(safe-area-inset-bottom, 0px))
+                    calc(12px + env(safe-area-inset-left, 0px));
+            }
             .toolbar { align-items: stretch; }
             .toolbar-left, .toolbar-right, .search-box, .search-box input { width: 100%; }
             .search-box input, .search-box input:focus { width: 100%; }
@@ -2917,7 +2954,17 @@ body.layout-list .card-actions-primary .btn-download span { font-size: 0.78rem; 
 
 @media (max-width: 768px) {
     body { padding: 12px; }
+    body {
+        padding:
+            calc(12px + env(safe-area-inset-top, 0px))
+            calc(12px + env(safe-area-inset-right, 0px))
+            calc(12px + env(safe-area-inset-bottom, 0px))
+            calc(12px + env(safe-area-inset-left, 0px));
+    }
     .container { min-height: calc(100vh - 24px); }
+    .container {
+        min-height: calc(100vh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    }
     body.layout-list .file-card {
         display: flex;
         flex-direction: column;
