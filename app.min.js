@@ -36,6 +36,60 @@
             function svgIcon(name) {
                 return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${uiIconPaths[name] || uiIconPaths.file}</svg>`;
             }
+            /* ---------- 分类分组：严格三类（涂装包 / 自定义部件 / DLL模组） ----------
+               说明：数据层仍保留 engine/function/entertain/skin 等细分 category，
+               这里只做「大类 -> 细分」的映射，因此细分信息不会丢失，后续想重新暴露很方便。 */
+            const CATEGORY_GROUPS = {
+                all: {
+                    key: 'all',
+                    label: '全部',
+                    eyebrow: 'ALL MODS',
+                    title: '全部模组',
+                    desc: '站内全部汉化模组，包含涂装包、自定义部件与 DLL 模组。',
+                    icon: '<rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/>',
+                    match: function() { return true; }
+                },
+                skin: {
+                    key: 'skin',
+                    label: '涂装包',
+                    eyebrow: 'TEXTURE PACKS',
+                    title: '涂装包',
+                    desc: '替换火箭与部件外观的涂装、国旗与标志贴图，放入 Textures Packs/ 目录使用。',
+                    icon: '<path d="M12 3a9 9 0 1 0 0 18 2 2 0 0 0 2-2 2 2 0 0 1 2-2h1a4 4 0 0 0 4-4 9 9 0 0 0-9-10Z"/><circle cx="7.5" cy="11.5" r="1.1"/><circle cx="11" cy="7.5" r="1.1"/><circle cx="15.5" cy="9" r="1.1"/>',
+                    match: function(c) { return c === 'skin'; }
+                },
+                parts: {
+                    key: 'parts',
+                    label: '自定义部件',
+                    eyebrow: 'CUSTOM PARTS',
+                    title: '自定义部件',
+                    desc: '新增发动机、功能性部件与娱乐性部件，放入 Parts/ 目录使用。',
+                    icon: '<path d="m21 8-9 5-9-5 9-5 9 5Z"/><path d="m3 8 9 5 9-5M12 13v9"/>',
+                    match: function(c) { return c === 'engine' || c === 'function' || c === 'entertain'; }
+                },
+                dll: {
+                    key: 'dll',
+                    label: 'DLL模组',
+                    eyebrow: 'PC / STEAM ONLY',
+                    title: 'DLL 模组',
+                    desc: '通过动态库注入实现的功能增强，仅支持 PC / Steam 版，移动端无法使用。',
+                    icon: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="m10.2 9.4-2.6 2.6 2.6 2.6M13.8 9.4l2.6 2.6-2.6 2.6"/>',
+                    match: function(c) { return c === 'dll'; }
+                }
+            };
+            const CATEGORY_ORDER = ['all', 'skin', 'parts', 'dll'];
+
+            function getCategoryGroup(key) {
+                return CATEGORY_GROUPS[key] || CATEGORY_GROUPS.all;
+            }
+            function fileMatchesCategory(file, key) {
+                if (!file) return false;
+                return getCategoryGroup(key).match(String(file.category || '').toLowerCase());
+            }
+            function isDllFile(file) {
+                return !!file && String(file.category || '').toLowerCase() === 'dll';
+            }
+
             let currentCategory = 'all';
             let searchKeyword = '';
             let currentSort = 'default'; // default | date
@@ -479,10 +533,16 @@
                 }
                 const now = Date.now();
                 if (now < downloadNavigationLockedUntil) return false;
-                // 同一点击在浏览器、卡片父级或内联事件中重复传播时，只允许第一条路径执行。
-                downloadNavigationLockedUntil = now + 1200;
                 const file = files[index];
                 if (!file) return false;
+                // 防呆：DLL 模组仅 PC 可用。移动端在「全部」等任意分类下点下载都直接拦截，
+                // 而不是只在 DLL 分类入口处拦。
+                if (isDllFile(file) && isMobileDevice()) {
+                    toast('DLL 模组仅支持 PC / Steam 版，移动端无法使用');
+                    return false;
+                }
+                // 同一点击在浏览器、卡片父级或内联事件中重复传播时，只允许第一条路径执行。
+                downloadNavigationLockedUntil = now + 1200;
                 const mode = getDownloadMode();
                 const payload = getAutoInstallPayload(file);
 
@@ -552,6 +612,12 @@
                 const tagsHtml = safe.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
                 const icon = typeIconNames[safe.type] || typeIconNames.default;
                 const slug = toSlug(file.name || '');
+                // DLL 模组仅 PC 可用，卡片上打角标，避免移动端用户误下载。
+                const pcBadge = isDllFile(file)
+                    ? '<span class="card-pc-badge" title="DLL 模组仅支持 PC / Steam 版"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="12.5" rx="2"/><path d="M8 20.5h8M12 16.5v4"/></svg>PC ONLY</span>'
+                    : '';
+                // 标记 DLL 卡片，移动端由 CSS 把下载按钮置灰（配合 handleModDownload 的拦截）
+                const dllAttr = isDllFile(file) ? ' data-dll="1"' : '';
 
                 let imageHtml = '';
                 if (validImages.length > 0) {
@@ -569,6 +635,7 @@
                     const fetchPriority = index === 0 ? 'fetchpriority="high"' : '';
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
+                            ${pcBadge}
                             <img ${isAboveFold ? 'src' : 'data-src'}="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" decoding="async" onerror="handleImgError(this)" onload="handleImgLoad(this)" ${isAboveFold ? `loading="eager" ${fetchPriority}` : 'loading="lazy"'}>
                             ${thumbsHtml}
                         </div>
@@ -576,6 +643,7 @@
                 } else {
                     imageHtml = `
                         <div class="card-image-wrap card-image-placeholder" onclick="openModDetail(${index})">
+                            ${pcBadge}
                             <div class="card-image-fallback">
                                 <span class="fallback-icon">${svgIcon(icon)}</span>
                                 <span class="fallback-text">暂无预览</span>
@@ -608,7 +676,7 @@
                             </div>
                             <div class="card-actions-primary">
                                 <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">${svgIcon('info')}<span>详情</span></button>
-                                <button type="button" class="btn btn-download" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
+                                <button type="button" class="btn btn-download"${dllAttr} onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                             </div>
                         </div>
                     </div>
@@ -643,7 +711,7 @@
                                 <span>作者: ${safe.author}</span>
                             </div>
                         </div>
-                        <button type="button" class="sug-btn" onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
+                        <button type="button" class="sug-btn"${isDllFile(file) ? ' data-dll="1"' : ''} onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                     </div>
                 `;
             }
@@ -693,7 +761,7 @@
                 const sortedFiles = sortFiles(files);
 
                 sortedFiles.forEach((file, sortedIndex) => {
-                    const matchCategory = currentCategory === 'all' || file.category === currentCategory;
+                    const matchCategory = fileMatchesCategory(file, currentCategory);
                     let matchSearch = false;
                     if (isTagSearch) {
                         matchSearch = tagQuery && Array.isArray(file.tags) && file.tags.some(t => t.toLowerCase().includes(tagQuery));
@@ -740,7 +808,7 @@
 
                 if (visibleCount === 0) {
                     noResults.classList.add('show');
-                    const suggestions = files.filter(f => currentCategory === 'all' || f.category === currentCategory).slice(0, 5);
+                    const suggestions = files.filter(f => fileMatchesCategory(f, currentCategory)).slice(0, 5);
                     noResults.innerHTML = `
                         <div style="text-align:center;margin-bottom:30px;">
                             <div class="no-results-icon">${svgIcon('search')}</div>
@@ -767,37 +835,267 @@
                 }, 120);
             });
 
-            // 下拉菜单
-            const categoryDropdown = document.getElementById('categoryDropdown');
-            const categoryToggle = document.getElementById('categoryToggle');
-            const categoryToggleText = document.getElementById('categoryToggleText');
+            /* ---------- 分类导航（涂装包 / 自定义部件 / DLL模组） ---------- */
+            const categoryNav = document.getElementById('categoryNav');
+            const categoryTabs = categoryNav
+                ? Array.prototype.slice.call(categoryNav.querySelectorAll('.category-tab'))
+                : [];
 
-            categoryToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                categoryDropdown.classList.toggle('open');
-                this.setAttribute('aria-expanded', categoryDropdown.classList.contains('open'));
+            function updateCategoryHead(key) {
+                const group = getCategoryGroup(key);
+                const eyebrowEl = document.getElementById('categoryEyebrow');
+                const titleEl = document.getElementById('categoryTitle');
+                const descEl = document.getElementById('categoryDesc');
+                const iconEl = document.getElementById('categoryHeadIcon');
+                if (eyebrowEl) eyebrowEl.textContent = group.eyebrow;
+                if (titleEl) titleEl.textContent = group.title;
+                if (descEl) descEl.textContent = group.desc;
+                if (iconEl) {
+                    iconEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + group.icon + '</svg>';
+                }
+            }
+
+            function isModsPageActive() {
+                const nav = document.querySelector('.nav-item[data-page="mods"]');
+                return !nav || nav.classList.contains('active');
+            }
+
+            /* 分类导航 / 分类页头 / DLL 须知 仅在「模组」页显示 */
+            function syncCategoryChrome() {
+                const onMods = isModsPageActive();
+                const navEl = document.getElementById('categoryNav');
+                const headEl = document.getElementById('categoryHead');
+                const noticeEl = document.getElementById('dllNotice');
+                if (navEl) navEl.style.display = onMods ? '' : 'none';
+                if (headEl) headEl.style.display = onMods ? '' : 'none';
+                if (noticeEl) noticeEl.hidden = !(onMods && currentCategory === 'dll');
+            }
+
+            function ensureModsPage() {
+                const modsNav = document.querySelector('.nav-item[data-page="mods"]');
+                if (modsNav && !modsNav.classList.contains('active')) modsNav.click();
+            }
+
+            /* 分类同步到 URL hash，便于直接分享 / 直达某一分类页 */
+            function updateCategoryHash(key) {
+                try {
+                    const next = (key === 'all') ? '' : '#' + key;
+                    if (window.location.hash !== next) {
+                        window.history.replaceState(null, '', window.location.pathname + window.location.search + next);
+                    }
+                } catch (e) { /* 忽略：部分环境不支持 history */ }
+            }
+
+            function applyCategory(key, options) {
+                const opts = options || {};
+                const group = getCategoryGroup(key);
+                currentCategory = group.key;
+                categoryTabs.forEach(function(tab) {
+                    const on = tab.dataset.category === group.key;
+                    tab.classList.toggle('active', on);
+                    tab.setAttribute('aria-pressed', on ? 'true' : 'false');
+                });
+                updateCategoryHead(group.key);
+                if (!opts.skipHash) updateCategoryHash(group.key);
+                syncCategoryChrome();
+                if (!opts.skipRender) renderFiles();
+            }
+
+            /* ---------- DLL 进入闸门：移动端拦截 + PC 端输入确认 ---------- */
+            const DLL_GATE_PHRASE = '我已知晓DLL无法在移动端使用';
+            const DLL_GATE_DISMISS_KEY = 'sfs_dll_gate_dismissed';
+            let dllGatePassed = false; // 仅本次页面加载内有效，刷新后需重新确认
+            // 「永久关闭」：用户确认过一次后记住，之后可直接进入 DLL 分类。
+            // 仅 PC 端生效——移动端仍然每次都拦截，避免被绕过。
+            let dllGateDismissed = false;
+            try { dllGateDismissed = localStorage.getItem(DLL_GATE_DISMISS_KEY) === '1'; } catch (e) {}
+            function isDllGateDismissed() { return dllGateDismissed; }
+
+            function isMobileDevice() {
+                const ua = navigator.userAgent || '';
+                if (/Android|iPhone|iPad|iPod|Mobile|Windows Phone|BlackBerry|Opera Mini|IEMobile/i.test(ua)) return true;
+                // iPadOS 13+ 会伪装成 macOS 桌面 UA，用触摸点数兜底
+                if (/Macintosh/i.test(ua) && Number(navigator.maxTouchPoints || 0) > 1) return true;
+                return false;
+            }
+
+            // 挂到 body 上，供 CSS 把移动端不可用的下载按钮置灰
+            if (isMobileDevice()) document.body.classList.add('is-mobile-device');
+
+            /* 归一化：忽略空格与中英文标点，降低输入门槛但仍要求用户真正读过这句话 */
+            function normalizeGateText(value) {
+                return String(value || '')
+                    .replace(/[\s\u3000]+/g, '')
+                    .replace(/[，,。.、！!？?；;：:'"“”‘’()（）【】\[\]]/g, '')
+                    .toLowerCase();
+            }
+
+            function openDllGate() {
+                const modal = document.getElementById('dllGateModal');
+                if (!modal) return;
+                const blocked = isMobileDevice();
+                const inputView = document.getElementById('dllGateInputView');
+                const blockedView = document.getElementById('dllGateBlockedView');
+                const confirmBtn = document.getElementById('dllGateConfirm');
+                const input = document.getElementById('dllGateInput');
+                const errorEl = document.getElementById('dllGateError');
+                const iconEl = document.getElementById('dllGateIcon');
+                const titleEl = document.getElementById('dllGateTitle');
+                const dismissWrap = document.getElementById('dllGatePermanent');
+
+                if (blocked) {
+                    if (inputView) inputView.hidden = true;
+                    if (blockedView) blockedView.hidden = false;
+                    if (confirmBtn) confirmBtn.hidden = true;
+                    // 移动端不提供「永久关闭」，否则等于放开拦截
+                    if (dismissWrap) dismissWrap.hidden = true;
+                    if (iconEl) iconEl.textContent = '📵';
+                    if (titleEl) titleEl.textContent = '移动端无法使用 DLL 模组';
+                } else {
+                    if (inputView) inputView.hidden = false;
+                    if (blockedView) blockedView.hidden = true;
+                    if (confirmBtn) { confirmBtn.hidden = false; confirmBtn.disabled = true; }
+                    // 「永久关闭」不在一开始就给，等用户把确认语句输对了才出现，
+                    // 免得它变成绕过输入的捷径
+                    if (dismissWrap) dismissWrap.hidden = true;
+                    if (iconEl) iconEl.textContent = '⚠️';
+                    if (titleEl) titleEl.textContent = 'DLL 模组仅支持 PC / Steam 版';
+                    if (input) input.value = '';
+                    if (errorEl) errorEl.hidden = true;
+                }
+
+                document.body.classList.add('modal-open');
+                modal.classList.add('active');
+                modal.setAttribute('aria-hidden', 'false');
+                if (!blocked && input) {
+                    window.setTimeout(function() { try { input.focus(); } catch (e) {} }, 320);
+                }
+            }
+
+            function closeDllGate() {
+                const modal = document.getElementById('dllGateModal');
+                if (!modal) return;
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+                checkAndRemoveModalOpen();
+            }
+
+            function validateDllGateInput() {
+                const input = document.getElementById('dllGateInput');
+                const confirmBtn = document.getElementById('dllGateConfirm');
+                const errorEl = document.getElementById('dllGateError');
+                const dismissWrap = document.getElementById('dllGatePermanent');
+                if (!input || !confirmBtn) return;
+                const ok = normalizeGateText(input.value) === normalizeGateText(DLL_GATE_PHRASE);
+                confirmBtn.disabled = !ok;
+                if (errorEl) errorEl.hidden = ok || input.value.trim() === '';
+                // 只有把确认语句输对之后，才给出「永久关闭」这个选项；
+                // 改动输入导致不匹配时会重新收起。移动端始终保持隐藏。
+                if (dismissWrap && !isMobileDevice()) dismissWrap.hidden = !ok;
+            }
+
+            function confirmDllGate() {
+                // 双保险：移动端即使被绕过 DOM 也拒绝放行
+                if (isMobileDevice()) { closeDllGate(); return; }
+                const confirmBtn = document.getElementById('dllGateConfirm');
+                if (!confirmBtn || confirmBtn.disabled) return;
+                dllGatePassed = true;
+                closeDllGate();
+                ensureModsPage();
+                applyCategory('dll');
+            }
+
+            function requestDllCategory() {
+                // 移动端永远拦截，「永久关闭」也不例外
+                if (isMobileDevice()) { openDllGate(); return; }
+                if (dllGatePassed || dllGateDismissed) {
+                    ensureModsPage();
+                    applyCategory('dll');
+                    return;
+                }
+                openDllGate();
+            }
+
+            // 分类标签点击
+            categoryTabs.forEach(function(tab) {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const key = this.dataset.category;
+                    if (key === 'dll') { requestDllCategory(); return; }
+                    ensureModsPage();
+                    applyCategory(key);
+                });
             });
-            document.addEventListener('click', function() {
-                categoryDropdown.classList.remove('open');
-                categoryToggle.setAttribute('aria-expanded', 'false');
-                if (sortDropdown) {
-                    sortDropdown.classList.remove('open');
-                    sortToggle.setAttribute('aria-expanded', 'false');
+
+            // 闸门交互绑定
+            const dllGateModalEl = document.getElementById('dllGateModal');
+            const dllGateInputEl = document.getElementById('dllGateInput');
+            const dllGateConfirmEl = document.getElementById('dllGateConfirm');
+            const dllGateCancelEl = document.getElementById('dllGateCancel');
+            if (dllGateInputEl) {
+                dllGateInputEl.addEventListener('input', validateDllGateInput);
+                dllGateInputEl.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (dllGateConfirmEl && !dllGateConfirmEl.disabled) confirmDllGate();
+                    }
+                });
+            }
+            if (dllGateConfirmEl) dllGateConfirmEl.addEventListener('click', confirmDllGate);
+            if (dllGateCancelEl) dllGateCancelEl.addEventListener('click', closeDllGate);
+
+            // 「永久关闭」：记到本机 localStorage，之后进 DLL 分类不再要求输入确认
+            const dllGateDismissEl = document.getElementById('dllGateDismissForever');
+            if (dllGateDismissEl) {
+                dllGateDismissEl.addEventListener('click', function() {
+                    // 移动端不允许永久关闭，否则等于放开拦截
+                    if (isMobileDevice()) { closeDllGate(); return; }
+                    dllGateDismissed = true;
+                    dllGatePassed = true;
+                    try { localStorage.setItem(DLL_GATE_DISMISS_KEY, '1'); } catch (e) {}
+                    closeDllGate();
+                    ensureModsPage();
+                    applyCategory('dll');
+                    toast('已永久关闭该确认，本设备之后可直接进入 DLL 分类');
+                });
+            }
+            if (dllGateModalEl) {
+                dllGateModalEl.addEventListener('click', function(e) {
+                    if (e.target === dllGateModalEl) closeDllGate();
+                });
+            }
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dllGateModalEl && dllGateModalEl.classList.contains('active')) {
+                    closeDllGate();
                 }
             });
 
-            document.querySelectorAll('.dropdown-item[data-category]').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    document.querySelectorAll('.dropdown-item[data-category]').forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    currentCategory = this.dataset.category;
-                    categoryToggleText.textContent = this.textContent;
-                    categoryDropdown.classList.remove('open');
-                    categoryToggle.setAttribute('aria-expanded', 'false');
-                    renderFiles();
+            /* 确认语句不可复制：拦截选中 / 复制 / 剪切 / 拖拽 / 右键，并禁止向输入框粘贴 */
+            const dllGatePhraseEl = document.getElementById('dllGatePhrase');
+            if (dllGatePhraseEl) {
+                ['selectstart', 'copy', 'cut', 'dragstart', 'contextmenu'].forEach(function(evt) {
+                    dllGatePhraseEl.addEventListener(evt, function(e) {
+                        e.preventDefault();
+                        return false;
+                    });
                 });
+            }
+            if (dllGateInputEl) {
+                dllGateInputEl.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    toast('请手动输入这句话，不支持粘贴');
+                });
+                dllGateInputEl.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    toast('请手动输入这句话，不支持拖拽');
+                });
+            }
+            document.addEventListener('copy', function(e) {
+                const sel = String((window.getSelection && window.getSelection().toString()) || '');
+                if (sel && normalizeGateText(sel) === normalizeGateText(DLL_GATE_PHRASE)) {
+                    e.preventDefault();
+                    toast('这句话不可复制，请手动输入');
+                }
             });
 
             // 排序下拉菜单
@@ -824,6 +1122,14 @@
                     });
                 });
             }
+
+            // 点击空白处收起排序下拉
+            document.addEventListener('click', function() {
+                if (sortDropdown && sortDropdown.classList.contains('open')) {
+                    sortDropdown.classList.remove('open');
+                    if (sortToggle) sortToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
 
             document.querySelectorAll('.tutorial-tab').forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -877,6 +1183,8 @@
                         if (toolbar) toolbar.style.display = 'flex';
                         if (footer) footer.style.display = 'grid';
                     }
+                    // 分类导航 / 分类页头 / DLL 须知 只在「模组」页出现
+                    syncCategoryChrome();
                 });
             });
 
@@ -920,6 +1228,11 @@
             window.openModDetail = function(index) {
                 const file = files[index];
                 if (!file) return;
+                // 防呆：DLL 模组仅 PC 可用，移动端连详情也不打开（详情页本身就是下载入口）
+                if (isDllFile(file) && isMobileDevice()) {
+                    toast('DLL 模组仅支持 PC / Steam 版，移动端无法查看');
+                    return;
+                }
                 const validImages = getValidImages(file);
                 const box = document.getElementById('modDetailBox');
                 const tags = (Array.isArray(file.tags) ? file.tags : []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
@@ -1264,6 +1577,29 @@
                 });
             }
 
+            /* ---------- 首屏：支持直接用 URL hash 进入某个分类页（#skin / #parts / #dll） ---------- */
+            (function bootstrapCategoryFromHash() {
+                const raw = String(window.location.hash || '').replace(/^#/, '').toLowerCase();
+                if (!raw || !CATEGORY_GROUPS[raw] || raw === 'all') {
+                    applyCategory('all', { skipHash: true, skipRender: true });
+                    return;
+                }
+                if (raw === 'dll') {
+                    // DLL 需先过闸门。这里标记「开屏欢迎弹窗已看过」（与 ENTRY_SEEN_KEY 同值），
+                    // 避免两个全屏遮罩同时弹出互相遮挡；闸门关闭后用户仍可正常浏览其它分类。
+                    try { sessionStorage.setItem('sfs_entry_modal_seen', 'true'); } catch (e) {}
+                    applyCategory('all', { skipHash: true, skipRender: true });
+                    // 已永久关闭确认（且非移动端）时直接进入，不再弹闸门
+                    if (!isMobileDevice() && (dllGatePassed || dllGateDismissed)) {
+                        applyCategory('dll');
+                        return;
+                    }
+                    window.setTimeout(openDllGate, 420);
+                    return;
+                }
+                applyCategory(raw, { skipHash: true, skipRender: true });
+            })();
+
             // 优先从本地缓存读取并立即渲染
             let cacheLoaded = false;
             try {
@@ -1277,7 +1613,7 @@
                 console.warn('缓存读取失败:', e);
             }
 
-            fetch('data/data.json?v=20260824-recovery1', { cache: 'force-cache' })
+            fetch('data/data.json?v=20260918-dll1', { cache: 'force-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
@@ -1568,7 +1904,6 @@
             const colorSurfaceThumb = document.getElementById('colorSurfaceThumb');
             const hueSlider = document.getElementById('hueSlider');
             const themePresetRow = document.getElementById('themePresetRow');
-            const siteTitle = document.querySelector('.header h1');
             const backgroundStyleSelector = document.getElementById('backgroundStyleSelector');
             const backgroundImageInput = document.getElementById('settingBackgroundImage');
             const clearBackgroundImageBtn = document.getElementById('clearBackgroundImage');
@@ -1628,30 +1963,16 @@
                 const channels = h < 60 ? [chroma, x, 0] : h < 120 ? [x, chroma, 0] : h < 180 ? [0, chroma, x] : h < 240 ? [0, x, chroma] : h < 300 ? [x, 0, chroma] : [chroma, 0, x];
                 return '#' + channels.map(channel => Math.round((channel + m) * 255).toString(16).padStart(2, '0')).join('').toUpperCase();
             }
-            function renderRainbowTitle(enabled) {
-                if (!siteTitle) return;
-                if (!siteTitle.dataset.plainTitle) siteTitle.dataset.plainTitle = siteTitle.textContent || '';
-                const plainTitle = siteTitle.dataset.plainTitle;
-                if (!enabled) {
-                    if (siteTitle.classList.contains('title-rainbow-text')) {
-                        siteTitle.textContent = plainTitle;
-                        siteTitle.classList.remove('title-rainbow-text');
-                    }
-                    return;
+            // 标题渐变的第二个色标：由主题色派生出一个对比色。
+            // 深色主题色往亮处提，浅色主题色（含夜间模式的纯白）往暗处压，
+            // 保证任何主题色下渐变都看得出来。这里在 JS 侧算好再写进 CSS 变量，
+            // 避免 color-mix 在部分移动内核的 background-clip 下裁剪不一致。
+            function getAccentShiftColor(hex) {
+                const hsv = hexToHsv(hex);
+                if (hsv.v > 62) {
+                    return hsvToHex(hsv.h, Math.min(100, hsv.s * 1.1), Math.max(20, hsv.v - 46));
                 }
-                if (siteTitle.classList.contains('title-rainbow-text')) return;
-                const colors = ['#FF4D6D', '#FF8A3D', '#FFC107', '#63C741', '#00A8E8', '#6671FF', '#A855F7'];
-                const fragment = document.createDocumentFragment();
-                Array.from(plainTitle).forEach((character, index) => {
-                    const span = document.createElement('span');
-                    span.className = 'title-rainbow-char';
-                    span.style.color = colors[index % colors.length];
-                    span.textContent = character === ' ' ? '\u00A0' : character;
-                    fragment.appendChild(span);
-                });
-                siteTitle.textContent = '';
-                siteTitle.appendChild(fragment);
-                siteTitle.classList.add('title-rainbow-text');
+                return hsvToHex(hsv.h, hsv.s * 0.55, Math.min(100, hsv.v + 34));
             }
             function getSafeBackgroundImage(value) {
                 const source = String(value || '').trim();
@@ -1685,18 +2006,17 @@
                 const usesDefaultBackground = settings.backgroundSource === 'default';
                 const imageReady = usesDefaultBackground || Boolean(imageUrl);
                 const activeBackground = settings.backgroundStyle === 'image' && !imageReady ? 'grid' : settings.backgroundStyle;
-                const imageColorLocked = activeBackground === 'image';
-                const colorAdjustmentLocked = Boolean(settings.darkMode || imageColorLocked);
-                const rainbowThemeActive = settings.colorTheme === 'rainbow' && !colorAdjustmentLocked;
-                // 深色模式和图片背景均使用中性色，避免已保存的高饱和主题色破坏阅读对比。
-                const activeAccent = settings.darkMode ? '#FFFFFF' : imageColorLocked ? DEFAULTS.accentColor : rainbowThemeActive ? '#7C3AED' : selectedAccent;
+                // 图片背景不再锁定调色盘：允许在图片背景下继续使用主题颜色。
+                // 目前仅黑夜模式仍锁定为高对比配色。
+                const colorAdjustmentLocked = Boolean(settings.darkMode);
+                const activeAccent = settings.darkMode ? '#FFFFFF' : selectedAccent;
                 settings.accentColor = selectedAccent;
                 document.documentElement.style.setProperty('--site-accent', activeAccent);
                 document.documentElement.style.setProperty('--site-on-accent', getOnAccentColor(activeAccent));
-                document.body.classList.toggle('rainbow-theme', rainbowThemeActive);
+                // 标题渐变的第二个色标跟随主题色，因此「标题渐变」开关在任何主题下都有效果。
+                document.documentElement.style.setProperty('--site-accent-shift', getAccentShiftColor(activeAccent));
                 document.body.classList.toggle('title-gradient-disabled', !settings.titleGradient);
                 document.body.classList.toggle('liquid-glass', Boolean(settings.liquidGlass));
-                renderRainbowTitle(rainbowThemeActive && settings.titleGradient);
                 document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
                     meta.content = settings.darkMode ? '#0D0D0D' : activeAccent;
                 });
@@ -1704,7 +2024,6 @@
                 accentColorValue.textContent = selectedAccent;
                 accentColorInput.disabled = colorAdjustmentLocked;
                 accentColorItem.classList.toggle('is-disabled', colorAdjustmentLocked);
-                accentColorItem.classList.toggle('is-image-locked', imageColorLocked);
                 accentColorControl.setAttribute('aria-disabled', String(colorAdjustmentLocked));
                 titleGradientToggle.checked = Boolean(settings.titleGradient);
                 liquidGlassToggle.checked = Boolean(settings.liquidGlass);
@@ -1719,13 +2038,11 @@
                 colorSurface.setAttribute('aria-valuetext', `饱和度 ${Math.round(hsv.s)}%，明度 ${Math.round(hsv.v)}%`);
                 hueSlider.value = String(Math.round(hsv.h));
                 customHexInput.value = selectedAccent;
-                customColorPreview.style.background = rainbowThemeActive ? 'linear-gradient(135deg, #ff4d6d, #ffbe0b, #00c853, #00b4d8, #7b2cbf)' : selectedAccent;
+                customColorPreview.style.background = selectedAccent;
                 customPaletteDesc.textContent = colorAdjustmentLocked
-                    ? (settings.darkMode ? '黑夜模式下已锁定为高对比配色' : '图片背景下已锁定为中性色')
-                    : rainbowThemeActive ? '全站彩虹主题已启用；标题、主按钮和选中状态统一使用彩虹配色' : '无需浏览器系统取色器，拖动即可选择颜色';
-                const activePreset = rainbowThemeActive
-                    ? 'rainbow'
-                    : settings.colorTheme === 'solid' && selectedAccent === '#111111'
+                    ? '黑夜模式下已锁定为高对比配色'
+                    : '无需浏览器系统取色器，拖动即可选择颜色';
+                const activePreset = settings.colorTheme === 'solid' && selectedAccent === '#111111'
                         ? 'ink'
                         : settings.colorTheme;
                 themePresetRow.querySelectorAll('[data-theme-preset]').forEach(btn => {
@@ -1736,9 +2053,7 @@
                 });
                 accentColorDesc.textContent = settings.darkMode
                     ? '黑夜模式下已锁定为高对比配色；切回浅色模式后可调整'
-                    : imageColorLocked
-                        ? '图片背景下已锁定为中性色；切回网格或纯色背景后可调整'
-                        : '同步应用于卡片、设置、公告、赞助和主按钮';
+                    : '同步应用于卡片、设置、公告、赞助和主按钮';
                 document.body.classList.remove('background-plain', 'background-grid', 'background-image');
                 document.body.classList.add('background-' + activeBackground);
                 settings.backgroundFit = normalizeBackgroundFit(settings.backgroundFit);
@@ -1929,7 +2244,7 @@
 
             // 事件绑定
             function saveAccentColor(value) {
-                if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
+                if (settings.darkMode) return;
                 settings.accentColor = normalizeAccentColor(value);
                 settings.colorTheme = 'solid';
                 saveSettings(settings);
@@ -1969,7 +2284,7 @@
             });
 
             function updateCustomColorFromSurface(clientX, clientY) {
-                if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
+                if (settings.darkMode) return;
                 const rect = colorSurface.getBoundingClientRect();
                 const saturation = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
                 const brightness = Math.max(0, Math.min(100, (1 - (clientY - rect.top) / rect.height) * 100));
@@ -2011,10 +2326,10 @@
             });
             themePresetRow.querySelectorAll('[data-theme-preset]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    if (settings.darkMode || (settings.backgroundStyle === 'image' && hasCustomBackgroundImage())) return;
+                    // 仅黑夜模式锁定配色；图片背景不再阻止切换主题预设
+                    if (settings.darkMode) return;
                     settings.accentColor = normalizeAccentColor(this.dataset.color);
-                    settings.colorTheme = this.dataset.themePreset === 'rainbow' ? 'rainbow' : this.dataset.themePreset;
-                    if (settings.colorTheme === 'rainbow') settings.titleGradient = true;
+                    settings.colorTheme = this.dataset.themePreset;
                     saveSettings(settings);
                     applySettings();
                 });

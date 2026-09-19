@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v9-blueprints';
+const CACHE_VERSION = 'sfs-v12-scrollbar';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',

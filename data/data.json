@@ -1763,5 +1763,97 @@
     "installType": "textures",
     "installUrl": "https://nasyt.dpdns.org/sd/221192eC/",
     "sha256": ""
+  },
+  {
+    "name": "Build Setting",
+    "type": "zip",
+    "size": "14KB",
+    "date": "2026-09-19",
+    "desc": "该模组的目的是将 Cucumber 的 Build Upgrade 功能中那些在新版的 Part Editor 模组中缺失的功能重新添加进来 此外 它还添加了更多功能 比如 Infinity 的 RandomTweaks 中的那些功能 这些功能包括调整网格的缩放间隔 控制部件的旋转幅度 以及提供各种组合键 以便能够以微小的单位来调整部件的大小或位置",
+    "link": "https://wwaqu.lanzoub.com/ijlrV491nlpe",
+    "tags": [
+      "DLL",
+      "PC"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/202.webp"
+    ],
+    "version": "v1.0",
+    "author": "NeptuneSky",
+    "heat": "6",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/63EQ1DLz/",
+    "sha256": ""
+  },
+  {
+    "name": "AstronautMod",
+    "type": "zip",
+    "size": "52KB",
+    "date": "2026-09-19",
+    "desc": "通过这个模组，你可以招募宇航员、将他们分配到乘组席位、让他们进行太空行走、在其他行星上竖立旗帜等等",
+    "link": "https://wwaqu.lanzoub.com/i2KLR491nlkj",
+    "tags": [
+      "DLL",
+      "PC"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/201.webp"
+    ],
+    "version": "v3.9.2",
+    "author": "A Future star",
+    "heat": "5",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/bcROZqD8/",
+    "sha256": ""
+  },
+  {
+    "name": "ANAIS",
+    "type": "zip",
+    "size": "46KB",
+    "date": "2026-09-19",
+    "desc": "该模组用更先进、更优化的导航系统取代了原有的导航系统 绝对是让游戏中的相遇过程更简单、在各星球之间更易于导航的绝佳模组！",
+    "link": "https://wwaqu.lanzoub.com/ibsiZ491nlla",
+    "tags": [
+      "DLL",
+      "PC"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/203.webp"
+    ],
+    "version": "v1.0",
+    "author": "Altaïr",
+    "heat": "4",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/gJO0kCla/",
+    "sha256": ""
+  },
+  {
+    "name": "BP Editor",
+    "type": "zip",
+    "size": "35KB",
+    "date": "2026-09-19",
+    "desc": "这是一款为《太空飞行模拟器》开发的模组，它用可视化的编辑工具取代了原版游戏中的编辑方式。该模组包含交互式控制柄、对齐和分布工具、尺寸标注以及各种属性设置功能。",
+    "link": "https://wwaqu.lanzoub.com/ivY9R491nlnc",
+    "tags": [
+      "DLL",
+      "PC独占"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/204.webp"
+    ],
+    "version": "v1.0",
+    "author": "uneven-coder",
+    "heat": "3",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/1ysyAlYR/",
+    "sha256": ""
   }
 ]
