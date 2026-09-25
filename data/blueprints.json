@@ -118,6 +118,90 @@
           "note": "需先下载并安装该模组"
         }
       ]
+    },
+    {
+      "id": "blueprint-9",
+      "name": "土星五号蓝图",
+      "desc": "Pic的土星五号模组配套蓝图",
+      "link": "https://wwaqu.lanzoub.com/iXCXD49x2fcb",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/206.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "0.9KB",
+      "date": "2026-09-25",
+      "requirements": [
+        {
+          "name": "Pic系列模组",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "sifjhbdsfnh",
+      "name": "真实火箭包配套蓝图zh.3",
+      "desc": "真实火箭包配套蓝图",
+      "link": "https://wwaqu.lanzoub.com/iYm6849x2ffe",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/205.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "69KB",
+      "date": "2026-09-25",
+      "requirements": [
+        {
+          "name": "Pic系列模组",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "blueprint-9sads",
+      "name": "龙飞船蓝图",
+      "desc": "龙飞船蓝图",
+      "link": "https://wwaqu.lanzoub.com/iYryg49x2etc",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/214.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "0.7KB",
+      "date": "2026-09-25",
+      "requirements": [
+        {
+          "name": "龙飞船",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "blueprint-10",
+      "name": "电子号蓝图",
+      "desc": "电子号蓝图",
+      "link": "https://wwaqu.lanzoub.com/iTI4P49x89ze",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/215.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "0.9KB",
+      "date": "2026-09-25",
+      "requirements": [
+        {
+          "name": "电子号",
+          "note": "需先下载并安装该模组"
+        }
+      ]
     }
   ]
 }
