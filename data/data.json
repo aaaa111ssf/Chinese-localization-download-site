@@ -1,5 +1,177 @@
 [
   {
+    "name": "龙飞船",
+    "type": "zip",
+    "size": "1.4MB",
+    "date": "2026-09-25",
+    "desc": "已完成的龙飞船自定义部件 提升你的游戏体验 依赖：猎鹰九号-V2-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iE4lR49x2esb",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/214.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Z5CqCvLo/",
+    "sha256": ""
+  }
+  {
+    "name": "电力系统",
+    "type": "zip",
+    "size": "1.8MB",
+    "date": "2026-09-25",
+    "desc": "一款简单重置电力系统的模组",
+    "link": "https://wwaqu.lanzoub.com/iPz4O49x2fuj",
+    "tags": [
+      "实用",
+      "汉化",
+      "电力"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/212.webp"
+    ],
+    "version": "v1.1",
+    "author": "VerdiX",
+    "heat": "8.9万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Lv8kBhrD/",
+    "sha256": ""
+  },
+  {
+    "name": "Mac 的桌面收音机包",
+    "type": "zip",
+    "size": "184MB",
+    "date": "2026-09-25",
+    "desc": "应该……是放音乐的吧……",
+    "link": "暂无",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/213.webp"
+    ],
+    "version": "v1.0",
+    "author": "Mac",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/fF8EH9Jz/",
+    "sha256": ""
+  }
+  {
+    "name": "巨型部件",
+    "type": "zip",
+    "size": "0.4MB",
+    "date": "2026-09-25",
+    "desc": "当原版部件还不够大时就用它吧。这是 Neptune 的 Tiny-Huge 整合包中的巨大部分！",
+    "link": "https://wwaqu.lanzoub.com/ikBXL49x2fpe",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/210.webp"
+    ],
+    "version": "v1.0",
+    "author": "NeptuneSky",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/KBWwuGGV/",
+    "sha256": ""
+  }
+  {
+    "name": "微缩部件",
+    "type": "zip",
+    "size": "0.4MB",
+    "date": "2026-09-25",
+    "desc": "2 格宽的燃料箱、锥体和整流罩。这是 Neptune 的 Tiny-Huge 整合包中的微缩部分！",
+    "link": "https://wwaqu.lanzoub.com/iBKsk49x2fsh",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/211.webp"
+    ],
+    "version": "v1.0",
+    "author": "NeptuneSky",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/r5Bp9TRg/",
+    "sha256": ""
+  }
+  {
+    "name": "程序化部件 六合一",
+    "type": "zip",
+    "size": "26.8MB",
+    "date": "2026-09-25",
+    "desc": "SFS 的程序化部件模组让你能使用特定的自定义部件 以更好地建造你的 SFS 作品",
+    "link": "https://wwaqu.lanzoub.com/i2noL49x2fod",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/209.webp"
+    ],
+    "version": "v1.5",
+    "author": "S.S9",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/xufgPGhL/",
+    "sha256": ""
+  }
+  {
+    "name": "SomethingCosmic 部件",
+    "type": "zip",
+    "size": "0.4MB",
+    "date": "2026-09-25",
+    "desc": "延续我们「Silver 计划」的部件包",
+    "link": "https://wwaqu.lanzoub.com/ih3gu49x2fgf",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/208.webp"
+    ],
+    "version": "v1.0",
+    "author": "ryanpe",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/29cruqbg/",
+    "sha256": ""
+  }
+  {
+    "name": "Pic系列模组",
+    "type": "zip",
+    "size": "47 MB",
+    "date": "2026-09-25",
+    "desc": "Pic的模组整合 修复了保存问题 请将zip中的模组全部安装",
+    "link": "https://wwaqu.lanzoub.com/inhOp49x2fba",
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/205.webp"
+    ],
+    "version": "v1.2 修复",
+    "author": "Pico Space Industries",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/02p3FOIT/",
+    "sha256": ""
+  },
+  {
     "name": "S9 PACK",
     "type": "zip",
     "size": "31.9MB",
