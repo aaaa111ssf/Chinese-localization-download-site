@@ -450,28 +450,6 @@
     "sha256": ""
   },
   {
-    "name": "Pic系列模组",
-    "type": "zip",
-    "size": "27 MB",
-    "date": "2026-08-04",
-    "desc": "Pic的模组整合 修复了保存问题 请将zip中的模组全部安装",
-    "link": "https://wwaqu.lanzoub.com/i9l8P40j34ri",
-    "tags": [
-      "汉化"
-    ],
-    "category": "function",
-    "images": [
-      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/107.webp"
-    ],
-    "version": "v1.1 修复",
-    "author": "Pico Space Industries",
-    "heat": "12.5万",
-    "compat": "1.6.00.3+",
-    "installType": "parts",
-    "installUrl": "https://nasyt.dpdns.org/sd/Ca4r5Ooy/",
-    "sha256": ""
-  },
-  {
     "name": "原版套件",
     "type": "zip",
     "size": "0.7 MB",
@@ -737,30 +715,6 @@
     "compat": "1.6.00.3+",
     "installType": "parts",
     "installUrl": "https://nasyt.dpdns.org/sd/aMWidC3k/",
-    "sha256": ""
-  },
-  {
-    "name": "电力系统",
-    "type": "zip",
-    "size": "1.8MB",
-    "date": "2026-05-15",
-    "desc": "一款简单重置电力系统的模组",
-    "link": "https://wwaqu.lanzoub.com/ifbjf3pj9z3a",
-    "tags": [
-      "实用",
-      "汉化",
-      "电力"
-    ],
-    "category": "function",
-    "images": [
-      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/6.webp"
-    ],
-    "version": "v1.0",
-    "author": "VerdiX",
-    "heat": "8.9万",
-    "compat": "1.6.00.3+",
-    "installType": "parts",
-    "installUrl": "https://nasyt.dpdns.org/sd/v0rzicyT/",
     "sha256": ""
   },
   {
