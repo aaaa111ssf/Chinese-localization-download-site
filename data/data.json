@@ -64,7 +64,7 @@
     "installType": "parts",
     "installUrl": "https://nasyt.dpdns.org/sd/fF8EH9Jz/",
     "sha256": ""
-  }
+  },
   {
     "name": "巨型部件",
     "type": "zip",
@@ -85,7 +85,7 @@
     "installType": "parts",
     "installUrl": "https://nasyt.dpdns.org/sd/KBWwuGGV/",
     "sha256": ""
-  }
+  },
   {
     "name": "微缩部件",
     "type": "zip",
@@ -106,7 +106,7 @@
     "installType": "parts",
     "installUrl": "https://nasyt.dpdns.org/sd/r5Bp9TRg/",
     "sha256": ""
-  }
+  },
   {
     "name": "程序化部件 六合一",
     "type": "zip",
@@ -127,7 +127,7 @@
     "installType": "parts",
     "installUrl": "https://nasyt.dpdns.org/sd/xufgPGhL/",
     "sha256": ""
-  }
+  },
   {
     "name": "SomethingCosmic 部件",
     "type": "zip",
@@ -148,7 +148,7 @@
     "installType": "parts",
     "installUrl": "https://nasyt.dpdns.org/sd/29cruqbg/",
     "sha256": ""
-  }
+  },
   {
     "name": "Pic系列模组",
     "type": "zip",
