@@ -20,6 +20,7 @@ export async function onRequestPost(context) {
     }
 
     const { SFS, SFS_DB } = context.env;
+    if (!SFS) return json({ error: 'KV 未绑定（SFS），计数不可用' }, { status: 503 }, context.request);
     let body;
     try {
         body = await context.request.json();

@@ -10,16 +10,23 @@ export async function onRequestGet(context) {
     const url = new URL(context.request.url);
     const mod = (url.searchParams.get('mod') || '').trim();
     if (!isValidModName(mod)) return json({ error: '无效的模组名称' }, { status: 400 }, context.request);
+    if (!SFS_DB) return json({ error: '数据库未绑定（SFS_DB）' }, { status: 503 }, context.request);
 
     const userKey = getUserKey(context.request);
-    const [summary, mine] = await Promise.all([
-        SFS_DB.prepare(
-            'SELECT COUNT(*) as count, AVG(score) as avg FROM ratings WHERE mod_name = ?'
-        ).bind(mod).first(),
-        SFS_DB.prepare(
-            'SELECT score FROM ratings WHERE mod_name = ? AND user_key = ?'
-        ).bind(mod, userKey).first()
-    ]);
+    let summary, mine;
+    try {
+        [summary, mine] = await Promise.all([
+            SFS_DB.prepare(
+                'SELECT COUNT(*) as count, AVG(score) as avg FROM ratings WHERE mod_name = ?'
+            ).bind(mod).first(),
+            SFS_DB.prepare(
+                'SELECT score FROM ratings WHERE mod_name = ? AND user_key = ?'
+            ).bind(mod, userKey).first()
+        ]);
+    } catch (e) {
+        // 表未初始化时降级为空数据，而不是裸 500。
+        return json({ count: 0, average: 0, myScore: 0, degraded: true }, { 'Cache-Control': 'no-store' }, context.request);
+    }
 
     return json({
         count: summary.count || 0,
@@ -43,6 +50,7 @@ export async function onRequestPost(context) {
     }
 
     const { SFS_DB } = context.env;
+    if (!SFS_DB) return json({ error: '数据库未绑定（SFS_DB）' }, { status: 503 }, context.request);
     let body;
     try {
         body = await context.request.json();
@@ -58,16 +66,25 @@ export async function onRequestPost(context) {
     const cookie = ensureUserCookie(context.request);
     const userKey = getUserKey(context.request, cookie || '');
 
-    await SFS_DB.prepare(
-        `INSERT INTO ratings (mod_name, user_key, score, created_at, updated_at)
-         VALUES (?, ?, ?, datetime('now'), datetime('now'))
-         ON CONFLICT(mod_name, user_key)
-         DO UPDATE SET score = excluded.score, updated_at = datetime('now')`
-    ).bind(mod, userKey, score).run();
+    try {
+        await SFS_DB.prepare(
+            `INSERT INTO ratings (mod_name, user_key, score, created_at, updated_at)
+             VALUES (?, ?, ?, datetime('now'), datetime('now'))
+             ON CONFLICT(mod_name, user_key)
+             DO UPDATE SET score = excluded.score, updated_at = datetime('now')`
+        ).bind(mod, userKey, score).run();
+    } catch (e) {
+        return json({ error: '评分写入失败：' + (e.message || '数据库错误') }, { status: 500 }, context.request);
+    }
 
-    const summary = await SFS_DB.prepare(
-        'SELECT COUNT(*) as count, AVG(score) as avg FROM ratings WHERE mod_name = ?'
-    ).bind(mod).first();
+    let summary;
+    try {
+        summary = await SFS_DB.prepare(
+            'SELECT COUNT(*) as count, AVG(score) as avg FROM ratings WHERE mod_name = ?'
+        ).bind(mod).first();
+    } catch (e) {
+        summary = { count: 0, avg: 0 };
+    }
 
     const headers = { 'Cache-Control': 'no-store' };
     if (cookie) headers['Set-Cookie'] = cookie;

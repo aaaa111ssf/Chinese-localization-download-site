@@ -328,7 +328,7 @@
             function getDownloadMode() {
                 try {
                     const saved = JSON.parse(localStorage.getItem(SITE_SETTINGS_KEY) || '{}');
-                    if (['direct', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
+                    if (['direct', 'auto', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
                     // 兼容旧版“手动”设置：旧手动下载即蓝奏云下载。
                     return saved.downloadMode === 'manual' ? 'lanzou' : 'direct';
                 } catch (e) {
@@ -376,6 +376,7 @@
             function getDownloadLabel(file, fallbackLabel) {
                 const mode = getDownloadMode();
                 const hasDirectLink = Boolean(getAutoInstallPayload(file));
+                if (mode === 'auto') return isAndroidBrowser() && hasDirectLink ? '自动安装' : (hasDirectLink ? '直链下载' : '蓝奏云下载');
                 if (mode === 'direct') return hasDirectLink ? '直链下载' : '蓝奏云下载';
                 return '蓝奏云下载';
             }
@@ -575,25 +576,32 @@
                     return false;
                 }
 
+                // auto 模式：非 Android 浏览器无法处理安装助手协议，回落直链下载，保证文件可达。
                 if (!isAndroidBrowser()) {
-                    toast('自动安装仅支持 Android 手机浏览器，请改用直链下载或蓝奏云下载');
+                    toast('当前浏览器不支持自动安装，已改用直链下载');
+                    logDownload(index);
+                    openExternalDownload(payload.installUrl);
                     return false;
                 }
 
                 let appOpened = false;
                 const markOpened = () => { appOpened = true; };
-                window.addEventListener('blur', markOpened, { once: true });
+                window.addEventListener('pagehide', markOpened, { once: true });
                 document.addEventListener('visibilitychange', function onVisibilityChange() {
                     if (document.visibilityState === 'hidden') appOpened = true;
                     document.removeEventListener('visibilitychange', onVisibilityChange);
                 });
                 logDownload(index);
-                if (!openExternalDownload(buildInstallerUrl(file, payload))) return false;
+                // 用当前页跳转唤起自定义协议：未安装助手时浏览器会留在本页，
+                // 不再像 window.open 那样弹出一个空白的无标题标签页。
+                location.href = buildInstallerUrl(file, payload);
                 window.setTimeout(() => {
                     if (!appOpened && document.visibilityState === 'visible') {
-                        toast('未检测到安装助手，请先安装 SFS 汉化模组安装助手，或改用直链下载');
+                        toast('未检测到安装助手，请先安装 SFS 汉化模组安装助手，已改用直链下载');
+                        // 定时回调里 window.open 会被浏览器拦截，必须用当前页导航触发下载。
+                        location.href = payload.installUrl;
                     }
-                }, 1400);
+                }, 1600);
                 return false;
             };
 
@@ -1464,11 +1472,12 @@
                         const msgEl = document.getElementById('detailRatingMsg');
                         if (msgEl) msgEl.textContent = activeRating.myScore === pendingRating ? '评分已保存，可随时点击编辑修改' : '评分已更新';
                     })
-                    .catch(() => {
+                    .catch((e) => {
                         ratingSubmitting = false;
                         renderRatingEditor();
                         const msgEl = document.getElementById('detailRatingMsg');
-                        if (msgEl) msgEl.textContent = '评分提交失败，请稍后重试';
+                        const reason = e && e.message && /[\u4e00-\u9fff]/.test(e.message) ? e.message : '评分提交失败，请稍后重试';
+                        if (msgEl) msgEl.textContent = reason;
                     });
             };
 
@@ -2216,7 +2225,7 @@
                 lazyLoadToggle.checked = settings.lazyLoad;
 
                 // 下载方式
-                if (!['direct', 'lanzou'].includes(settings.downloadMode)) {
+                if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
                     settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
                 }
                 if (downloadModeSelector) {
@@ -2230,9 +2239,13 @@
                             desc: '从固定 HTTPS 直链直接下载 ZIP 文件',
                             note: '直链下载会在浏览器中直接获取文件；未配置安全直链的资源将回退到蓝奏云。'
                         },
+                        auto: {
+                            desc: '唤起「SFS 汉化模组安装助手」一键下载并安装模组',
+                            note: '仅 Android 手机浏览器支持自动安装；其他设备将自动回落为直链或蓝奏云下载。'
+                        },
                         lanzou: {
                             desc: '打开原蓝奏云分享页后手动下载',
-                            note: '自动安装正在制作中，敬请期待；当前可使用直链下载或蓝奏云下载。'
+                            note: '也可以在设置中切换为直链下载或自动安装。'
                         }
                     };
                     downloadModeDesc.textContent = messages[settings.downloadMode].desc;
@@ -2530,15 +2543,13 @@
 
             downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    if (this.dataset.downloadMode === 'auto') {
-                        toast('自动安装正在制作中，敬请期待');
-                        return;
-                    }
                     settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'direct';
                     saveSettings(settings);
                     applySettings();
                     if (settings.downloadMode === 'direct') {
                         toast('已选择直链下载，将直接下载 ZIP 文件');
+                    } else if (settings.downloadMode === 'auto') {
+                        toast('已选择自动安装，Android 手机上将唤起安装助手');
                     }
                 });
             });

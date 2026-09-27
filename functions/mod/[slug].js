@@ -196,31 +196,39 @@ function renderStars(score) {
         row.appendChild(wrap);
     }
 }
+let currentAvg = 0;
 function loadRating() {
     fetch('/api/ratings?mod=' + encodeURIComponent(MOD_NAME))
         .then(r => r.json())
         .then(d => {
-            const avg = d.average || 0;
-            document.getElementById('ratingNum').textContent = avg ? avg.toFixed(1) : '--';
+            currentAvg = d.average || 0;
+            document.getElementById('ratingNum').textContent = currentAvg ? currentAvg.toFixed(1) : '--';
             document.getElementById('ratingCount').textContent = d.count ? d.count + ' 人评分' : '暂无评分';
-            document.getElementById('statRating').innerHTML = '评分 <b>' + (avg || '--') + '</b>';
-            renderStars(avg);
+            document.getElementById('statRating').innerHTML = '评分 <b>' + (currentAvg || '--') + '</b>';
+            renderStars(currentAvg);
         }).catch(() => {});
 }
 function submitRating(score) {
+    const msg = document.getElementById('ratingMsg');
+    if (msg) msg.textContent = '正在提交评分...';
     fetch('/api/ratings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mod: MOD_NAME, score })
-    }).then(r => r.json()).then(d => {
-        if (d.ok) {
-            document.getElementById('ratingNum').textContent = d.average.toFixed(1);
-            document.getElementById('ratingCount').textContent = d.count + ' 人评分';
-            document.getElementById('ratingMsg').textContent = '感谢你的评分！';
-            renderStars(d.average);
+    }).then(r => r.json().then(d => ({ httpOk: r.ok, body: d })))
+    .then(({ httpOk, body }) => {
+        if (httpOk && body.ok) {
+            currentAvg = body.average || 0;
+            document.getElementById('ratingNum').textContent = currentAvg.toFixed(1);
+            document.getElementById('ratingCount').textContent = body.count + ' 人评分';
+            if (msg) msg.textContent = '感谢你的评分！';
+            renderStars(currentAvg);
+        } else {
+            // 失败必须给出提示（限流/校验/服务端错误），不能让点击无反应。
+            if (msg) msg.textContent = (body && body.error) ? body.error : '评分提交失败，请稍后再试';
         }
     }).catch(() => {
-        document.getElementById('ratingMsg').textContent = '评分提交失败，请稍后再试';
+        if (msg) msg.textContent = '评分提交失败，请稍后再试';
     });
 }
 loadRating();
