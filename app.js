@@ -326,6 +326,11 @@
             let downloadNavigationLockedUntil = 0;
 
             function getDownloadMode() {
+                // 直链暂时关闭：nasyt 直链源不可用。无论本地保存了什么（direct/auto 曾是
+                // 旧版默认值，会随设置被自动持久化到 localStorage）一律回落蓝奏云。
+                // 恢复直链后：删除本行强改，恢复下方注释掉的三值校验即可。
+                return 'lanzou';
+                /*
                 try {
                     const saved = JSON.parse(localStorage.getItem(SITE_SETTINGS_KEY) || '{}');
                     if (['direct', 'auto', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
@@ -334,6 +339,7 @@
                 } catch (e) {
                     return 'direct';
                 }
+                */
             }
 
             function isAllowedInstallerSource(parsed) {
@@ -1784,7 +1790,7 @@
                 backgroundSource: 'default',
                 backgroundFit: 'cover',
                 backgroundOverlay: 82,
-                downloadMode: 'direct'
+                downloadMode: 'lanzou'
             };
 
             // 读取设置
@@ -2224,10 +2230,12 @@
                 // 懒加载
                 lazyLoadToggle.checked = settings.lazyLoad;
 
-                // 下载方式
-                if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
-                    settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
-                }
+                // 下载方式：直链暂时关闭，无论本地保存了什么都回落蓝奏云。
+                // 恢复直链后改回三值校验：
+                // if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
+                //     settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
+                // }
+                settings.downloadMode = 'lanzou';
                 if (downloadModeSelector) {
                     downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
                         const active = btn.dataset.downloadMode === settings.downloadMode;
@@ -2543,14 +2551,15 @@
 
             downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'direct';
+                    // 直链暂时关闭：direct/auto 暂不可选，点击时提示并保持蓝奏云。
+                    // 恢复直链后改回：settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'lanzou';
+                    if (this.dataset.downloadMode !== 'lanzou') {
+                        toast('直链下载暂时关闭，已暂时使用蓝奏云下载');
+                        return;
+                    }
+                    settings.downloadMode = 'lanzou';
                     saveSettings(settings);
                     applySettings();
-                    if (settings.downloadMode === 'direct') {
-                        toast('已选择直链下载，将直接下载 ZIP 文件');
-                    } else if (settings.downloadMode === 'auto') {
-                        toast('已选择自动安装，Android 手机上将唤起安装助手');
-                    }
                 });
             });
 
