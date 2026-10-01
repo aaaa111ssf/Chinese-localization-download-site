@@ -36,7 +36,7 @@ function makeEnv(savedMode, ua) {
   sandbox.files = [{
     name: '测试模组',
     installType: 'parts',
-    installUrl: 'https://nasyt.dpdns.org/sd/aGJ5g2gU/',
+    installUrl: 'http://220.205.16.24:5244/sd/aGJ5g2gU/',
     sha256: SAMPLE,
     link: 'https://www.lanzou.com/xxx',
   }];
@@ -84,10 +84,16 @@ if (r1 && r1.schemeHit) {
   console.log('url  =', u.searchParams.get('url'));
   console.log('type =', u.searchParams.get('type'));
   console.log('sha256 长度 =', (u.searchParams.get('sha256') || '').length);
-  // APK 端 parseInstallFields 白名单复验
+  // APK 端 parseInstallFields 白名单复验（含临时 http IP 源规则）
   const dl = u.searchParams.get('url');
   const parsed = new URL(dl);
-  const ok = parsed.protocol === 'https:' && ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org'].includes(parsed.hostname)
-    && (!parsed.hostname.includes('nasyt') || /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname));
+  const host = parsed.hostname.toLowerCase();
+  let ok;
+  if (host === '220.205.16.24') {
+    ok = parsed.protocol === 'http:' && /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
+  } else {
+    ok = parsed.protocol === 'https:' && ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org'].includes(host)
+      && (!host.includes('nasyt') || /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname));
+  }
   console.log('APK 白名单校验 =', ok ? '✅ 通过' : '❌ 拒绝');
 }

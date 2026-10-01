@@ -322,15 +322,14 @@
             /* ---------- 下载方式与 Android 安装助手 ---------- */
             const SITE_SETTINGS_KEY = 'sfs_site_settings';
             const INSTALLER_SCHEME = 'sfsmodinstaller://install';
-            const INSTALLER_DIRECT_HOSTS = ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org'];
+            const INSTALLER_DIRECT_HOSTS = ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org', '220.205.16.24'];
+            // 临时直链源：http://220.205.16.24:5244（AList，/sd/<id>/ 结构与 nasyt 相同）。
+            // 该源为 http + 裸 IP，单独放行；nasyt 恢复后可移除。
+            const INSTALLER_TEMP_HOST = '220.205.16.24';
             let downloadNavigationLockedUntil = 0;
 
             function getDownloadMode() {
-                // 直链暂时关闭：nasyt 直链源不可用。无论本地保存了什么（direct/auto 曾是
-                // 旧版默认值，会随设置被自动持久化到 localStorage）一律回落蓝奏云。
-                // 恢复直链后：删除本行强改，恢复下方注释掉的三值校验即可。
-                return 'lanzou';
-                /*
+                // 直链已恢复（临时 IP 源 220.205.16.24:5244），恢复三值校验。
                 try {
                     const saved = JSON.parse(localStorage.getItem(SITE_SETTINGS_KEY) || '{}');
                     if (['direct', 'auto', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
@@ -339,12 +338,16 @@
                 } catch (e) {
                     return 'direct';
                 }
-                */
             }
 
             function isAllowedInstallerSource(parsed) {
-                if (parsed.protocol !== 'https:' || !INSTALLER_DIRECT_HOSTS.includes(parsed.hostname.toLowerCase())) return false;
-                return parsed.hostname.toLowerCase() !== 'nasyt.dpdns.org' || /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
+                const host = parsed.hostname.toLowerCase();
+                // 临时 IP 源：允许 http + /sd/<id>/ 直链路径。
+                if (host === INSTALLER_TEMP_HOST) {
+                    return parsed.protocol === 'http:' && /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
+                }
+                if (parsed.protocol !== 'https:' || !INSTALLER_DIRECT_HOSTS.includes(host)) return false;
+                return host !== 'nasyt.dpdns.org' || /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
             }
 
             function getAutoInstallPayload(file) {
@@ -1790,7 +1793,7 @@
                 backgroundSource: 'default',
                 backgroundFit: 'cover',
                 backgroundOverlay: 82,
-                downloadMode: 'lanzou'
+                downloadMode: 'direct'
             };
 
             // 读取设置
@@ -2230,12 +2233,10 @@
                 // 懒加载
                 lazyLoadToggle.checked = settings.lazyLoad;
 
-                // 下载方式：直链暂时关闭，无论本地保存了什么都回落蓝奏云。
-                // 恢复直链后改回三值校验：
-                // if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
-                //     settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
-                // }
-                settings.downloadMode = 'lanzou';
+                // 下载方式：直链已恢复（临时 IP 源），恢复三值校验。
+                if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
+                    settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
+                }
                 if (downloadModeSelector) {
                     downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
                         const active = btn.dataset.downloadMode === settings.downloadMode;
@@ -2551,15 +2552,14 @@
 
             downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    // 直链暂时关闭：direct/auto 暂不可选，点击时提示并保持蓝奏云。
-                    // 恢复直链后改回：settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'lanzou';
-                    if (this.dataset.downloadMode !== 'lanzou') {
-                        toast('直链下载暂时关闭，已暂时使用蓝奏云下载');
-                        return;
-                    }
-                    settings.downloadMode = 'lanzou';
+                    settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'direct';
                     saveSettings(settings);
                     applySettings();
+                    if (settings.downloadMode === 'direct') {
+                        toast('已选择直链下载，将直接下载 ZIP 文件');
+                    } else if (settings.downloadMode === 'auto') {
+                        toast('已选择自动安装，Android 手机上将唤起安装助手');
+                    }
                 });
             });
 
