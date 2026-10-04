@@ -2,10 +2,209 @@
   "schemaVersion": 1,
   "blueprints": [
     {
+      "id": "bp-225",
+      "name": "猎9-2 配套蓝图",
+      "desc": "猎9-2 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/imlJa4asfueh",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/225.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "猎鹰九号模组-旧",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-235",
+      "name": "天空之船 配套蓝图",
+      "desc": "天空之船 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iHPML4asfyhe",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/235.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "天空之船",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-218",
+      "name": "火神 配套蓝图",
+      "desc": "火神 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/i4iXX4asfpve",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/218.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "火神-半人马火箭",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-227",
+      "name": "GWTM 星舰 配套蓝图",
+      "desc": "GWTM 星舰 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iAFj24asfw7c",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/227.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "SpaceX 星舰-GWTM",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-228",
+      "name": "ISV 配套蓝图",
+      "desc": "ISV 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iIru94asfwaf",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/228.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "2KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "ISV 星际飞船",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-220",
+      "name": "阿特拉斯V 配套蓝图",
+      "desc": "阿特拉斯V 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iFPLi4asfsxe",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/220.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "2KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "阿特拉斯V火箭",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-229",
+      "name": "sy-筷子 配套蓝图",
+      "desc": "sy-筷子 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iNPEs4asg2ef",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/229.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "筷子-旧",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-236",
+      "name": "星舰-货舱 配套蓝图",
+      "desc": "星舰-货舱 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/iKXzU4asfyfc",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/236.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "星舰-旧",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
+      "id": "bp-223",
+      "name": "星座计划 配套蓝图",
+      "desc": "星座计划 配套蓝图 下载并导入前 请先安装所需模组",
+      "link": "https://wwaqu.lanzoub.com/inqzB4asfr5a",
+      "pwd": 0,
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/223.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "1KB",
+      "date": "2026-10-03",
+      "requirements": [
+        {
+          "name": "星座计划",
+          "note": "需先下载并安装该模组"
+        }
+      ]
+    },
+    {
       "id": "falcon-heavy-v2",
       "name": "猎鹰重型 V2 配套蓝图",
       "desc": "适配猎鹰九号-V2模组的猎鹰重型火箭蓝图。下载并导入前，请先安装所需模组。",
       "link": "https://wwaqu.lanzoub.com/i6YQ244mulli",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/125.webp"
       ],
@@ -29,6 +228,7 @@
       "name": "Falcon 9",
       "desc": "适配猎鹰九号-V2模组的猎鹰9火箭蓝图 下载并导入前 请先安装所需模组",
       "link": "https://wwaqu.lanzoub.com/iUbw7456gmaj",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/131.webp"
       ],
@@ -48,6 +248,7 @@
       "name": "星舰V3",
       "desc": "星舰V3蓝图 下载并导入前 请先安装所需模组",
       "link": "https://wwaqu.lanzoub.com/iAUc7456gm9i",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/118.webp"
       ],
@@ -67,6 +268,7 @@
       "name": "BP - Mechazila V2",
       "desc": "发射台",
       "link": "https://wwaqu.lanzoub.com/ie5cb456gm8h",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/132.webp"
       ],
@@ -86,6 +288,7 @@
       "name": "阿波罗配套蓝图v1.1",
       "desc": "阿波罗配套蓝图v1.1 by AFS",
       "link": "https://wwaqu.lanzoub.com/iZ7Ir457w82j",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/134.webp"
       ],
@@ -105,6 +308,7 @@
       "name": "新视野配套蓝图",
       "desc": "新视野配套蓝图",
       "link": "https://wwaqu.lanzoub.com/iVmhU457w85c",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/135.webp"
       ],
@@ -124,6 +328,7 @@
       "name": "土星五号蓝图",
       "desc": "Pic的土星五号模组配套蓝图",
       "link": "https://wwaqu.lanzoub.com/iXCXD49x2fcb",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/206.webp"
       ],
@@ -145,6 +350,7 @@
       "name": "真实火箭包配套蓝图zh.3",
       "desc": "真实火箭包配套蓝图",
       "link": "https://wwaqu.lanzoub.com/iYm6849x2ffe",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/205.webp"
       ],
@@ -166,6 +372,7 @@
       "name": "龙飞船蓝图",
       "desc": "龙飞船蓝图",
       "link": "https://wwaqu.lanzoub.com/iYryg49x2etc",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/214.webp"
       ],
@@ -187,6 +394,7 @@
       "name": "电子号蓝图",
       "desc": "电子号蓝图",
       "link": "https://wwaqu.lanzoub.com/iTI4P49x89ze",
+      "pwd": 0,
       "images": [
         "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/215.webp"
       ],
