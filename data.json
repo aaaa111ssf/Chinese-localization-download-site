@@ -1,0 +1,2600 @@
+[
+  {
+    "name": "双子座",
+    "type": "zip",
+    "size": "36.2MB",
+    "date": "2026-10-04",
+    "desc": "一个小型模组 用于添加双子座计划的部件",
+    "link": "https://wwaqu.lanzoub.com/ixkJL4aum6jc",
+    "pwd": 1,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/239.webp"
+    ],
+    "version": "v1.0",
+    "author": "Cryptowave2112",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/5OP9QAzG",
+    "sha256": ""
+  },
+  {
+    "name": "恭喜发财模组",
+    "type": "zip",
+    "size": "36.2MB",
+    "date": "2026-10-03",
+    "desc": "祝大家新年快乐",
+    "link": "https://wwaqu.lanzoub.com/ixAKC4as9xni",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/216.webp"
+    ],
+    "version": "v1.0",
+    "author": "天冲 ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/EZZPVPqq",
+    "sha256": ""
+  },
+  {
+    "name": "圣诞节模组",
+    "type": "zip",
+    "size": "154KB",
+    "date": "2026-10-03",
+    "desc": "我刚做的一个小圣诞模组 :)",
+    "link": "https://wwaqu.lanzoub.com/iIgcO4as9ykb",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/217.webp"
+    ],
+    "version": "v1.0.0",
+    "author": "Recoleto ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/yS5FByKA",
+    "sha256": ""
+  },
+  {
+    "name": "火神-半人马火箭",
+    "type": "zip",
+    "size": "2.0MB",
+    "date": "2026-10-03",
+    "desc": "本包包含火神半人马座火箭的精细部件 实现强劲高效的发射。",
+    "link": "https://wwaqu.lanzoub.com/ijDvH4as9zsf",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/218.webp"
+    ],
+    "version": "v1.0.1",
+    "author": "Space_Crab",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/dDClHSuk",
+    "sha256": ""
+  },
+  {
+    "name": "泰坦火箭",
+    "type": "zip",
+    "size": "447KB",
+    "date": "2026-10-03",
+    "desc": "一个小型模组 用于添加泰坦运载火箭的部件",
+    "link": "https://wwaqu.lanzoub.com/i3fMW4asa0zi",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/219.webp"
+    ],
+    "version": "v1.0",
+    "author": "Cryptowave2112 ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/E61hn7xO",
+    "sha256": ""
+  },
+  {
+    "name": "阿特拉斯V火箭",
+    "type": "zip",
+    "size": "1.3MB",
+    "date": "2026-10-03",
+    "desc": "宇宙神五号一次性运载系统的自定义部件",
+    "link": "https://wwaqu.lanzoub.com/i3Yfw4asaa2f",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/220.webp"
+    ],
+    "version": "v0.1",
+    "author": "Skyride Space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/yg3v5PF7",
+    "sha256": ""
+  },
+  {
+    "name": "更好的RCS",
+    "type": "zip",
+    "size": "599KB",
+    "date": "2026-10-03",
+    "desc": "新增单向 RCS 让 RCS 更加强力！！！",
+    "link": "https://wwaqu.lanzoub.com/isJdm4asa92j",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/221.webp"
+    ],
+    "version": "v1.5",
+    "author": "VTplayz ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/Vz6tAtxF",
+    "sha256": ""
+  },
+  {
+    "name": "Brioche叉车包",
+    "type": "zip",
+    "size": "161KB",
+    "date": "2026-10-03",
+    "desc": "其实就只是一个叉车部件",
+    "link": "https://wwaqu.lanzoub.com/i0ZZz4asagkj",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/222.webp"
+    ],
+    "version": "v1.0.1",
+    "author": "Brioche ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/0E2So6Ea",
+    "sha256": ""
+  },
+  {
+    "name": "星座计划",
+    "type": "zip",
+    "size": "3.9MB",
+    "date": "2026-10-03",
+    "desc": "在《航天模拟器》中复刻的星座计划",
+    "link": "https://wwaqu.lanzoub.com/ikbat4asahej",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/223.webp"
+    ],
+    "version": "P1.1",
+    "author": "[Veimos] ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/LRN4Jbpu",
+    "sha256": ""
+  },
+  {
+    "name": "旧版发动机包",
+    "type": "zip",
+    "size": "692KB",
+    "date": "2026-10-03",
+    "desc": "它们是旧版发动机 在之前的版本中被移除或取消",
+    "link": "https://wwaqu.lanzoub.com/iJDSW4asal3c",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/224.webp"
+    ],
+    "version": "v1.3 / 1.4",
+    "author": "Mickey/Axcel ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/oXtNkOoI",
+    "sha256": ""
+  },
+  {
+    "name": "猎鹰九号模组-旧",
+    "type": "zip",
+    "size": "1.8MB",
+    "date": "2026-10-03",
+    "desc": "完整的猎鹰九号火箭包",
+    "link": "https://wwaqu.lanzoub.com/ib0Tx4asam1g",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/225.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride Space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/mIYFCqWs",
+    "sha256": ""
+  },
+  {
+    "name": "飞掠地平线系列模组",
+    "type": "zip",
+    "size": "72.4MB",
+    "date": "2026-10-03",
+    "desc": "飞掠地平线系列合集 收录 5 个模组：远未来整合、飞掠地平线、重型运载火箭、近未来科技整合包、Pluto 任务",
+    "link": "https://wwaqu.lanzoub.com/iIiqn4asanwd",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/226.webp"
+    ],
+    "version": "v1.0",
+    "author": "飞掠地平线工作室 ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/wT3X4qUx",
+    "sha256": ""
+  },
+  {
+    "name": "SpaceX 星舰-GWTM",
+    "type": "zip",
+    "size": "4.9MB",
+    "date": "2026-10-03",
+    "desc": "本模组包为你带来 SpaceX 星舰与超重型助推器的关键部件 精心设计 力求准确与真实",
+    "link": "https://wwaqu.lanzoub.com/iPRV54asapkd",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/227.webp"
+    ],
+    "version": "v1.0.0",
+    "author": "Space_Crab ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/RQ9RqKmW",
+    "sha256": ""
+  },
+  {
+    "name": "ISV 星际飞船",
+    "type": "zip",
+    "size": "11.7MB",
+    "date": "2026-10-03",
+    "desc": "完整的《阿凡达》ISV 飞船",
+    "link": "https://wwaqu.lanzoub.com/imLP44asau6j",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/228.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride Space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/hIgda0Bi",
+    "sha256": ""
+  },
+  {
+    "name": "筷子-旧",
+    "type": "zip",
+    "size": "2.1MB",
+    "date": "2026-10-03",
+    "desc": "筷子包",
+    "link": "https://wwaqu.lanzoub.com/icl3Q4asavze",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/229.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/LWu4N1b0",
+    "sha256": ""
+  },
+  {
+    "name": "我的世界系列",
+    "type": "zip",
+    "size": "200KB",
+    "date": "2026-10-03",
+    "desc": "这里面有一些关于我的世界的东西",
+    "link": "https://wwaqu.lanzoub.com/ik64I4asb73e",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "entertain",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/230.webp"
+    ],
+    "version": "v1.0",
+    "author": "星辰太空（SFS凤PC探索星辰） ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/JytDmW9s",
+    "sha256": ""
+  },
+  {
+    "name": "猎户座飞船",
+    "type": "zip",
+    "size": "2.0MB",
+    "date": "2026-10-03",
+    "desc": "一个正在进行的项目 旨在复刻猎户座飞船及其所有部件",
+    "link": "https://wwaqu.lanzoub.com/ijkmA4asbanc",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/231.webp"
+    ],
+    "version": "v1.1",
+    "author": "[Veimos] ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/Tk6TGb0k",
+    "sha256": ""
+  },
+  {
+    "name": "Recoleto 的 SpaceX 部件包",
+    "type": "zip",
+    "size": "804KB",
+    "date": "2026-10-03",
+    "desc": "一些被制作成 SFS 模组的 SpaceX 部件",
+    "link": "https://wwaqu.lanzoub.com/iLwqE4asbarg",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/232.webp"
+    ],
+    "version": "v1.0",
+    "author": "RecoletoAerospace ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/fBVaGY74",
+    "sha256": ""
+  },
+  {
+    "name": "SFS 1.6 原版发动机",
+    "type": "zip",
+    "size": "821KB",
+    "date": "2026-10-03",
+    "desc": "提前制作 SFS1.6 版本",
+    "link": "https://wwaqu.lanzoub.com/iRIh64asbaji",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/233.webp"
+    ],
+    "version": "v1.0",
+    "author": "sfs凤PC探索星辰 ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/w0gfOlGK",
+    "sha256": ""
+  },
+  {
+    "name": "Recoleto 精细发动机包",
+    "type": "zip",
+    "size": "4.0MB",
+    "date": "2026-10-03",
+    "desc": "一些给你的建造用的酷炫发动机",
+    "link": "https://wwaqu.lanzoub.com/igXio4asbi2j",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/234.webp"
+    ],
+    "version": "v3.0.0",
+    "author": "Recoleto ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/9nerqTfh",
+    "sha256": ""
+  },
+  {
+    "name": "天空之船",
+    "type": "zip",
+    "size": "5.3MB",
+    "date": "2026-10-03",
+    "desc": "Skyride Space 飞行器的原创设计",
+    "link": "https://wwaqu.lanzoub.com/iZVuJ4asblsd",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/235.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride Space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/gOqgmO8O",
+    "sha256": ""
+  },
+  {
+    "name": "星舰-旧",
+    "type": "zip",
+    "size": "18.0MB",
+    "date": "2026-10-03",
+    "desc": "星舰包",
+    "link": "https://wwaqu.lanzoub.com/ivwYi4asboha",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/236.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/8GZBVS7z",
+    "sha256": ""
+  },
+  {
+    "name": "星链",
+    "type": "zip",
+    "size": "294KB",
+    "date": "2026-10-03",
+    "desc": "由 SpaceX 研发的通信卫星",
+    "link": "https://wwaqu.lanzoub.com/iKNxf4asbs5c",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/237.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride Space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/vVF2OR4R",
+    "sha256": ""
+  },
+  {
+    "name": "星舰HLS 月面着陆器",
+    "type": "zip",
+    "size": "8.7MB",
+    "date": "2026-10-03",
+    "desc": "星舰 HLS 包",
+    "link": "https://wwaqu.lanzoub.com/i9ilj4asbs0h",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/238.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride space ",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/ksD9JXr1",
+    "sha256": ""
+  },
+  {
+    "name": "龙飞船",
+    "type": "zip",
+    "size": "1.4MB",
+    "date": "2026-09-25",
+    "desc": "已完成的龙飞船自定义部件 提升你的游戏体验 依赖：猎鹰九号-V2-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iE4lR49x2esb",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/214.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Z5CqCvLo/",
+    "sha256": ""
+  },
+  {
+    "name": "电力系统",
+    "type": "zip",
+    "size": "1.8MB",
+    "date": "2026-09-25",
+    "desc": "一款简单重置电力系统的模组",
+    "link": "https://wwaqu.lanzoub.com/iPz4O49x2fuj",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化",
+      "电力"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/212.webp"
+    ],
+    "version": "v1.1",
+    "author": "VerdiX",
+    "heat": "8.9万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Lv8kBhrD/",
+    "sha256": ""
+  },
+  {
+    "name": "Mac 的桌面收音机包",
+    "type": "zip",
+    "size": "184MB",
+    "date": "2026-09-25",
+    "desc": "应该……是放音乐的吧……",
+    "link": "暂无",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/213.webp"
+    ],
+    "version": "v1.0",
+    "author": "Mac",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/fF8EH9Jz/",
+    "sha256": ""
+  },
+  {
+    "name": "巨型部件",
+    "type": "zip",
+    "size": "0.4MB",
+    "date": "2026-09-25",
+    "desc": "当原版部件还不够大时就用它吧。这是 Neptune 的 Tiny-Huge 整合包中的巨大部分！",
+    "link": "https://wwaqu.lanzoub.com/ikBXL49x2fpe",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/210.webp"
+    ],
+    "version": "v1.0",
+    "author": "NeptuneSky",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/KBWwuGGV/",
+    "sha256": ""
+  },
+  {
+    "name": "微缩部件",
+    "type": "zip",
+    "size": "0.4MB",
+    "date": "2026-09-25",
+    "desc": "2 格宽的燃料箱、锥体和整流罩。这是 Neptune 的 Tiny-Huge 整合包中的微缩部分！",
+    "link": "https://wwaqu.lanzoub.com/iBKsk49x2fsh",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/211.webp"
+    ],
+    "version": "v1.0",
+    "author": "NeptuneSky",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/r5Bp9TRg/",
+    "sha256": ""
+  },
+  {
+    "name": "程序化部件 六合一",
+    "type": "zip",
+    "size": "26.8MB",
+    "date": "2026-09-25",
+    "desc": "SFS 的程序化部件模组让你能使用特定的自定义部件 以更好地建造你的 SFS 作品",
+    "link": "https://wwaqu.lanzoub.com/i5Vs24asjxmh",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/209.webp"
+    ],
+    "version": "v1.5",
+    "author": "S.S9",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/RTldlre6/",
+    "sha256": ""
+  },
+  {
+    "name": "SomethingCosmic 部件",
+    "type": "zip",
+    "size": "0.4MB",
+    "date": "2026-09-25",
+    "desc": "延续我们「Silver 计划」的部件包",
+    "link": "https://wwaqu.lanzoub.com/ih3gu49x2fgf",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/208.webp"
+    ],
+    "version": "v1.0",
+    "author": "ryanpe",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/29cruqbg/",
+    "sha256": ""
+  },
+  {
+    "name": "Pic系列模组",
+    "type": "zip",
+    "size": "47 MB",
+    "date": "2026-09-25",
+    "desc": "Pic的模组整合 修复了保存问题 请将zip中的模组全部安装",
+    "link": "https://wwaqu.lanzoub.com/inhOp49x2fba",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/205.webp"
+    ],
+    "version": "v1.2 修复",
+    "author": "Pico Space Industries",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/02p3FOIT/",
+    "sha256": ""
+  },
+  {
+    "name": "S9 PACK",
+    "type": "zip",
+    "size": "31.9MB",
+    "date": "2026-09-06",
+    "desc": "Procedural Parts-程序化部件+Aerodynamic Parts-空气动力部件+Procedural Engines-程序化引擎+Support System-可重复使用部件和支持系统+Utility Components-实用工具部件",
+    "link": "https://wwaqu.lanzoub.com/iHZEU470qxkb",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/200.webp"
+    ],
+    "version": "Procedural Bundle",
+    "author": "SFS.S9",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/aGJ5g2gU/",
+    "sha256": ""
+  },
+  {
+    "name": "Dah(Vanilla)真空发动机 - TM",
+    "type": "zip",
+    "size": "1.2MB",
+    "date": "2026-08-28",
+    "desc": "与基础游戏中的泰动机非常相似的发动机 但配备了真空尾焰",
+    "link": "https://wwaqu.lanzoub.com/ipV58451t3ng",
+    "pwd": 0,
+    "tags": [
+      "尾焰"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/130.webp"
+    ],
+    "version": "1.1",
+    "author": "Dahzito",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/LmvI43oB/",
+    "sha256": ""
+  },
+  {
+    "name": "猎鹰九号-V2",
+    "type": "zip",
+    "size": "3.1MB",
+    "date": "2026-08-24",
+    "desc": "已完成的猎鹰系列自定义部件 提升你的游戏体验-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/i0wOL44anuhe",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/125.webp"
+    ],
+    "version": "v1.5",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Pw4LTNSE/",
+    "sha256": ""
+  },
+  {
+    "name": "无人船 OCISILY",
+    "type": "zip",
+    "size": "1.2MB",
+    "date": "2026-08-24",
+    "desc": "SpaceX公式用于回收火箭的回收船-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iC0uO44anueb",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/124.webp"
+    ],
+    "version": "v1.5",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/CqHOBDlb/",
+    "sha256": ""
+  },
+  {
+    "name": "Mechazila",
+    "type": "zip",
+    "size": "3.6MB",
+    "date": "2026-08-24",
+    "desc": "筷子夹火箭的筷子-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iPlYG44antwd",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/123.webp"
+    ],
+    "version": "v1.0",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/72Yrqfnp/",
+    "sha256": ""
+  },
+  {
+    "name": "颜色部件",
+    "type": "zip",
+    "size": "0.3MB",
+    "date": "2026-08-24",
+    "desc": "给部件上色吧",
+    "link": "https://wwaqu.lanzoub.com/i7uQV44antsj",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/122.webp"
+    ],
+    "version": "v1.5",
+    "author": "QMSP",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/yqbMUbRD/",
+    "sha256": ""
+  },
+  {
+    "name": "反应轮",
+    "type": "zip",
+    "size": "0.1MB",
+    "date": "2026-08-24",
+    "desc": "卫星和其他轨道设备需要在没有地方可以释放角动量的情况下控制自身的旋转 为此，它们使用了一种高扭矩电机和飞轮的组合，这种组合被称为反应轮",
+    "link": "https://wwaqu.lanzoub.com/iqTbo44antof",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/121.webp"
+    ],
+    "version": "v1.5",
+    "author": "Bob Frank",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/2PM3KJXK/",
+    "sha256": ""
+  },
+  {
+    "name": "生命支持系统",
+    "type": "zip",
+    "size": "3.4MB",
+    "date": "2026-08-24",
+    "desc": "添加了氧气和食物，载入舱消耗氧气食物的特点。",
+    "link": "https://wwaqu.lanzoub.com/iKj8944antne",
+    "pwd": 0,
+    "tags": [
+      "资源",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/120.webp"
+    ],
+    "version": "v1.4",
+    "author": "QMSP",
+    "heat": "7.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/9KJTxaId/",
+    "sha256": ""
+  },
+  {
+    "name": "固态助推器",
+    "type": "zip",
+    "size": "0.8MB",
+    "date": "2026-08-24",
+    "desc": "固态助推器",
+    "link": "https://wwaqu.lanzoub.com/iGT6t44antfg",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/119.webp"
+    ],
+    "version": "v1.5",
+    "author": "NeptuneSky",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/iklRITbL/",
+    "sha256": ""
+  },
+  {
+    "name": "V3星舰部件包",
+    "type": "zip",
+    "size": "13.1MB",
+    "date": "2026-08-24",
+    "desc": "星舰部件包-注：这原本是付费模组 由A Future star提供模组",
+    "link": "https://wwaqu.lanzoub.com/iDqoq44al3zi",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/118.webp"
+    ],
+    "version": "v1.5",
+    "author": "Skyride",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/JGfpuh4D/",
+    "sha256": ""
+  },
+  {
+    "name": "程序化部件（旧）",
+    "type": "zip",
+    "size": "2.8MB",
+    "date": "2026-08-06",
+    "desc": "这是程序化部件包的旧版本 以确保使用旧部件建造的蓝图可以正确加载",
+    "link": "https://wwaqu.lanzoub.com/iQEYI40srhkh",
+    "pwd": 0,
+    "tags": [
+      "实用",
+      "汉化",
+      "调节"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/109.webp"
+    ],
+    "version": "v1.5",
+    "author": "SFS.S9",
+    "heat": "22.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/D8b9Bh3C/",
+    "sha256": ""
+  },
+  {
+    "name": "IPS",
+    "type": "zip",
+    "size": "1 MB",
+    "date": "2026-07-03",
+    "desc": "包含 6+ 台新发动机. 感谢 A Future star, zTallsRobot, Conderblack 和 Mr. Coquita 给我机会制作你们的发动机 并帮助进行移动端适配.",
+    "link": "https://wwaqu.lanzoub.com/iH58B40sp29e",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/108.webp"
+    ],
+    "version": "v1.1 汉化",
+    "author": "Eternity",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/xVYu9wD3/",
+    "sha256": ""
+  },
+  {
+    "name": "原版套件",
+    "type": "zip",
+    "size": "0.7 MB",
+    "date": "2026-07-24",
+    "desc": "有很多新东西以及偏移模块，可用于将任何部分的尺寸偏移 0.25 米",
+    "link": "https://wwaqu.lanzoub.com/igcKt3yealng",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/106.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "Sam",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/HIyufGZA/",
+    "sha256": ""
+  },
+  {
+    "name": "可部署部件",
+    "type": "zip",
+    "size": "10.7 MB",
+    "date": "2026-07-24",
+    "desc": "可折叠轮子 舱门 螺旋桨等等",
+    "link": "https://wwaqu.lanzoub.com/itvPq3ye9shg",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/105.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "SFS Theta",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/mqJV75y8/",
+    "sha256": ""
+  },
+  {
+    "name": "新视野-汉化-修复完成",
+    "type": "zip",
+    "size": "36.9 MB",
+    "date": "2026-07-11",
+    "desc": "土星系列火箭扩展 克服1900报错汉化而成 切勿搭配阿波罗计划【整合部件】使用 否则会出现问题（压缩包里的1.pack就是阿波罗） 蓝图下载https://wwaqu.lanzoub.com/iKLVx3vqr6kj",
+    "link": "https://wwaqu.lanzoub.com/iX4dW3y75e5e",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/101.webp"
+    ],
+    "version": "v1.1 汉化",
+    "author": "Mac",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/CM4zghsL/",
+    "sha256": ""
+  },
+  {
+    "name": "殖民地v0.2.1",
+    "type": "zip",
+    "size": "3 MB",
+    "date": "2026-07-14",
+    "desc": "一款可以殖民其他行星的模组，使用模组部件可以在世界中建筑部件，修复内容1.修复了重心问题2.添加轨道扫描仪",
+    "link": "https://wwaqu.lanzoub.com/ivHuT3x73mcb",
+    "pwd": 0,
+    "tags": [
+      "科技",
+      "殖民",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/4.webp"
+    ],
+    "version": "v0.2.1 汉化",
+    "author": "QMSP",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/RaQZXqAF/",
+    "sha256": ""
+  },
+  {
+    "name": "实用包Fix fix",
+    "type": "zip",
+    "size": "14.8MB",
+    "date": "2026-6-10",
+    "desc": "货场 花瓣整流罩等",
+    "link": "https://wwaqu.lanzoub.com/iEffs3w0vf0h",
+    "pwd": 0,
+    "tags": [
+      "实用"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/35.webp"
+    ],
+    "version": "v1.0",
+    "author": "PicoSpace",
+    "heat": "11.9万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/ZDTmhjn9/",
+    "sha256": ""
+  },
+  {
+    "name": "原版+",
+    "type": "zip",
+    "size": "2.3 MB",
+    "date": "2026-07-03",
+    "desc": "一套香草风格的部件和纹理",
+    "link": "https://wwaqu.lanzoub.com/iMR123ueb7of",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/100.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "InvinteX",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/ngEwXKDV/",
+    "sha256": ""
+  },
+  {
+    "name": "Hyptix 的字体",
+    "type": "zip",
+    "size": "0.5 MB",
+    "date": "2026-07-03",
+    "desc": "添加字母",
+    "link": "https://wwaqu.lanzoub.com/iMyV53ue8j8d",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/98.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "HyptixFonts",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/FGpb9G39/",
+    "sha256": ""
+  },
+  {
+    "name": "字母数字符号",
+    "type": "zip",
+    "size": "0.5 MB",
+    "date": "2026-07-03",
+    "desc": "添加字母、数字和符号",
+    "link": "https://wwaqu.lanzoub.com/iUbS73ue7hhe",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/97.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "Roshan",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/yrY3QGz6/",
+    "sha256": ""
+  },
+  {
+    "name": "TTS电力",
+    "type": "zip",
+    "size": "12.5 MB",
+    "date": "2026-07-03",
+    "desc": "此包包含与电力相关的部件 例如太阳能板 电池 放射性同位素热电发生器(RTG)等",
+    "link": "https://wwaqu.lanzoub.com/iAXnK3u808xi",
+    "pwd": 0,
+    "tags": [
+      "电力",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/95.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "TSS XingYi",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/zwcaWOPd/",
+    "sha256": ""
+  },
+  {
+    "name": "着陆垫",
+    "type": "zip",
+    "size": "0.5 MB",
+    "date": "2026-07-03",
+    "desc": "猎鹰 9 号和重型着陆于无人机船和着陆垫等",
+    "link": "https://wwaqu.lanzoub.com/ivW2l3u81chc",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/96.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "sfsupgraderocket",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/bvBnO0EM/",
+    "sha256": ""
+  },
+  {
+    "name": "坎巴拉太空飞行模拟器",
+    "type": "zip",
+    "size": "9.1 MB",
+    "date": "2026-06-27",
+    "desc": "哈哈 KSP 在 SFS 里冲啊啊啊啊啊",
+    "link": "https://wwaqu.lanzoub.com/iX8U43t8mvih",
+    "pwd": 0,
+    "tags": [
+      "引擎",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/93.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "Mac",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/kQO4VhK9/",
+    "sha256": ""
+  },
+  {
+    "name": "海龙号",
+    "type": "zip",
+    "size": "6.4 MB",
+    "date": "2026-06-27",
+    "desc": "海龙号",
+    "link": "https://wwaqu.lanzoub.com/iu8ZN3t8mueh",
+    "pwd": 0,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/92.webp"
+    ],
+    "version": "v1.0 汉化",
+    "author": "Mac",
+    "heat": "12.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/aMWidC3k/",
+    "sha256": ""
+  },
+  {
+    "name": "电子号",
+    "type": "zip",
+    "size": "5MB",
+    "date": "2026-6-19",
+    "desc": "电子号火箭",
+    "link": "https://wwaqu.lanzoub.com/iD0nD3sc11ab",
+    "pwd": 0,
+    "tags": [
+      "真实",
+      "发动机"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/28.webp"
+    ],
+    "version": "v2.1",
+    "author": "SenchQ",
+    "heat": "19.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/w0DSBhBU/",
+    "sha256": ""
+  },
+  {
+    "name": "新一代燃料",
+    "type": "zip",
+    "size": "1.8MB",
+    "date": "2026-05-15",
+    "desc": "加入了更多的燃料引擎。",
+    "link": "https://wwaqu.lanzoub.com/io6mj3pj9yub",
+    "pwd": 0,
+    "tags": [
+      "引擎",
+      "汉化",
+      "燃料"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/7.webp",
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/8.webp"
+    ],
+    "version": "v1.1",
+    "author": "Ludwig",
+    "heat": "15.2万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/4SKGxane/",
+    "sha256": ""
+  },
+  {
+    "name": "曲率引擎",
+    "type": "zip",
+    "size": "0.94MB",
+    "date": "2026-05-16",
+    "desc": "加入了推力比冲更高的引擎",
+    "link": "https://wwaqu.lanzoub.com/iF4hB3pj9z2j",
+    "pwd": 0,
+    "tags": [
+      "汉化",
+      "引擎",
+      "燃料"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/9.webp",
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/10.webp"
+    ],
+    "version": "v1.0",
+    "author": "Gremlin",
+    "heat": "18.7万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/vg75VyFO/",
+    "sha256": ""
+  },
+  {
+    "name": "核能引擎",
+    "type": "zip",
+    "size": "20.4MB",
+    "date": "2026-05-16",
+    "desc": "添加了原版引擎的核变种&未来的核引擎",
+    "link": "https://wwaqu.lanzoub.com/iy9Jw3ry3e5c",
+    "pwd": 0,
+    "tags": [
+      "核能",
+      "引擎",
+      "汉化"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/11.webp"
+    ],
+    "version": "v1.2",
+    "author": "TSS XingYi",
+    "heat": "22.1万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/TMrOCYCh/",
+    "sha256": ""
+  },
+  {
+    "name": "减速伞",
+    "type": "zip",
+    "size": "0.5MB",
+    "date": "2026-05-16",
+    "desc": "减速伞辅助降落",
+    "link": "https://wwaqu.lanzoub.com/iNbou3pj9ywd",
+    "pwd": 0,
+    "tags": [
+      "降落伞",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/12.webp"
+    ],
+    "version": "v1.0",
+    "author": "VerdiX",
+    "heat": "9.3万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/E2tiAys8/",
+    "sha256": ""
+  },
+  {
+    "name": "阿波罗计划【整合部件】",
+    "type": "zip",
+    "size": "14.4MB",
+    "date": "2026-05-16",
+    "desc": "耳熟能详的阿波罗登月计划",
+    "link": "https://wwaqu.lanzoub.com/iip0b3o6kw4f",
+    "pwd": 0,
+    "tags": [
+      "汉化",
+      "历史",
+      "真实"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/13.webp"
+    ],
+    "version": "v1.0",
+    "author": "brioche",
+    "heat": "31.4万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/MImgOzFU/",
+    "sha256": ""
+  },
+  {
+    "name": "航天航空星舰包",
+    "type": "zip",
+    "size": "11.9MB",
+    "date": "2026-05-16",
+    "desc": "添加了星舰及其变种",
+    "link": "https://wwaqu.lanzoub.com/iFXa53rsgrre",
+    "pwd": 0,
+    "tags": [
+      "星舰",
+      "汉化",
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/15.webp"
+    ],
+    "version": "v1.6",
+    "author": "PrimeAero",
+    "heat": "28.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Uy1Y87aR/",
+    "sha256": ""
+  },
+  {
+    "name": "半真实发动机",
+    "type": "zip",
+    "size": "2.5MB",
+    "date": "2026-05-16",
+    "desc": "灵感来自历史上的真实或设想引擎",
+    "link": "https://wwaqu.lanzoub.com/itTcu3rw4h5e",
+    "pwd": 0,
+    "tags": [
+      "pic系列",
+      "引擎",
+      "真实"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/16.webp"
+    ],
+    "version": "v1.6.2",
+    "author": "PicoSpace",
+    "heat": "14.2万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/NRirpX2Q/",
+    "sha256": ""
+  },
+  {
+    "name": "半真实航天器",
+    "type": "zip",
+    "size": "6.8MB",
+    "date": "2026-6-10",
+    "desc": "受现实启发的航天器/舱体/着陆器/卫星",
+    "link": "https://wwaqu.lanzoub.com/iaaO33sbzs2d",
+    "pwd": 0,
+    "tags": [
+      "pic系列",
+      "卫星",
+      "真实"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/17.webp"
+    ],
+    "version": "v1.6.4",
+    "author": "PicoSpace",
+    "heat": "11.0万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/KyNZQU4H/",
+    "sha256": ""
+  },
+  {
+    "name": "异域套装",
+    "type": "zip",
+    "size": "1.8MB",
+    "date": "2026-6-10",
+    "desc": "这东西是我从一个人那里得到的，他又从另一个人那里得到的，那人可能是外星人。",
+    "link": "https://wwaqu.lanzoub.com/i0dgU3rrv2md",
+    "pwd": 0,
+    "tags": [
+      "pic系列",
+      "引擎",
+      "真实"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/3.webp",
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/2.webp"
+    ],
+    "version": "v1.6",
+    "author": "PicoSpace",
+    "heat": "10.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/FpZtLWnb/",
+    "sha256": ""
+  },
+  {
+    "name": "杂项",
+    "type": "zip",
+    "size": "0.2MB",
+    "date": "2026-6-11",
+    "desc": "燃料管和一些奇奇怪怪的东西",
+    "link": "https://wwaqu.lanzoub.com/iqKD03rnw2ha",
+    "pwd": 0,
+    "tags": [
+      "部件"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/18.webp"
+    ],
+    "version": "v1.0",
+    "author": "grew",
+    "heat": "5.4万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Zh3Rj3GW/",
+    "sha256": ""
+  },
+  {
+    "name": "超频模式",
+    "type": "zip",
+    "size": "1MB",
+    "date": "2026-6-10",
+    "desc": "稍微超强的零件，适合需要真正爆发力的时候",
+    "link": "https://wwaqu.lanzoub.com/iJ6323rw3y0f",
+    "pwd": 0,
+    "tags": [
+      "pic系列",
+      "引擎",
+      "真实"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/115.webp"
+    ],
+    "version": "v1.6",
+    "author": "PicoSpace",
+    "heat": "9.1万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/S7OypZ4v/",
+    "sha256": ""
+  },
+  {
+    "name": "助推器+",
+    "type": "zip",
+    "size": "2.3MB",
+    "date": "2026-6-10",
+    "desc": "更多的助推器",
+    "link": "https://wwaqu.lanzoub.com/ipRTk3rqp1sb",
+    "pwd": 0,
+    "tags": [
+      "pic系列",
+      "引擎",
+      "助推器"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/21.webp"
+    ],
+    "version": "v1.6",
+    "author": "PicoSpace",
+    "heat": "8.7万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/vw4pbpdp/",
+    "sha256": ""
+  },
+  {
+    "name": "额外现代运载火箭",
+    "type": "zip",
+    "size": "3.1MB",
+    "date": "2026-6-10",
+    "desc": "现代发射器附加组件",
+    "link": "https://wwaqu.lanzoub.com/iFiLJ3rqnieh",
+    "pwd": 0,
+    "tags": [
+      "pic系列",
+      "引擎",
+      "真实"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/22.webp"
+    ],
+    "version": "v1.6.3",
+    "author": "PicoSpace",
+    "heat": "12.3万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/uy1MYdTS/",
+    "sha256": ""
+  },
+  {
+    "name": "半真实着陆器引擎+",
+    "type": "zip",
+    "size": "1.7MB",
+    "date": "2026-6-10",
+    "desc": "更多的着陆引擎",
+    "link": "https://wwaqu.lanzoub.com/i8bEf3rw3sgf",
+    "pwd": 0,
+    "tags": [
+      "pic系列",
+      "引擎",
+      "真实"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/19.webp"
+    ],
+    "version": "v1.6.1",
+    "author": "PicoSpace",
+    "heat": "7.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/cdIa87bl/",
+    "sha256": ""
+  },
+  {
+    "name": "现成-星级",
+    "type": "zip",
+    "size": "1MB",
+    "date": "2026-6-10",
+    "desc": "该模组属于“现成系列”，包含星系列的多款发动机。这些发动机最初由Thiokol生产，现由诺斯罗普格鲁曼公司制造。",
+    "link": "https://wwaqu.lanzoub.com/iSQpp3rw7ggh",
+    "pwd": 0,
+    "tags": [
+      "真实",
+      "发动机",
+      "汉化"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/117.webp"
+    ],
+    "version": "v1.0.0",
+    "author": "Lemniscate Biscuit",
+    "heat": "6.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/pNFFJ6O8/",
+    "sha256": ""
+  },
+  {
+    "name": "通讯系统",
+    "type": "zip",
+    "size": "0.1MB",
+    "date": "2026-6-10",
+    "desc": "基础通讯零件",
+    "link": "https://wwaqu.lanzoub.com/iRkYV3rw8bfc",
+    "pwd": 0,
+    "tags": [
+      "通讯"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/23.webp"
+    ],
+    "version": "Beta6",
+    "author": "Lemniscate Biscuit",
+    "heat": "4.2万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/UL3kQ8bf/",
+    "sha256": ""
+  },
+  {
+    "name": "新曙光",
+    "type": "zip",
+    "size": "0.2MB",
+    "date": "2026-6-10",
+    "desc": "一个零件包，包含多种零件，允许你重现真实火箭和任务，或创造混合型号，展示可能实现的设想。",
+    "link": "https://wwaqu.lanzoub.com/isvtA3sc39of",
+    "pwd": 0,
+    "tags": [
+      "零件",
+      "现实",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/30.webp"
+    ],
+    "version": "v0.1.1.2",
+    "author": "QMSP",
+    "heat": "5.9万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/olw8Xsh8/",
+    "sha256": ""
+  },
+  {
+    "name": "RL10复刻版",
+    "type": "zip",
+    "size": "2MB",
+    "date": "2026-6-10",
+    "desc": "适用于上级的发动机",
+    "link": "https://wwaqu.lanzoub.com/i9xpw3sc5lxi",
+    "pwd": 0,
+    "tags": [
+      "发动机",
+      "现实",
+      "汉化"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/31.webp"
+    ],
+    "version": "v1.6",
+    "author": "Lemniscate Biscuit",
+    "heat": "13.1万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/r0C3GqAU/",
+    "sha256": ""
+  },
+  {
+    "name": "探索者终极套装",
+    "type": "zip",
+    "size": "6.8MB",
+    "date": "2026-6-10",
+    "desc": "终极模组，助你探索太阳系。包含先进着陆系统、电力、实用设备，甚至有助于飞行的机翼。有了它，没有你去不了的地方。",
+    "link": "https://wwaqu.lanzoub.com/iGErh3pjjcyd",
+    "pwd": 0,
+    "tags": [
+      "起落架",
+      "电力",
+      "设备"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/32.webp"
+    ],
+    "version": "v1.0.3",
+    "author": "QMSP",
+    "heat": "16.4万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/KHJtb9t1/",
+    "sha256": ""
+  },
+  {
+    "name": "隔热砖",
+    "type": "zip",
+    "size": "0.2MB",
+    "date": "2026-6-10",
+    "desc": "可隔热的砖头",
+    "link": "https://wwaqu.lanzoub.com/iHg0T3pjjcze",
+    "pwd": 0,
+    "tags": [
+      "隔热罩",
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/27.webp"
+    ],
+    "version": "v1.0",
+    "author": "NeptuneSky",
+    "heat": "5.1万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/YGLusk7Q/",
+    "sha256": ""
+  },
+  {
+    "name": "霍比特核引擎Fix",
+    "type": "zip",
+    "size": "4.5MB",
+    "date": "2026-6-10",
+    "desc": "添加了多种引擎 部件，帮助你殖民太阳系",
+    "link": "https://wwaqu.lanzoub.com/i7J8w3sz8zgb",
+    "pwd": 0,
+    "tags": [
+      "核能",
+      "发动机"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/33.webp"
+    ],
+    "version": "v1.0",
+    "author": "Hopiter",
+    "heat": "19.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/PU5I33IL/",
+    "sha256": ""
+  },
+  {
+    "name": "激光 大炮 核弹",
+    "type": "zip",
+    "size": "12.1MB",
+    "date": "2026-6-10",
+    "desc": "添加了各种武器",
+    "link": "https://wwaqu.lanzoub.com/imMzs3sc200b",
+    "pwd": 0,
+    "tags": [
+      "激光",
+      "核弹",
+      "大炮"
+    ],
+    "category": "entertain",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/29.webp"
+    ],
+    "version": "v1.0",
+    "author": "Gunno",
+    "heat": "25.6万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Ju2UdtiI/",
+    "sha256": ""
+  },
+  {
+    "name": "lurins的东西",
+    "type": "zip",
+    "size": "2.7MB",
+    "date": "2026-6-10",
+    "desc": "添加了更多的轮子着陆腿隔热罩太阳能板",
+    "link": "https://wwaqu.lanzoub.com/ijfJU3pjjd7c",
+    "pwd": 0,
+    "tags": [
+      "起落架",
+      "轮子",
+      "隔热罩"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/34.webp"
+    ],
+    "version": "v1.0",
+    "author": "Lurin",
+    "heat": "8.3万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/RPCbhwj9/",
+    "sha256": ""
+  },
+  {
+    "name": "Mac的原版风格发动机",
+    "type": "zip",
+    "size": "3.4MB",
+    "date": "2026-6-10",
+    "desc": "添加了更多的发动机",
+    "link": "https://wwaqu.lanzoub.com/iJAz23pjjdte",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/40.webp"
+    ],
+    "version": "v1.0.5",
+    "author": "Mac",
+    "heat": "11.7万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/F7aAFdtA/",
+    "sha256": ""
+  },
+  {
+    "name": "米勒的新增内容",
+    "type": "zip",
+    "size": "1.5MB",
+    "date": "2026-6-10",
+    "desc": "包含一些外观较为原版的发动机",
+    "link": "https://wwaqu.lanzoub.com/ivtHx3pjjdqb",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/37.webp"
+    ],
+    "version": "v1.01",
+    "author": "Miller",
+    "heat": "7.4万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/wdEmdkT5/",
+    "sha256": ""
+  },
+  {
+    "name": "奇异果引擎",
+    "type": "zip",
+    "size": "2.7MB",
+    "date": "2026-6-10",
+    "desc": "更多的引擎",
+    "link": "https://wwaqu.lanzoub.com/iUJzY3pjjdpa",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/38.webp"
+    ],
+    "version": "v1.4",
+    "author": "jaconos",
+    "heat": "9.9万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/7zEh7enq/",
+    "sha256": ""
+  },
+  {
+    "name": "路虎",
+    "type": "zip",
+    "size": "0.8MB",
+    "date": "2026-6-10",
+    "desc": "在SFS里开路虎",
+    "link": "https://wwaqu.lanzoub.com/iEpky3pjjdhc",
+    "pwd": 0,
+    "tags": [
+      "路虎"
+    ],
+    "category": "entertain",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/41.webp"
+    ],
+    "version": "v1.0.1",
+    "author": "Defender",
+    "heat": "17.2万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/IEoqTiFJ/",
+    "sha256": ""
+  },
+  {
+    "name": "战斧火箭+SpaceX引擎+部件",
+    "type": "zip",
+    "size": "8.7MB",
+    "date": "2026-6-10",
+    "desc": "SpaceX引擎+部件+战斧火箭",
+    "link": "https://wwaqu.lanzoub.com/igPw83t2y6af",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/39.webp"
+    ],
+    "version": "v1.0",
+    "author": "ARHLOE",
+    "heat": "20.1万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Z166UQM2/",
+    "sha256": ""
+  },
+  {
+    "name": "霍皮特的空间站与基地部件Fix",
+    "type": "zip",
+    "size": "1.6MB",
+    "date": "2026-6-10",
+    "desc": "空间站与基地部件",
+    "link": "https://wwaqu.lanzoub.com/ixOOP3sz9gah",
+    "pwd": 0,
+    "tags": [
+      "空间站"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/91.webp"
+    ],
+    "version": "v1.0",
+    "author": "Hopiter",
+    "heat": "10.3万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/fkZezupW/",
+    "sha256": ""
+  },
+  {
+    "name": "海王星的模仿者",
+    "type": "zip",
+    "size": "1.1MB",
+    "date": "2026-6-10",
+    "desc": "模仿原版引擎",
+    "link": "https://wwaqu.lanzoub.com/i0kHz3rk2z6j",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/36.webp"
+    ],
+    "version": "v1.0",
+    "author": "Neptune",
+    "heat": "8.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/6uuGN5ew/",
+    "sha256": ""
+  },
+  {
+    "name": "海王星的杂项",
+    "type": "zip",
+    "size": "0.76MB",
+    "date": "2026-6-10",
+    "desc": "部件+",
+    "link": "https://wwaqu.lanzoub.com/iBhAA3rqkw8h",
+    "pwd": 0,
+    "tags": [
+      "部件"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/45.webp"
+    ],
+    "version": "v1.0",
+    "author": "Neptune",
+    "heat": "6.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/aUWFmZ9F/",
+    "sha256": ""
+  },
+  {
+    "name": "圆周率引擎",
+    "type": "zip",
+    "size": "8.7MB",
+    "date": "2026-6-10",
+    "desc": "3.14159265358979",
+    "link": "https://wwaqu.lanzoub.com/isPWV3rn4pud",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/43.webp"
+    ],
+    "version": "v1.0",
+    "author": "QMSP",
+    "heat": "13.3万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/bRrkd5a1/",
+    "sha256": ""
+  },
+  {
+    "name": "真实对接口",
+    "type": "zip",
+    "size": "0.5MB",
+    "date": "2026-6-10",
+    "desc": "真实的对接口",
+    "link": "https://wwaqu.lanzoub.com/iRDs43ry1ife",
+    "pwd": 0,
+    "tags": [
+      "对接口"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/26.webp"
+    ],
+    "version": "v1.0",
+    "author": "RealDock",
+    "heat": "7.1万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/iKdXkcuf/",
+    "sha256": ""
+  },
+  {
+    "name": "物理零件",
+    "type": "zip",
+    "size": "0.4MB",
+    "date": "2026-6-10",
+    "desc": "铰链？！",
+    "link": "https://wwaqu.lanzoub.com/i6UKV3rntscd",
+    "pwd": 0,
+    "tags": [
+      "部件"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/42.webp"
+    ],
+    "version": "v1.0",
+    "author": "Wave",
+    "heat": "9.4万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/Wkm1wBXJ/",
+    "sha256": ""
+  },
+  {
+    "name": "未来科技&星舰",
+    "type": "zip",
+    "size": "2.8MB",
+    "date": "2026-6-10",
+    "desc": "未发布的模组 新增星舰未来变体和未来科技",
+    "link": "https://wwaqu.lanzoub.com/iZuZd44anu9g",
+    "pwd": 0,
+    "tags": [
+      "部件"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/44.webp"
+    ],
+    "version": "v1.0",
+    "author": "jsudo",
+    "heat": "15.7万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/hN750lSv/",
+    "sha256": ""
+  },
+  {
+    "name": "万福玛丽亚",
+    "type": "zip",
+    "size": "2.1MB",
+    "date": "2026-6-10",
+    "desc": "万福玛丽亚计划",
+    "link": "https://wwaqu.lanzoub.com/iddLE3rqlkfi",
+    "pwd": 0,
+    "tags": [
+      "部件"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/46.webp"
+    ],
+    "version": "v1.0",
+    "author": "Maria",
+    "heat": "8.2万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/1QCd8Awu/",
+    "sha256": ""
+  },
+  {
+    "name": "立方星",
+    "type": "zip",
+    "size": "5.3MB",
+    "date": "2026-6-10",
+    "desc": "谁不想拥有一大堆微型卫星呢？",
+    "link": "https://wwaqu.lanzoub.com/iMFpN3rjyaed",
+    "pwd": 0,
+    "tags": [
+      "卫星"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/47.webp"
+    ],
+    "version": "v1.0",
+    "author": "PicoSpace",
+    "heat": "7.6万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/aW4RR9Tn/",
+    "sha256": ""
+  },
+  {
+    "name": "近-远未来科技",
+    "type": "zip",
+    "size": "3.5MB",
+    "date": "2026-6-10",
+    "desc": "添加了多种未来引擎",
+    "link": "https://wwaqu.lanzoub.com/iYHqO3t2xfqj",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/48.webp"
+    ],
+    "version": "v1.0",
+    "author": "NearFar",
+    "heat": "12.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/k26luK4f/",
+    "sha256": ""
+  },
+  {
+    "name": "等离子与离子推进技术",
+    "type": "zip",
+    "size": "7.4MB",
+    "date": "2026-6-10",
+    "desc": "等离子与离子推进技术",
+    "link": "https://wwaqu.lanzoub.com/iz3353rjy7gh",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/51.webp"
+    ],
+    "version": "v1.0",
+    "author": "TSS XingYi",
+    "heat": "14.4万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/zsDMdgJK/",
+    "sha256": ""
+  },
+  {
+    "name": "ShareSpace巨型包",
+    "type": "zip",
+    "size": "1.4MB",
+    "date": "2026-6-10",
+    "desc": "暂无",
+    "link": "https://wwaqu.lanzoub.com/i86ex3t2xpib",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/52.webp"
+    ],
+    "version": "v1.0",
+    "author": "ShareSpace",
+    "heat": "5.5万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/XFsMoI2n/",
+    "sha256": ""
+  },
+  {
+    "name": "SDSA",
+    "type": "zip",
+    "size": "0.58MB",
+    "date": "2026-6-10",
+    "desc": "暂无",
+    "link": "https://wwaqu.lanzoub.com/i4V8Q3rjy6ni",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/50.webp"
+    ],
+    "version": "v1.0",
+    "author": "SDSA",
+    "heat": "4.8万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/z1BIA1Vw/",
+    "sha256": ""
+  },
+  {
+    "name": "QMSP的机械",
+    "type": "zip",
+    "size": "0.13MB",
+    "date": "2026-6-10",
+    "desc": "铰链等机械部件",
+    "link": "https://wwaqu.lanzoub.com/i2mpp3rjy6lg",
+    "pwd": 0,
+    "tags": [
+      "机械"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/49.webp"
+    ],
+    "version": "v1.0",
+    "author": "QMSP",
+    "heat": "6.7万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/dV4aqMCh/",
+    "sha256": ""
+  },
+  {
+    "name": "AEPCont.1.4 AEP续集",
+    "type": "zip",
+    "size": "0.9MB",
+    "date": "2026-6-10",
+    "desc": "先进的推进技术",
+    "link": "https://wwaqu.lanzoub.com/irdWS3pjjdaf",
+    "pwd": 0,
+    "tags": [
+      "核能"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/54.webp"
+    ],
+    "version": "v1.4",
+    "author": "Lemniscate Biscuit",
+    "heat": "9.0万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/tEJVLJK8/",
+    "sha256": ""
+  },
+  {
+    "name": "ACEv2.0 低温发动机",
+    "type": "zip",
+    "size": "1.5MB",
+    "date": "2026-6-10",
+    "desc": "低温发动机",
+    "link": "https://wwaqu.lanzoub.com/iv3lt3pjjd9e",
+    "pwd": 0,
+    "tags": [
+      "引擎"
+    ],
+    "category": "engine",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/53.webp"
+    ],
+    "version": "v2.0",
+    "author": "Lemniscate Biscuit",
+    "heat": "10.2万",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "https://nasyt.dpdns.org/sd/ZlEY7jEi/",
+    "sha256": ""
+  },
+  {
+    "name": "星舰涂装包",
+    "type": "zip",
+    "size": "2.3MB",
+    "date": "2026-6-12",
+    "desc": "星舰系列涂装，包含多种配色方案",
+    "link": "https://wwaqu.lanzoub.com/iIB7w3ru8kpe",
+    "pwd": 0,
+    "tags": [
+      "涂装",
+      "星舰",
+      "外观"
+    ],
+    "category": "skin",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/56.webp"
+    ],
+    "version": "v1.0",
+    "author": "Model",
+    "heat": "22.3万",
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/JREUuNJ8/",
+    "sha256": ""
+  },
+  {
+    "name": "最大的涂装包",
+    "type": "zip",
+    "size": "1.8MB",
+    "date": "2026-6-12",
+    "desc": "更多旗帜变体、更多颜色，以及更多旗帜",
+    "link": "https://wwaqu.lanzoub.com/ihH5M3ru8n8f",
+    "pwd": 0,
+    "tags": [
+      "涂装"
+    ],
+    "category": "skin",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/58.webp"
+    ],
+    "version": "v1.0",
+    "author": "TYavaJ",
+    "heat": "18.9万",
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/Z9cDOt8T/",
+    "sha256": ""
+  },
+  {
+    "name": "中国航天标志合集",
+    "type": "zip",
+    "size": "5.6MB",
+    "date": "2026-6-12",
+    "desc": "中国航天标志合集",
+    "link": "https://wwaqu.lanzoub.com/iuAlP3ru8vlg",
+    "pwd": 0,
+    "tags": [
+      "涂装"
+    ],
+    "category": "skin",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/55.webp"
+    ],
+    "version": "v1.0",
+    "author": "CN_UwU",
+    "heat": "16.7万",
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/zakj1jZ7/",
+    "sha256": ""
+  },
+  {
+    "name": "国旗涂装包",
+    "type": "zip",
+    "size": "0.9MB",
+    "date": "2026-6-12",
+    "desc": "各国国旗主题涂装",
+    "link": "https://wwaqu.lanzoub.com/iDwVY3sch9uf",
+    "pwd": 0,
+    "tags": [
+      "涂装",
+      "国旗",
+      "外观"
+    ],
+    "category": "skin",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/59.webp"
+    ],
+    "version": "v1.0",
+    "author": "Frostblue44",
+    "heat": "12.1万",
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/1BMDUkUk/",
+    "sha256": ""
+  },
+  {
+    "name": "高清涂装包",
+    "type": "zip",
+    "size": "3.2MB",
+    "date": "2026-6-12",
+    "desc": "原版涂装高清版",
+    "link": "https://wwaqu.lanzoub.com/i9Zs73ru8yxg",
+    "pwd": 0,
+    "tags": [
+      "涂装",
+      "迷彩",
+      "军事"
+    ],
+    "category": "skin",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/57.webp"
+    ],
+    "version": "v1.0",
+    "author": "SFS-Gamer",
+    "heat": "14.5万",
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/z5Rlc2n7/",
+    "sha256": ""
+  },
+  {
+    "name": "金属符号涂装",
+    "type": "zip",
+    "size": "4.1MB",
+    "date": "2026-6-12",
+    "desc": "金属质感涂装，包含金、银、铜等效果",
+    "link": "https://wwaqu.lanzoub.com/iU4Kd3ru8zuj",
+    "pwd": 0,
+    "tags": [
+      "涂装",
+      "金属",
+      "质感"
+    ],
+    "category": "skin",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/60.webp"
+    ],
+    "version": "v1.0",
+    "author": "Dr. Stark Miller",
+    "heat": "11.3万",
+    "compat": "1.6.00.3+",
+    "installType": "textures",
+    "installUrl": "https://nasyt.dpdns.org/sd/221192eC/",
+    "sha256": ""
+  },
+  {
+    "name": "Build Setting",
+    "type": "zip",
+    "size": "14KB",
+    "date": "2026-09-19",
+    "desc": "该模组的目的是将 Cucumber 的 Build Upgrade 功能中那些在新版的 Part Editor 模组中缺失的功能重新添加进来 此外 它还添加了更多功能 比如 Infinity 的 RandomTweaks 中的那些功能 这些功能包括调整网格的缩放间隔 控制部件的旋转幅度 以及提供各种组合键 以便能够以微小的单位来调整部件的大小或位置",
+    "link": "https://wwaqu.lanzoub.com/ijlrV491nlpe",
+    "pwd": 0,
+    "tags": [
+      "DLL",
+      "PC"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/202.webp"
+    ],
+    "version": "v1.0",
+    "author": "NeptuneSky",
+    "heat": "6",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/63EQ1DLz/",
+    "sha256": ""
+  },
+  {
+    "name": "AstronautMod",
+    "type": "zip",
+    "size": "52KB",
+    "date": "2026-09-19",
+    "desc": "通过这个模组，你可以招募宇航员、将他们分配到乘组席位、让他们进行太空行走、在其他行星上竖立旗帜等等",
+    "link": "https://wwaqu.lanzoub.com/i2KLR491nlkj",
+    "pwd": 0,
+    "tags": [
+      "DLL",
+      "PC"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/201.webp"
+    ],
+    "version": "v3.9.2",
+    "author": "A Future star",
+    "heat": "5",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/bcROZqD8/",
+    "sha256": ""
+  },
+  {
+    "name": "ANAIS",
+    "type": "zip",
+    "size": "46KB",
+    "date": "2026-09-19",
+    "desc": "该模组用更先进、更优化的导航系统取代了原有的导航系统 绝对是让游戏中的相遇过程更简单、在各星球之间更易于导航的绝佳模组！",
+    "link": "https://wwaqu.lanzoub.com/ibsiZ491nlla",
+    "pwd": 0,
+    "tags": [
+      "DLL",
+      "PC"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/203.webp"
+    ],
+    "version": "v1.0",
+    "author": "Altaïr",
+    "heat": "4",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/gJO0kCla/",
+    "sha256": ""
+  },
+  {
+    "name": "BP Editor",
+    "type": "zip",
+    "size": "35KB",
+    "date": "2026-09-19",
+    "desc": "这是一款为《太空飞行模拟器》开发的模组，它用可视化的编辑工具取代了原版游戏中的编辑方式。该模组包含交互式控制柄、对齐和分布工具、尺寸标注以及各种属性设置功能。",
+    "link": "https://wwaqu.lanzoub.com/ivY9R491nlnc",
+    "pwd": 0,
+    "tags": [
+      "DLL",
+      "PC独占"
+    ],
+    "category": "dll",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/204.webp"
+    ],
+    "version": "v1.0",
+    "author": "uneven-coder",
+    "heat": "3",
+    "compat": "PC/Steam 1.6.00.3+",
+    "installType": "dll",
+    "installUrl": "https://nasyt.dpdns.org/sd/1ysyAlYR/",
+    "sha256": ""
+  }
+]

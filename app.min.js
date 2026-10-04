@@ -322,17 +322,103 @@
             /* ---------- 下载方式与 Android 安装助手 ---------- */
             const SITE_SETTINGS_KEY = 'sfs_site_settings';
             const INSTALLER_SCHEME = 'sfsmodinstaller://install';
-            const INSTALLER_DIRECT_HOSTS = ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org', '220.205.16.24'];
-            // 临时直链源：http://220.205.16.24:5244（AList，/sd/<id>/ 结构与 nasyt 相同）。
-            // 该源为 http + 裸 IP，单独放行；nasyt 恢复后可移除。
-            const INSTALLER_TEMP_HOST = '220.205.16.24';
+            const INSTALLER_DIRECT_HOSTS = ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org'];
+            // 临时直链源：http://<IP>:5244（AList/OpenList，/sd/<id>/ 结构与 nasyt 相同）。
+            // 这些源为 http + 裸 IP，单独放行；nasyt 恢复后可从这里移除。
+            // ⚠️ 2026-10-04：data.json 里的 25 条实际指向 207.57.124.92，
+            //    而这里原来只写了 220.205.16.24 → isAllowedInstallerSource() 判否 →
+            //    getAutoInstallPayload() 返回 null → 按钮标签回退成"蓝奏云下载"，
+            //    用户表现为「切了直链下载但还是显示蓝奏云」。两个 IP 都保留（数组）。
+            const INSTALLER_TEMP_HOSTS = ['220.205.16.24', '207.57.124.92'];
             let downloadNavigationLockedUntil = 0;
 
+            /* ---------- 蓝奏云提取码（2026-10-04 起） ----------
+             * 背景：蓝奏云已改为强制密码制，免费用户无法取消提取码，下载前必须输入；
+             *      且提取码区分大小写、输错 3 次锁页 15 分钟，所以本站的目标不是
+             *      "让用户记住密码"，而是"让用户根本不需要手打"。
+             *
+             * ⚠️ 关键前提：**提取码不是全站都有的**。蓝奏云只对"新建/新设密码"的分享生效，
+             *    改动之前上传的老链接依然免密。所以每条数据用 `pwd` 开关：
+             *      pwd = 0 → 该条免密，不显示提取码（老链接一律用 0）
+             *      pwd = 1 → 该条需要提取码，显示醒目徽章 + 点下载自动复制
+             *    绝不能全站默认 1，否则老链接用户看到"提取码 afs"却输不进去，
+             *    连错 3 次反被锁页，比不显示更糟。
+             *
+             * 提取码值集中在下面 LANZOU_PWD 一处 —— 以后换密码只改这一行，
+             * 不必去数据里逐条改。
+             */
+            const LANZOU_PWD = 'afs';
+            function isValidLanzouPwd(value) {
+                return typeof value === 'string' && /^[A-Za-z0-9]{3,12}$/.test(value.trim());
+            }
+            // 把 1 / true / '1' / 'true' 都视为打开；其余（0 / '' / 缺失 / 非法）一律关闭。
+            function isPwdEnabled(file) {
+                if (!file) return false;
+                const v = file.pwd;
+                if (v === 1 || v === true) return true;
+                if (typeof v === 'string') {
+                    const s = v.trim().toLowerCase();
+                    return s === '1' || s === 'true' || s === 'yes';
+                }
+                return false;
+            }
+            // 未开启 -> 返回 ''，调用方据此隐藏徽章、不复制剪贴板。
+            function getLanzouPwd(file) {
+                if (!isPwdEnabled(file)) return '';
+                return isValidLanzouPwd(LANZOU_PWD) ? LANZOU_PWD : '';
+            }
+            // 点下载时静默把提取码放进剪贴板。必须在跳转前调用，
+            // 因为 window.open 之后部分浏览器会限制剪贴板写入时机。
+            // 失败不打扰用户：蓝奏云页面仍可手动输入。
+            function copyLanzouPwd(pwd) {
+                if (!pwd) return false;
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(pwd);
+                        return true;
+                    }
+                } catch (e) {}
+                // 回退：临时 textarea + execCommand，兼容非 https 环境。
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = pwd;
+                    ta.setAttribute('readonly', '');
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    const ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    return ok;
+                } catch (e) {
+                    return false;
+                }
+            }
+            // 醒目密码条：卡片、紧凑卡片、详情弹窗三处复用同一套结构。
+            // 醒目但不打扰 —— 蓝奏云老链接无密码，所以只在数据里确实带 pwd 时才显示。
+            function getPwdBadgeHtml(file, options) {
+                const pwd = getLanzouPwd(file);
+                if (!pwd) return '';
+                const compact = Boolean(options && options.compact);
+                return `<div class="pwd-badge${compact ? ' pwd-badge-compact' : ''}">`
+                    + `<span class="pwd-badge-tag">提取码</span>`
+                    + `<code class="pwd-badge-value" data-pwd="${escapeHtml(pwd)}">${escapeHtml(pwd)}</code>`
+                    + `<button type="button" class="pwd-badge-copy" data-copy-pwd="${escapeHtml(pwd)}" `
+                    + `onclick="event.stopPropagation(); return copyPwdToClipboard('${escapeHtml(pwd)}')">复制</button>`
+                    + `<span class="pwd-badge-hint">蓝奏云下载需输入，点此可复制</span>`
+                    + `</div>`;
+            }
+            window.copyPwdToClipboard = function(pwd) {
+                const ok = copyLanzouPwd(pwd);
+                toast(ok ? '提取码已复制，去蓝奏云页面粘贴即可' : '复制失败，请手动输入提取码');
+                return false;
+            };
+
             function getDownloadMode() {
-                // 直链已恢复（临时 IP 源 220.205.16.24:5244），恢复三值校验。
+                // 'auto'（自动安装）尚未完成、按钮已禁用，这里把历史遗留的 'auto' 也当作 'direct'。
                 try {
                     const saved = JSON.parse(localStorage.getItem(SITE_SETTINGS_KEY) || '{}');
-                    if (['direct', 'auto', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
+                    if (['direct', 'lanzou'].includes(saved.downloadMode)) return saved.downloadMode;
                     // 兼容旧版“手动”设置：旧手动下载即蓝奏云下载。
                     return saved.downloadMode === 'manual' ? 'lanzou' : 'direct';
                 } catch (e) {
@@ -343,7 +429,7 @@
             function isAllowedInstallerSource(parsed) {
                 const host = parsed.hostname.toLowerCase();
                 // 临时 IP 源：允许 http + /sd/<id>/ 直链路径。
-                if (host === INSTALLER_TEMP_HOST) {
+                if (INSTALLER_TEMP_HOSTS.includes(host)) {
                     return parsed.protocol === 'http:' && /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
                 }
                 if (parsed.protocol !== 'https:' || !INSTALLER_DIRECT_HOSTS.includes(host)) return false;
@@ -385,7 +471,7 @@
             function getDownloadLabel(file, fallbackLabel) {
                 const mode = getDownloadMode();
                 const hasDirectLink = Boolean(getAutoInstallPayload(file));
-                if (mode === 'auto') return isAndroidBrowser() && hasDirectLink ? '自动安装' : (hasDirectLink ? '直链下载' : '蓝奏云下载');
+                // 'auto'（自动安装）已下线，getDownloadMode() 只可能返回 direct / lanzou。
                 if (mode === 'direct') return hasDirectLink ? '直链下载' : '蓝奏云下载';
                 return '蓝奏云下载';
             }
@@ -446,6 +532,7 @@
                                 <div class="meta-box">${svgIcon('box')}<span>大小: ${safe.size}</span></div>
                                 <div class="meta-box">${svgIcon('calendar')}<span>日期: ${safe.date}</span></div>
                             </div>
+                            ${getPwdBadgeHtml(file)}
                         </div>
                         <div class="card-actions">
                             <div class="card-actions-secondary"></div>
@@ -559,10 +646,21 @@
                 downloadNavigationLockedUntil = now + 1200;
                 const mode = getDownloadMode();
                 const payload = getAutoInstallPayload(file);
+                // 走蓝奏云时先把提取码放进剪贴板：用户跳过去可直接粘贴，
+                // 完全绕开「记住/手打 3 位小写字母」以及连错 3 次锁页 15 分钟的风险。
+                // 必须在 openExternalDownload 之前调用。
+                const pwd = getLanzouPwd(file);
+                let pwdCopied = false;
+                function goLanzou() {
+                    logDownload(index);
+                    if (pwd && !pwdCopied) {
+                        pwdCopied = copyLanzouPwd(pwd);
+                    }
+                    openExternalDownload(file.link);
+                }
 
                 if (mode === 'lanzou') {
-                    logDownload(index);
-                    openExternalDownload(file.link);
+                    goLanzou();
                     return false;
                 }
 
@@ -572,19 +670,20 @@
                         openExternalDownload(payload.installUrl);
                     } else {
                         toast('此资源未配置安全直链，已改用蓝奏云下载');
-                        logDownload(index);
-                        openExternalDownload(file.link);
+                        goLanzou();
                     }
                     return false;
                 }
 
                 if (!payload) {
                     toast('此资源未配置安全直链，已改用蓝奏云下载');
-                    logDownload(index);
-                    openExternalDownload(file.link);
+                    goLanzou();
                     return false;
                 }
 
+                // ↓↓↓ 以下为「自动安装」模式的实现。2026-10-04 该模式尚未完成、
+                // 设置里的按钮已 disabled，getDownloadMode() 也不会再返回 'auto'，
+                // 所以这段目前**不可达**，保留是为了将来启用时不必重写。
                 // auto 模式：非 Android 浏览器无法处理安装助手协议，回落直链下载，保证文件可达。
                 if (!isAndroidBrowser()) {
                     toast('当前浏览器不支持自动安装，已改用直链下载');
@@ -688,6 +787,7 @@
                                 <div class="meta-box">${svgIcon('box')}<span>大小: ${safe.size}</span></div>
                                 <div class="meta-box">${svgIcon('calendar')}<span>日期: ${safe.date}</span></div>
                             </div>
+                            ${getPwdBadgeHtml(file)}
                         </div>
                         <div class="card-actions">
                             <div class="card-actions-secondary">
@@ -731,6 +831,7 @@
                             <div class="sug-extra">
                                 <span>作者: ${safe.author}</span>
                             </div>
+                            ${getPwdBadgeHtml(file, { compact: true })}
                         </div>
                         <button type="button" class="sug-btn"${isDllFile(file) ? ' data-dll="1"' : ''} onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                     </div>
@@ -1286,6 +1387,7 @@
                         </div>
                     </div>
                     <div class="mod-detail-body">
+                        ${getPwdBadgeHtml(file)}
                         <div class="detail-section"><h4>简介</h3><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
                         <div class="detail-section"><h4>信息</h3><div class="detail-info-grid">${detailInfoHtml}</div></div>
                         <div class="detail-section detail-rating">
@@ -2234,7 +2336,9 @@
                 lazyLoadToggle.checked = settings.lazyLoad;
 
                 // 下载方式：直链已恢复（临时 IP 源），恢复三值校验。
-                if (!['direct', 'auto', 'lanzou'].includes(settings.downloadMode)) {
+                if (!['direct', 'lanzou'].includes(settings.downloadMode)) {
+                    // 'auto'（自动安装）尚未完成，按钮已禁用；这里再兜一层，
+                    // 防止旧 localStorage 里残留的 'auto' 让 UI 显示成选中一个灰按钮。
                     settings.downloadMode = settings.downloadMode === 'manual' ? 'lanzou' : 'direct';
                 }
                 if (downloadModeSelector) {
@@ -2248,17 +2352,16 @@
                             desc: '从固定 HTTPS 直链直接下载 ZIP 文件',
                             note: '直链下载会在浏览器中直接获取文件；未配置安全直链的资源将回退到蓝奏云。'
                         },
-                        auto: {
-                            desc: '唤起「SFS 汉化模组安装助手」一键下载并安装模组',
-                            note: '仅 Android 手机浏览器支持自动安装；其他设备将自动回落为直链或蓝奏云下载。'
-                        },
                         lanzou: {
                             desc: '打开原蓝奏云分享页后手动下载',
-                            note: '也可以在设置中切换为直链下载或自动安装。'
+                            note: '也可以在设置中切换为直链下载。'
                         }
                     };
-                    downloadModeDesc.textContent = messages[settings.downloadMode].desc;
-                    downloadModeNote.textContent = messages[settings.downloadMode].note;
+                    // 'auto' 已被禁用（按钮 disabled + 上面强制降级），
+                    // 正常只会是 direct / lanzou；兜底防止 messages[...] 读到 undefined。
+                    const msg = messages[settings.downloadMode] || messages.direct;
+                    downloadModeDesc.textContent = msg.desc;
+                    downloadModeNote.textContent = msg.note;
                     window.dispatchEvent(new Event('sfs-download-mode-change'));
                 }
             }
@@ -2552,13 +2655,12 @@
 
             downloadModeSelector.querySelectorAll('[data-download-mode]').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    settings.downloadMode = ['direct', 'auto', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'direct';
+                    if (this.disabled) return;
+                    settings.downloadMode = ['direct', 'lanzou'].includes(this.dataset.downloadMode) ? this.dataset.downloadMode : 'direct';
                     saveSettings(settings);
                     applySettings();
                     if (settings.downloadMode === 'direct') {
                         toast('已选择直链下载，将直接下载 ZIP 文件');
-                    } else if (settings.downloadMode === 'auto') {
-                        toast('已选择自动安装，Android 手机上将唤起安装助手');
                     }
                 });
             });

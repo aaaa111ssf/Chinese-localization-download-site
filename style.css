@@ -2078,6 +2078,37 @@ img.loaded {
             color: #000;
             border-color: #fff;
         }
+        /* 未完成 / 已禁用的选项（当前：「自动安装」）：灰显、不可点、不响应 hover */
+        .style-btn:disabled,
+        .style-btn[aria-disabled="true"] {
+            cursor: not-allowed;
+            opacity: .45;
+            background: #f4f4f4;
+            color: #9a9a9a;
+            border-color: #e4e4e4;
+            box-shadow: none;
+        }
+        .style-btn:disabled:hover,
+        .style-btn[aria-disabled="true"]:hover {
+            border-color: #e4e4e4;
+            color: #9a9a9a;
+        }
+        .style-btn:disabled:active,
+        .style-btn[aria-disabled="true"]:active {
+            transform: none;
+        }
+        body.dark-mode .style-btn:disabled,
+        body.dark-mode .style-btn[aria-disabled="true"] {
+            background: #141414;
+            border-color: #232323;
+            color: #5e5e5e;
+            opacity: .6;
+        }
+        body.dark-mode .style-btn:disabled:hover,
+        body.dark-mode .style-btn[aria-disabled="true"]:hover {
+            border-color: #232323;
+            color: #5e5e5e;
+        }
 
         /* 设置面板底部 */
         .settings-panel-footer {
@@ -4657,4 +4688,104 @@ body.is-mobile-device .sug-btn[data-dll="1"] {
 }
 ::-webkit-scrollbar-corner {
     background: transparent;
+}
+
+/* ==========================================================================
+   蓝奏云提取码徽章（2026-10-04）
+   背景：蓝奏云改为强制提取码，免费用户无法取消，下载前必须输入；
+        且输错 3 次锁页 15 分钟。全站统一小写 'afs'，此处负责"醒目展示 + 一键复制"。
+   设计取舍：用高对比的琥珀色而非红色，避免"像报错"；等宽字体保证 3 位字母
+   一眼可辨；不依赖 JS，任何渲染路径下都能显示。
+   ========================================================================== */
+.pwd-badge {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 8px 10px;
+    border: 1px solid #f0c36d;
+    border-radius: 10px;
+    background: #fff8e8;
+}
+.pwd-badge-tag {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #8a5a00;
+    padding: 4px 7px;
+    border-radius: 999px;
+    background: #ffe9b8;
+}
+.pwd-badge-value {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: .18em;
+    color: #7a4d00;
+    padding: 2px 4px;
+    border-bottom: 2px solid #f0c36d;
+    user-select: all;
+}
+.pwd-badge-copy {
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+    color: #8a5a00;
+    padding: 6px 12px;
+    border: 1px solid #f0c36d;
+    border-radius: 999px;
+    background: #fffdf7;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.pwd-badge-copy:hover { background: #ffe9b8; }
+.pwd-badge-copy:active { transform: translateY(1px); }
+.pwd-badge-hint {
+    flex: 1 1 100%;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #9a6b00;
+}
+/* 紧凑卡片（无结果推荐）空间有限，只保留标签+密码+复制按钮 */
+.pwd-badge-compact {
+    margin-top: 6px;
+    padding: 6px 8px;
+    gap: 6px;
+}
+.pwd-badge-compact .pwd-badge-value { font-size: 16px; letter-spacing: .14em; }
+.pwd-badge-compact .pwd-badge-hint { display: none; }
+/* 详情弹窗：给足存在感，放在正文最上方 */
+.mod-detail-body > .pwd-badge {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+}
+.mod-detail-body > .pwd-badge .pwd-badge-value { font-size: 26px; }
+
+body.dark-mode .pwd-badge {
+    background: #2a2213;
+    border-color: #6b5220;
+}
+body.dark-mode .pwd-badge-tag {
+    background: #4a381a;
+    color: #ffd88a;
+}
+body.dark-mode .pwd-badge-value {
+    color: #ffd88a;
+    border-bottom-color: #6b5220;
+}
+body.dark-mode .pwd-badge-copy {
+    background: #241d10;
+    color: #ffd88a;
+    border-color: #6b5220;
+}
+body.dark-mode .pwd-badge-copy:hover { background: #4a381a; }
+body.dark-mode .pwd-badge-hint { color: #d4b26a; }
+
+@media (max-width: 480px) {
+    .pwd-badge { gap: 6px; padding: 8px; }
+    .pwd-badge-value { font-size: 18px; }
+    .mod-detail-body > .pwd-badge .pwd-badge-value { font-size: 22px; }
 }
