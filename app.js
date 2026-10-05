@@ -532,7 +532,7 @@
                                 <div class="meta-box">${svgIcon('box')}<span>大小: ${safe.size}</span></div>
                                 <div class="meta-box">${svgIcon('calendar')}<span>日期: ${safe.date}</span></div>
                             </div>
-                            ${getPwdBadgeHtml(file)}
+                            ${getPwdBadgeHtml(blueprint)}
                         </div>
                         <div class="card-actions">
                             <div class="card-actions-secondary"></div>
@@ -1763,7 +1763,7 @@
                     }
                 });
 
-            fetch('data/blueprints.json?v=20260826-blueprints1', { cache: 'force-cache' })
+            fetch('data/blueprints.json?v=20261005-bp1', { cache: 'force-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();

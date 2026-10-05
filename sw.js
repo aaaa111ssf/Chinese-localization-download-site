@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v13-icons-dll';
+const CACHE_VERSION = 'sfs-v14-blueprint-fix';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
