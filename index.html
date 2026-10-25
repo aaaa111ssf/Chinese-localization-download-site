@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://cdn.jsdmirror.com" crossorigin>
     <link rel="dns-prefetch" href="https://testingcf.jsdelivr.net">
     <link rel="preconnect" href="https://testingcf.jsdelivr.net" crossorigin>
-    <link rel="preload" href="data/data.json?v=20260919-dll2" as="fetch" crossorigin>
+    <link rel="preload" href="data/data.json?v=20261025-deps1" as="fetch" crossorigin>
 
     <script>try{if(localStorage.getItem('sfs_data_cache'))document.documentElement.className+=' has-cache'}catch(e){}</script>
 
@@ -104,53 +104,6 @@
     </div>
 
     <!-- ============================================
-         DLL 模组进入闸门
-         ① 移动端（Android/iOS）直接拦截，不允许进入
-         ② PC 端需手动输入确认语句后方可进入
-         ============================================ -->
-    <div class="modal-overlay dll-gate-overlay" id="dllGateModal" role="dialog" aria-modal="true" aria-labelledby="dllGateTitle" aria-hidden="true">
-        <div class="modal-box dll-gate-box">
-            <div class="modal-icon dll-gate-icon" id="dllGateIcon">⚠️</div>
-            <div class="modal-title" id="dllGateTitle">DLL 模组仅支持 PC / Steam 版</div>
-
-            <!-- PC 端：输入确认视图 -->
-            <div id="dllGateInputView">
-                <div class="modal-text dll-gate-text">
-                    移动端（Android / iOS）<strong>完全无法加载</strong> DLL 模组。<br>
-                    如果你只用手机玩 SFS，请不要继续。
-                </div>
-                <div class="dll-gate-field">
-                    <span class="dll-gate-label">请在下方手动输入这句话以确认：</span>
-                    <code class="dll-gate-phrase" id="dllGatePhrase">我已知晓DLL无法在移动端使用</code>
-                    <input type="text" class="dll-gate-input" id="dllGateInput" autocomplete="off" spellcheck="false" placeholder="在此输入上面这句话">
-                    <span class="dll-gate-error" id="dllGateError" hidden>输入不一致，请完整输入上方这句话</span>
-                </div>
-            </div>
-
-            <!-- 移动端：拦截视图 -->
-            <div class="dll-gate-blocked" id="dllGateBlockedView" hidden>
-                <div class="modal-text dll-gate-text">
-                    检测到你正在使用<strong>移动设备</strong>，出于避免无效下载的考虑，已阻止进入 DLL 模组页。
-                </div>
-                <div class="dll-gate-blocked-tip">
-                    DLL 需要注入游戏进程，Android / iOS 系统不允许 <code>.dll</code> / <code>.so</code> 动态库被加载，
-                    下载后<strong>无法使用</strong>。请在电脑上访问本站查看 DLL 模组。
-                </div>
-            </div>
-
-            <div class="modal-buttons dll-gate-buttons">
-                <button type="button" class="modal-btn modal-btn-cancel" id="dllGateCancel">返回</button>
-                <button type="button" class="modal-btn modal-btn-confirm" id="dllGateConfirm" disabled>确认进入</button>
-            </div>
-
-            <!-- 仅 PC 端、且确认语句输对后才出现：记住选择，之后不再要求输入确认 -->
-            <div class="dll-gate-permanent" id="dllGatePermanent" hidden>
-                <button type="button" class="dll-gate-permanent-btn" id="dllGateDismissForever">不再提示，永久关闭此确认</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================
          主容器
          ============================================ -->
     <main class="container" id="main-content">
@@ -184,7 +137,7 @@
         </header>
 
         <!-- ============================================
-             分类导航：涂装包 / 自定义部件 / DLL 模组
+             分类导航：涂装包 / 自定义部件
              ============================================ -->
         <nav class="category-nav" id="categoryNav" aria-label="模组分类">
             <button type="button" class="category-tab active" data-category="all" aria-pressed="true">
@@ -199,11 +152,6 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 8-9 5-9-5 9-5 9 5Z"/><path d="m3 8 9 5 9-5M12 13v9"/></svg>
                 <span>自定义部件</span>
             </button>
-            <button type="button" class="category-tab category-tab-pc" data-category="dll" aria-pressed="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="m10.2 9.4-2.6 2.6 2.6 2.6M13.8 9.4l2.6 2.6-2.6 2.6"/></svg>
-                <span>DLL模组</span>
-                <em class="category-tab-flag">PC</em>
-            </button>
         </nav>
 
         <!-- 分类页头（随所选分类切换） -->
@@ -211,42 +159,12 @@
             <div class="category-head-main">
                 <span class="category-eyebrow" id="categoryEyebrow">ALL MODS</span>
                 <h2 id="categoryTitle">全部模组</h2>
-                <p id="categoryDesc">站内全部汉化模组，包含涂装包、自定义部件与 DLL 模组。</p>
+                <p id="categoryDesc">站内全部汉化模组，包含涂装包与自定义部件。</p>
             </div>
             <div class="category-head-icon" id="categoryHeadIcon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg>
             </div>
         </section>
-
-        <!-- DLL 专属须知（仅 DLL 分类显示） -->
-        <div class="dll-notice" id="dllNotice" hidden>
-            <div class="dll-notice-alert">
-                <span class="dll-notice-alert-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
-                </span>
-                <div class="dll-notice-alert-body">
-                    <strong>DLL 模组仅支持 PC / Steam 版 Spaceflight Simulator</strong>
-                    <p>移动端（Android / iOS）<b>完全无法</b>加载 DLL 模组。DLL 需要注入游戏进程，移动端系统不允许加载动态库，手机用户下载后无法使用，请不要下载。<br>DLL 模组同样跟随设置里的「下载方式」，可在<b>直链下载</b>与<b>蓝奏云下载</b>之间切换。</p>
-                </div>
-            </div>
-            <div class="dll-notice-steps">
-                <h3>DLL 模组安装方法（仅 PC）</h3>
-                <ol class="dll-steps">
-                    <li>
-                        <span class="dll-step-num">1</span>
-                        <div><h4>确认版本匹配</h4><p>必须是 PC / Steam 版，且游戏版本与模组标注的兼容版本一致（如 <code>1.6.00.3+</code>）。</p></div>
-                    </li>
-                    <li>
-                        <span class="dll-step-num">2</span>
-                        <div><h4>解压后不要放进 Parts / Textures Packs</h4><p>DLL 是动态库文件（Windows 为 <code>.dll</code>），<strong>不是</strong>部件包也不是涂装包，放错目录不会生效。</p></div>
-                    </li>
-                    <li>
-                        <span class="dll-step-num">3</span>
-                        <div><h4>按模组说明放入对应目录并重启游戏</h4><p>具体放置位置以模组自带的说明文档为准；重启后在模组加载器中确认已加载。</p></div>
-                    </li>
-                </ol>
-            </div>
-        </div>
 
         <!-- 工具栏 -->
         <div class="toolbar">
@@ -374,7 +292,7 @@
             <div class="about-page-section">
                 <h2>关于我们</h2>
                 <div class="about-avatar-wrap">
-                    <img src="https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/A%20Future%20star.webp" alt="A Future star" class="about-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
+                    <img src="A%20Future%20star.webp" alt="A Future star" class="about-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
                     <div class="about-person-heading"><span class="about-avatar-name">A Future star</span><span class="about-role-badge about-role-owner">网站制作者与维护者</span></div>
                 </div>
                 <div class="about-desc">
@@ -417,7 +335,7 @@
                         </a>
                     </div>
                     <div class="credits-item">
-                        <img src="https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/重铬酸钠.webp" alt="重铬酸钠" class="credits-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
+                        <img src="重铬酸钠.webp" alt="重铬酸钠" class="credits-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
                         <div class="credits-person"><span class="credits-name">重铬酸钠</span><span class="credits-role">协助制作</span></div>
                         <a class="about-us-link" href="https://qm.qq.com/q/35ei6O5kuQ" target="_blank" rel="noopener noreferrer">
                             <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-4-.9L3 20l1.4-4A8.4 8.4 0 0 1 3 11.5a8.4 8.4 0 0 1 9-8 8.4 8.4 0 0 1 9 8Z"/></svg>QQ群: 1078113418
@@ -905,7 +823,7 @@
                 <div class="settings-group-title">关于我们</div>
                 <div class="about-us-section">
                     <div class="about-avatar-wrap">
-                        <img src="https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/A%20Future%20star.webp" alt="A Future star" class="about-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
+                        <img src="A%20Future%20star.webp" alt="A Future star" class="about-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
                         <div class="about-person-heading"><span class="about-avatar-name">A Future star</span><span class="about-role-badge about-role-owner">网站制作者与维护者</span></div>
                     </div>
                     <div class="about-desc">
@@ -951,7 +869,7 @@
                             </a>
                         </div>
                         <div class="credits-item">
-                            <img src="https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/重铬酸钠.webp" alt="重铬酸钠" class="credits-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
+                            <img src="重铬酸钠.webp" alt="重铬酸钠" class="credits-avatar" loading="lazy" data-mirror-idx="0" onerror="handleImgError(this)">
                             <div class="credits-person"><span class="credits-name">重铬酸钠</span><span class="credits-role">协助制作</span></div>
                             <a class="about-us-link" href="https://qm.qq.com/q/35ei6O5kuQ" target="_blank" rel="noopener noreferrer">
                                 <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-4-.9L3 20l1.4-4A8.4 8.4 0 0 1 3 11.5a8.4 8.4 0 0 1 9-8 8.4 8.4 0 0 1 9 8Z"/></svg>QQ群: 1078113418
@@ -1025,10 +943,30 @@
         </div>
     </div>
 
+    <!-- 模组依赖提醒（声明了前置模组的模组在下载前弹出） -->
+    <div class="blueprint-dependency-overlay" id="modDependencyOverlay" onclick="if(event.target===this)closeModDependency()" aria-hidden="true">
+        <div class="blueprint-dependency-dialog" role="dialog" aria-modal="true" aria-labelledby="modDependencyTitle">
+            <div class="blueprint-dependency-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 19a2 2 0 0 0 1.74 3h14.92a2 2 0 0 0 1.74-3L12 3Z"></path><path d="M12 9v5M12 18h.01"></path></svg>
+            </div>
+            <div class="blueprint-dependency-copy">
+                <span class="blueprint-eyebrow">下载前确认</span>
+                <h3 id="modDependencyTitle">请先安装所需模组</h3>
+                <p id="modDependencyDesc">该模组需要以下前置模组才能正常加载。</p>
+            </div>
+            <div class="blueprint-requirements" id="modRequirements"></div>
+            <p class="blueprint-dependency-tip">未安装依赖模组时，模组可能加载失败或部件缺失。</p>
+            <div class="blueprint-dependency-actions">
+                <button type="button" class="blueprint-cancel-btn" onclick="closeModDependency()">暂不下载</button>
+                <button type="button" class="blueprint-continue-btn" onclick="continueModDownload()">我已了解，继续下载</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ============================================
          JavaScript
          ============================================ -->
-    <script src="app.min.js?v=20261005-bp1" defer></script>
+    <script src="app.min.js?v=20261025-deps1" defer></script>
 
     <!-- 注册 Service Worker -->
     <script>

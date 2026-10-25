@@ -5,6 +5,9 @@
             let blueprints = [];
             let blueprintIndexMap = new Map();
             let pendingBlueprintDownload = null;
+            let pendingModDownload = null;
+            // data/data.json 顶层的 config 对象（目前只有 depsEnabled 依赖总开关）
+            let siteConfig = {};
             let fileIndexMap = new Map();
             let fileSearchIndex = new WeakMap();
             let dateSortedFiles = null;
@@ -36,7 +39,7 @@
             function svgIcon(name) {
                 return `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${uiIconPaths[name] || uiIconPaths.file}</svg>`;
             }
-            /* ---------- 分类分组：严格三类（涂装包 / 自定义部件 / DLL模组） ----------
+            /* ---------- 分类分组：严格两类（涂装包 / 自定义部件） ----------
                说明：数据层仍保留 engine/function/entertain/skin 等细分 category，
                这里只做「大类 -> 细分」的映射，因此细分信息不会丢失，后续想重新暴露很方便。 */
             const CATEGORY_GROUPS = {
@@ -45,7 +48,7 @@
                     label: '全部',
                     eyebrow: 'ALL MODS',
                     title: '全部模组',
-                    desc: '站内全部汉化模组，包含涂装包、自定义部件与 DLL 模组。',
+                    desc: '站内全部汉化模组，包含涂装包与自定义部件。',
                     icon: '<rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/>',
                     match: function() { return true; }
                 },
@@ -66,18 +69,9 @@
                     desc: '新增发动机、功能性部件与娱乐性部件，放入 Parts/ 目录使用。',
                     icon: '<path d="m21 8-9 5-9-5 9-5 9 5Z"/><path d="m3 8 9 5 9-5M12 13v9"/>',
                     match: function(c) { return c === 'engine' || c === 'function' || c === 'entertain'; }
-                },
-                dll: {
-                    key: 'dll',
-                    label: 'DLL模组',
-                    eyebrow: 'PC / STEAM ONLY',
-                    title: 'DLL 模组',
-                    desc: '通过动态库注入实现的功能增强，仅支持 PC / Steam 版，移动端无法使用。',
-                    icon: '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="m10.2 9.4-2.6 2.6 2.6 2.6M13.8 9.4l2.6 2.6-2.6 2.6"/>',
-                    match: function(c) { return c === 'dll'; }
                 }
             };
-            const CATEGORY_ORDER = ['all', 'skin', 'parts', 'dll'];
+            const CATEGORY_ORDER = ['all', 'skin', 'parts'];
 
             function getCategoryGroup(key) {
                 return CATEGORY_GROUPS[key] || CATEGORY_GROUPS.all;
@@ -85,9 +79,6 @@
             function fileMatchesCategory(file, key) {
                 if (!file) return false;
                 return getCategoryGroup(key).match(String(file.category || '').toLowerCase());
-            }
-            function isDllFile(file) {
-                return !!file && String(file.category || '').toLowerCase() === 'dll';
             }
 
             let currentCategory = 'all';
@@ -440,11 +431,7 @@
                 const installType = String(file && file.installType || '').toLowerCase();
                 const installUrl = String(file && file.installUrl || '').trim();
                 const sha256 = String(file && file.sha256 || '').trim();
-                // installType 里必须带上 dll：否则 DLL 模组永远拿不到 installUrl，
-                // 「下载方式」选直链也会被判定成「未配置安全直链」而回落蓝奏云，
-                // 表现就是 DLL 无法在直链 / 蓝奏云之间切换。
-                // DLL 是 PC 专用、移动端在更前面就被拦截，所以不会走到 Android 安装助手。
-                if (!file || !file.name || !installUrl || !['parts', 'textures', 'dll'].includes(installType)) return null;
+                if (!file || !file.name || !installUrl || !['parts', 'textures'].includes(installType)) return null;
                 try {
                     if (!isAllowedInstallerSource(new URL(installUrl))) return null;
                 } catch (e) {
@@ -626,7 +613,81 @@
 
             window.addEventListener('sfs-download-mode-change', updateDownloadLabels);
 
-            window.handleModDownload = function(index, event) {
+            /* ---------- 模组依赖关系 ----------
+               数据格式（data/data.json）：
+               1. 顶层 config.depsEnabled 控制依赖功能的总开关（缺省视为开启）；
+               2. 单个模组可用 "depsEnabled": false 单独关闭；
+               3. 模组用 requirements 数组声明前置模组：
+                  "requirements": [{ "name": "猎鹰九号-V2", "note": "需先安装该模组" }]
+                  name 必填；note 可选，缺省为「需先下载并安装该模组」。
+               开启后：卡片与详情展示依赖徽章，下载前弹确认框（与蓝图依赖弹窗同款式）。 */
+            function getDepsEnabled(file) {
+                if (file && file.depsEnabled === false) return false;
+                return !(siteConfig && siteConfig.depsEnabled === false);
+            }
+
+            function getModRequirements(file) {
+                if (!file || !Array.isArray(file.requirements)) return [];
+                return file.requirements
+                    .map(item => {
+                        if (typeof item === 'string') return { name: item.trim(), note: '' };
+                        if (item && typeof item === 'object' && item.name) {
+                            return { name: String(item.name).trim(), note: String(item.note || '').trim() };
+                        }
+                        return null;
+                    })
+                    .filter(item => item && item.name)
+                    .map(item => ({ name: item.name, note: item.note || '需先下载并安装该模组' }));
+            }
+
+            function openModDependency(file, index, requirements) {
+                pendingModDownload = index;
+                const nameEl = document.getElementById('modDependencyTitle');
+                const descEl = document.getElementById('modDependencyDesc');
+                const requirementsEl = document.getElementById('modRequirements');
+                if (nameEl) nameEl.textContent = '“' + (file.name || '该模组') + '”需要以下模组';
+                if (descEl) descEl.textContent = '请先下载并安装所列模组，再安装本模组。';
+                if (requirementsEl) {
+                    requirementsEl.innerHTML = requirements.map(requirement =>
+                        `<div class="blueprint-requirement-row"><div><strong>${escapeHtml(requirement.name)}</strong><span>${escapeHtml(requirement.note)}</span></div><button type="button" onclick="openRequiredModFromDetail('${escapeJs(requirement.name)}')">查看模组</button></div>`
+                    ).join('');
+                }
+                const overlay = document.getElementById('modDependencyOverlay');
+                if (!overlay) {
+                    // 弹窗结构缺失时直接放行下载，避免功能异常把下载完全堵死
+                    pendingModDownload = null;
+                    window.handleModDownload(index, null, true);
+                    return;
+                }
+                overlay.classList.add('active');
+                overlay.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-open');
+            }
+
+            window.closeModDependency = function() {
+                const overlay = document.getElementById('modDependencyOverlay');
+                if (overlay) {
+                    overlay.classList.remove('active');
+                    overlay.setAttribute('aria-hidden', 'true');
+                }
+                pendingModDownload = null;
+                checkAndRemoveModalOpen();
+            };
+
+            window.continueModDownload = function() {
+                const index = pendingModDownload;
+                window.closeModDependency();
+                if (index != null) window.handleModDownload(index, null, true);
+            };
+
+            // 从依赖弹窗 / 详情页跳到「所需模组」：关掉弹层后回到模组页并搜索
+            window.openRequiredModFromDetail = function(name) {
+                window.closeModDependency();
+                window.closeModDetail();
+                window.openRequiredMod(name);
+            };
+
+            window.handleModDownload = function(index, event, skipDepCheck) {
                 if (event) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
@@ -636,11 +697,14 @@
                 if (now < downloadNavigationLockedUntil) return false;
                 const file = files[index];
                 if (!file) return false;
-                // 防呆：DLL 模组仅 PC 可用。移动端在「全部」等任意分类下点下载都直接拦截，
-                // 而不是只在 DLL 分类入口处拦。
-                if (isDllFile(file) && isMobileDevice()) {
-                    toast('DLL 模组仅支持 PC / Steam 版，移动端无法使用');
-                    return false;
+                // 依赖确认：声明了前置模组且依赖功能开启时，先弹确认框，
+                // 用户点「我已了解，继续下载」后带 skipDepCheck 重入。
+                if (!skipDepCheck) {
+                    const requirements = getDepsEnabled(file) ? getModRequirements(file) : [];
+                    if (requirements.length) {
+                        openModDependency(file, index, requirements);
+                        return false;
+                    }
                 }
                 // 同一点击在浏览器、卡片父级或内联事件中重复传播时，只允许第一条路径执行。
                 downloadNavigationLockedUntil = now + 1200;
@@ -732,12 +796,11 @@
                 const tagsHtml = safe.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
                 const icon = typeIconNames[safe.type] || typeIconNames.default;
                 const slug = toSlug(file.name || '');
-                // DLL 模组仅 PC 可用，卡片上打角标，避免移动端用户误下载。
-                const pcBadge = isDllFile(file)
-                    ? '<span class="card-pc-badge" title="DLL 模组仅支持 PC / Steam 版"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="12.5" rx="2"/><path d="M8 20.5h8M12 16.5v4"/></svg>PC ONLY</span>'
+                // 依赖提示：声明了前置模组且依赖功能开启时，卡片上展示依赖徽章
+                const requirements = getDepsEnabled(file) ? getModRequirements(file) : [];
+                const depsHtml = requirements.length
+                    ? `<div class="blueprint-card-requirements">${requirements.map(r => `<span class="blueprint-requirement-chip">${svgIcon('box')}依赖：${escapeHtml(r.name)}</span>`).join('')}</div>`
                     : '';
-                // 标记 DLL 卡片，移动端由 CSS 把下载按钮置灰（配合 handleModDownload 的拦截）
-                const dllAttr = isDllFile(file) ? ' data-dll="1"' : '';
 
                 let imageHtml = '';
                 if (validImages.length > 0) {
@@ -755,7 +818,6 @@
                     const fetchPriority = index === 0 ? 'fetchpriority="high"' : '';
                     imageHtml = `
                         <div class="card-image-wrap" onclick="openModDetail(${index})">
-                            ${pcBadge}
                             <img ${isAboveFold ? 'src' : 'data-src'}="${escapeHtml(validImages[0])}" alt="${safe.name}预览图" class="lazy-img" data-icon="${icon}" data-mirror-idx="0" decoding="async" onerror="handleImgError(this)" onload="handleImgLoad(this)" ${isAboveFold ? `loading="eager" ${fetchPriority}` : 'loading="lazy"'}>
                             ${thumbsHtml}
                         </div>
@@ -763,7 +825,6 @@
                 } else {
                     imageHtml = `
                         <div class="card-image-wrap card-image-placeholder" onclick="openModDetail(${index})">
-                            ${pcBadge}
                             <div class="card-image-fallback">
                                 <span class="fallback-icon">${svgIcon(icon)}</span>
                                 <span class="fallback-text">暂无预览</span>
@@ -782,6 +843,7 @@
                                 <span class="card-inline-meta">${svgIcon('tag')}版本: ${safe.version}</span>
                             </div>
                             <div class="card-tags">${tagsHtml}</div>
+                            ${depsHtml}
                             <div class="card-desc">${safe.desc}</div>
                             <div class="card-meta-boxes">
                                 <div class="meta-box">${svgIcon('box')}<span>大小: ${safe.size}</span></div>
@@ -797,7 +859,7 @@
                             </div>
                             <div class="card-actions-primary">
                                 <button class="btn btn-detail" onclick="event.stopPropagation(); openModDetail(${index})">${svgIcon('info')}<span>详情</span></button>
-                                <button type="button" class="btn btn-download"${dllAttr} onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
+                                <button type="button" class="btn btn-download" onclick="return handleModDownload(${index}, event)">${svgIcon('download')}<span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                             </div>
                         </div>
                     </div>
@@ -833,7 +895,7 @@
                             </div>
                             ${getPwdBadgeHtml(file, { compact: true })}
                         </div>
-                        <button type="button" class="sug-btn"${isDllFile(file) ? ' data-dll="1"' : ''} onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
+                        <button type="button" class="sug-btn" onclick="return handleModDownload(${index}, event)"><span data-download-label="${index}" data-manual-label="蓝奏云下载">${getDownloadLabel(file, '蓝奏云下载')}</span></button>
                     </div>
                 `;
             }
@@ -957,7 +1019,7 @@
                 }, 120);
             });
 
-            /* ---------- 分类导航（涂装包 / 自定义部件 / DLL模组） ---------- */
+            /* ---------- 分类导航（涂装包 / 自定义部件） ---------- */
             const categoryNav = document.getElementById('categoryNav');
             const categoryTabs = categoryNav
                 ? Array.prototype.slice.call(categoryNav.querySelectorAll('.category-tab'))
@@ -982,15 +1044,13 @@
                 return !nav || nav.classList.contains('active');
             }
 
-            /* 分类导航 / 分类页头 / DLL 须知 仅在「模组」页显示 */
+            /* 分类导航 / 分类页头 仅在「模组」页显示 */
             function syncCategoryChrome() {
                 const onMods = isModsPageActive();
                 const navEl = document.getElementById('categoryNav');
                 const headEl = document.getElementById('categoryHead');
-                const noticeEl = document.getElementById('dllNotice');
                 if (navEl) navEl.style.display = onMods ? '' : 'none';
                 if (headEl) headEl.style.display = onMods ? '' : 'none';
-                if (noticeEl) noticeEl.hidden = !(onMods && currentCategory === 'dll');
             }
 
             function ensureModsPage() {
@@ -1023,201 +1083,14 @@
                 if (!opts.skipRender) renderFiles();
             }
 
-            /* ---------- DLL 进入闸门：移动端拦截 + PC 端输入确认 ---------- */
-            const DLL_GATE_PHRASE = '我已知晓DLL无法在移动端使用';
-            const DLL_GATE_DISMISS_KEY = 'sfs_dll_gate_dismissed';
-            let dllGatePassed = false; // 仅本次页面加载内有效，刷新后需重新确认
-            // 「永久关闭」：用户确认过一次后记住，之后可直接进入 DLL 分类。
-            // 仅 PC 端生效——移动端仍然每次都拦截，避免被绕过。
-            let dllGateDismissed = false;
-            try { dllGateDismissed = localStorage.getItem(DLL_GATE_DISMISS_KEY) === '1'; } catch (e) {}
-            function isDllGateDismissed() { return dllGateDismissed; }
-
-            function isMobileDevice() {
-                const ua = navigator.userAgent || '';
-                if (/Android|iPhone|iPad|iPod|Mobile|Windows Phone|BlackBerry|Opera Mini|IEMobile/i.test(ua)) return true;
-                // iPadOS 13+ 会伪装成 macOS 桌面 UA，用触摸点数兜底
-                if (/Macintosh/i.test(ua) && Number(navigator.maxTouchPoints || 0) > 1) return true;
-                return false;
-            }
-
-            // 挂到 body 上，供 CSS 把移动端不可用的下载按钮置灰
-            if (isMobileDevice()) document.body.classList.add('is-mobile-device');
-
-            /* 归一化：忽略空格与中英文标点，降低输入门槛但仍要求用户真正读过这句话 */
-            function normalizeGateText(value) {
-                return String(value || '')
-                    .replace(/[\s\u3000]+/g, '')
-                    .replace(/[，,。.、！!？?；;：:'"“”‘’()（）【】\[\]]/g, '')
-                    .toLowerCase();
-            }
-
-            function openDllGate() {
-                const modal = document.getElementById('dllGateModal');
-                if (!modal) return;
-                const blocked = isMobileDevice();
-                const inputView = document.getElementById('dllGateInputView');
-                const blockedView = document.getElementById('dllGateBlockedView');
-                const confirmBtn = document.getElementById('dllGateConfirm');
-                const input = document.getElementById('dllGateInput');
-                const errorEl = document.getElementById('dllGateError');
-                const iconEl = document.getElementById('dllGateIcon');
-                const titleEl = document.getElementById('dllGateTitle');
-                const dismissWrap = document.getElementById('dllGatePermanent');
-
-                if (blocked) {
-                    if (inputView) inputView.hidden = true;
-                    if (blockedView) blockedView.hidden = false;
-                    if (confirmBtn) confirmBtn.hidden = true;
-                    // 移动端不提供「永久关闭」，否则等于放开拦截
-                    if (dismissWrap) dismissWrap.hidden = true;
-                    if (iconEl) iconEl.textContent = '📵';
-                    if (titleEl) titleEl.textContent = '移动端无法使用 DLL 模组';
-                } else {
-                    if (inputView) inputView.hidden = false;
-                    if (blockedView) blockedView.hidden = true;
-                    if (confirmBtn) { confirmBtn.hidden = false; confirmBtn.disabled = true; }
-                    // 「永久关闭」不在一开始就给，等用户把确认语句输对了才出现，
-                    // 免得它变成绕过输入的捷径
-                    if (dismissWrap) dismissWrap.hidden = true;
-                    if (iconEl) iconEl.textContent = '⚠️';
-                    if (titleEl) titleEl.textContent = 'DLL 模组仅支持 PC / Steam 版';
-                    if (input) input.value = '';
-                    if (errorEl) errorEl.hidden = true;
-                }
-
-                document.body.classList.add('modal-open');
-                modal.classList.add('active');
-                modal.setAttribute('aria-hidden', 'false');
-                if (!blocked && input) {
-                    window.setTimeout(function() { try { input.focus(); } catch (e) {} }, 320);
-                }
-            }
-
-            function closeDllGate() {
-                const modal = document.getElementById('dllGateModal');
-                if (!modal) return;
-                modal.classList.remove('active');
-                modal.setAttribute('aria-hidden', 'true');
-                checkAndRemoveModalOpen();
-            }
-
-            function validateDllGateInput() {
-                const input = document.getElementById('dllGateInput');
-                const confirmBtn = document.getElementById('dllGateConfirm');
-                const errorEl = document.getElementById('dllGateError');
-                const dismissWrap = document.getElementById('dllGatePermanent');
-                if (!input || !confirmBtn) return;
-                const ok = normalizeGateText(input.value) === normalizeGateText(DLL_GATE_PHRASE);
-                confirmBtn.disabled = !ok;
-                if (errorEl) errorEl.hidden = ok || input.value.trim() === '';
-                // 只有把确认语句输对之后，才给出「永久关闭」这个选项；
-                // 改动输入导致不匹配时会重新收起。移动端始终保持隐藏。
-                if (dismissWrap && !isMobileDevice()) dismissWrap.hidden = !ok;
-            }
-
-            function confirmDllGate() {
-                // 双保险：移动端即使被绕过 DOM 也拒绝放行
-                if (isMobileDevice()) { closeDllGate(); return; }
-                const confirmBtn = document.getElementById('dllGateConfirm');
-                if (!confirmBtn || confirmBtn.disabled) return;
-                dllGatePassed = true;
-                closeDllGate();
-                ensureModsPage();
-                applyCategory('dll');
-            }
-
-            function requestDllCategory() {
-                // 移动端永远拦截，「永久关闭」也不例外
-                if (isMobileDevice()) { openDllGate(); return; }
-                if (dllGatePassed || dllGateDismissed) {
-                    ensureModsPage();
-                    applyCategory('dll');
-                    return;
-                }
-                openDllGate();
-            }
-
             // 分类标签点击
             categoryTabs.forEach(function(tab) {
                 tab.addEventListener('click', function(e) {
                     e.preventDefault();
                     const key = this.dataset.category;
-                    if (key === 'dll') { requestDllCategory(); return; }
                     ensureModsPage();
                     applyCategory(key);
                 });
-            });
-
-            // 闸门交互绑定
-            const dllGateModalEl = document.getElementById('dllGateModal');
-            const dllGateInputEl = document.getElementById('dllGateInput');
-            const dllGateConfirmEl = document.getElementById('dllGateConfirm');
-            const dllGateCancelEl = document.getElementById('dllGateCancel');
-            if (dllGateInputEl) {
-                dllGateInputEl.addEventListener('input', validateDllGateInput);
-                dllGateInputEl.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        if (dllGateConfirmEl && !dllGateConfirmEl.disabled) confirmDllGate();
-                    }
-                });
-            }
-            if (dllGateConfirmEl) dllGateConfirmEl.addEventListener('click', confirmDllGate);
-            if (dllGateCancelEl) dllGateCancelEl.addEventListener('click', closeDllGate);
-
-            // 「永久关闭」：记到本机 localStorage，之后进 DLL 分类不再要求输入确认
-            const dllGateDismissEl = document.getElementById('dllGateDismissForever');
-            if (dllGateDismissEl) {
-                dllGateDismissEl.addEventListener('click', function() {
-                    // 移动端不允许永久关闭，否则等于放开拦截
-                    if (isMobileDevice()) { closeDllGate(); return; }
-                    dllGateDismissed = true;
-                    dllGatePassed = true;
-                    try { localStorage.setItem(DLL_GATE_DISMISS_KEY, '1'); } catch (e) {}
-                    closeDllGate();
-                    ensureModsPage();
-                    applyCategory('dll');
-                    toast('已永久关闭该确认，本设备之后可直接进入 DLL 分类');
-                });
-            }
-            if (dllGateModalEl) {
-                dllGateModalEl.addEventListener('click', function(e) {
-                    if (e.target === dllGateModalEl) closeDllGate();
-                });
-            }
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && dllGateModalEl && dllGateModalEl.classList.contains('active')) {
-                    closeDllGate();
-                }
-            });
-
-            /* 确认语句不可复制：拦截选中 / 复制 / 剪切 / 拖拽 / 右键，并禁止向输入框粘贴 */
-            const dllGatePhraseEl = document.getElementById('dllGatePhrase');
-            if (dllGatePhraseEl) {
-                ['selectstart', 'copy', 'cut', 'dragstart', 'contextmenu'].forEach(function(evt) {
-                    dllGatePhraseEl.addEventListener(evt, function(e) {
-                        e.preventDefault();
-                        return false;
-                    });
-                });
-            }
-            if (dllGateInputEl) {
-                dllGateInputEl.addEventListener('paste', function(e) {
-                    e.preventDefault();
-                    toast('请手动输入这句话，不支持粘贴');
-                });
-                dllGateInputEl.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    toast('请手动输入这句话，不支持拖拽');
-                });
-            }
-            document.addEventListener('copy', function(e) {
-                const sel = String((window.getSelection && window.getSelection().toString()) || '');
-                if (sel && normalizeGateText(sel) === normalizeGateText(DLL_GATE_PHRASE)) {
-                    e.preventDefault();
-                    toast('这句话不可复制，请手动输入');
-                }
             });
 
             // 排序下拉菜单
@@ -1305,7 +1178,7 @@
                         if (toolbar) toolbar.style.display = 'flex';
                         if (footer) footer.style.display = 'grid';
                     }
-                    // 分类导航 / 分类页头 / DLL 须知 只在「模组」页出现
+                    // 分类导航 / 分类页头 只在「模组」页出现
                     syncCategoryChrome();
                 });
             });
@@ -1350,11 +1223,6 @@
             window.openModDetail = function(index) {
                 const file = files[index];
                 if (!file) return;
-                // 防呆：DLL 模组仅 PC 可用，移动端连详情也不打开（详情页本身就是下载入口）
-                if (isDllFile(file) && isMobileDevice()) {
-                    toast('DLL 模组仅支持 PC / Steam 版，移动端无法查看');
-                    return;
-                }
                 const validImages = getValidImages(file);
                 const box = document.getElementById('modDetailBox');
                 const tags = (Array.isArray(file.tags) ? file.tags : []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
@@ -1378,6 +1246,13 @@
                 const gallery = validImages.length > 0 ?
                     `<div class="detail-section"><h4>预览图</h4><div class="mod-detail-gallery">${validImages.map((img,i)=>`<img data-src="${escapeHtml(img)}" alt="${escapeHtml(file.name||'模组')}预览图${i+1}" data-icon="${icon}" class="lazy-img" data-mirror-idx="0" loading="lazy" decoding="async" onclick="openImgViewer(${index},${i})" onerror="handleImgError(this)" onload="handleImgLoad(this)">`).join('')}</div></div>` : '';
 
+                // 依赖模组区块：声明了前置模组且依赖功能开启时才显示
+                const detailRequirements = getDepsEnabled(file) ? getModRequirements(file) : [];
+                const depsSection = detailRequirements.length
+                    ? `<div class="detail-section"><h4>依赖模组</h4><div class="blueprint-requirements">${detailRequirements.map(requirement =>
+                        `<div class="blueprint-requirement-row"><div><strong>${escapeHtml(requirement.name)}</strong><span>${escapeHtml(requirement.note)}</span></div><button type="button" onclick="openRequiredModFromDetail('${escapeJs(requirement.name)}')">查看模组</button></div>`).join('')}</div></div>`
+                    : '';
+
                 box.innerHTML = `
                     <div class="mod-detail-header">
                         ${firstImage}
@@ -1390,6 +1265,7 @@
                         ${getPwdBadgeHtml(file)}
                         <div class="detail-section"><h4>简介</h3><p>${escapeHtml(file.desc || '暂无描述')}</p></div>
                         <div class="detail-section"><h4>信息</h3><div class="detail-info-grid">${detailInfoHtml}</div></div>
+                        ${depsSection}
                         <div class="detail-section detail-rating">
                             <div class="detail-section-heading">
                                 <h4>评分</h4>
@@ -1671,8 +1547,10 @@
             function setFiles(data) {
                 if (Array.isArray(data)) {
                     files = data;
+                    siteConfig = {};
                 } else if (data && typeof data === 'object' && Array.isArray(data.files)) {
                     files = data.files;
+                    siteConfig = (data.config && typeof data.config === 'object') ? data.config : {};
                 } else {
                     throw new Error('数据格式错误');
                 }
@@ -1701,24 +1579,11 @@
                 });
             }
 
-            /* ---------- 首屏：支持直接用 URL hash 进入某个分类页（#skin / #parts / #dll） ---------- */
+            /* ---------- 首屏：支持直接用 URL hash 进入某个分类页（#skin / #parts） ---------- */
             (function bootstrapCategoryFromHash() {
                 const raw = String(window.location.hash || '').replace(/^#/, '').toLowerCase();
                 if (!raw || !CATEGORY_GROUPS[raw] || raw === 'all') {
                     applyCategory('all', { skipHash: true, skipRender: true });
-                    return;
-                }
-                if (raw === 'dll') {
-                    // DLL 需先过闸门。这里标记「开屏欢迎弹窗已看过」（与 ENTRY_SEEN_KEY 同值），
-                    // 避免两个全屏遮罩同时弹出互相遮挡；闸门关闭后用户仍可正常浏览其它分类。
-                    try { sessionStorage.setItem('sfs_entry_modal_seen', 'true'); } catch (e) {}
-                    applyCategory('all', { skipHash: true, skipRender: true });
-                    // 已永久关闭确认（且非移动端）时直接进入，不再弹闸门
-                    if (!isMobileDevice() && (dllGatePassed || dllGateDismissed)) {
-                        applyCategory('dll');
-                        return;
-                    }
-                    window.setTimeout(openDllGate, 420);
                     return;
                 }
                 applyCategory(raw, { skipHash: true, skipRender: true });
@@ -1737,7 +1602,7 @@
                 console.warn('缓存读取失败:', e);
             }
 
-            fetch('data/data.json?v=20260919-dll2', { cache: 'force-cache' })
+            fetch('data/data.json?v=20261025-deps1', { cache: 'force-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();

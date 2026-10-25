@@ -4259,7 +4259,7 @@ body.dark-mode .blueprint-requirement-row span { color: #f5d08a; }
 }
 
 /* ============================================
-   分类导航：涂装包 / 自定义部件 / DLL 模组
+   分类导航：涂装包 / 自定义部件
    配色沿用站点设计变量（--site-accent / --site-surface*），
    用户改主色时这里会一起跟随。
    ============================================ */
@@ -4319,21 +4319,6 @@ body.dark-mode .category-nav {
 body.dark-mode .category-tab { color: #a8a8a8; }
 body.dark-mode .category-tab:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
-.category-tab-flag {
-    font-style: normal;
-    font-size: 0.6rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    line-height: 1.35;
-    padding: 2px 6px;
-    border-radius: 50px;
-    border: 1px solid currentColor;
-    background: transparent;
-    opacity: 0.72;
-}
-
-.category-tab.active .category-tab-flag { opacity: 0.9; }
-
 /* ---------- 分类页头 ---------- */
 .category-head {
     display: flex;
@@ -4387,225 +4372,6 @@ body.dark-mode .category-tab:hover { background: rgba(255, 255, 255, 0.1); color
 body.dark-mode .category-head { background: #1a1a1a; border-color: #2a2a2a; }
 body.dark-mode .category-head h2 { color: #eee; }
 body.dark-mode .category-head p { color: #9aa3b2; }
-
-/* ---------- DLL 专属须知（仅 DLL 分类显示） ---------- */
-.dll-notice {
-    margin-bottom: 18px;
-    padding: 20px 22px;
-    background: var(--site-surface, #fff);
-    border: 1px solid var(--site-surface-border, #e8e8e8);
-    border-radius: 18px;
-    text-align: left;
-}
-
-.dll-notice[hidden] { display: none !important; }
-
-.dll-notice-alert { display: flex; align-items: flex-start; gap: 13px; }
-
-.dll-notice-alert-icon {
-    flex: 0 0 auto;
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--site-on-accent, #fff);
-    background: var(--site-accent, #111);
-}
-
-.dll-notice-alert-icon svg { width: 21px; height: 21px; }
-
-.dll-notice-alert-body strong { display: block; font-size: 1rem; color: #111; margin-bottom: 6px; letter-spacing: -0.2px; }
-.dll-notice-alert-body p { margin: 0; color: #5b6476; line-height: 1.7; font-size: 0.88rem; }
-.dll-notice-alert-body b { color: #111; }
-
-.dll-notice-steps { margin-top: 18px; padding-top: 18px; border-top: 1px dashed var(--site-surface-border, #e8e8e8); }
-.dll-notice-steps h3 { margin: 0 0 13px; font-size: 0.95rem; color: #111; }
-
-.dll-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-
-.dll-steps li { display: flex; align-items: flex-start; gap: 11px; }
-
-.dll-step-num {
-    flex: 0 0 auto;
-    width: 23px;
-    height: 23px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--site-accent, #111);
-    color: var(--site-on-accent, #fff);
-    font-size: 0.72rem;
-    font-weight: 700;
-}
-
-.dll-steps h4 { margin: 0 0 3px; font-size: 0.88rem; color: #111; }
-.dll-steps p { margin: 0; font-size: 0.82rem; color: #5b6476; line-height: 1.65; }
-
-.dll-steps code,
-.dll-notice code {
-    background: var(--site-accent-soft, #eee);
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.85em;
-    color: #111;
-}
-
-body.dark-mode .dll-notice { background: #1a1a1a; border-color: #2a2a2a; }
-body.dark-mode .dll-notice-alert-body strong,
-body.dark-mode .dll-notice-steps h3,
-body.dark-mode .dll-steps h4,
-body.dark-mode .dll-steps code,
-body.dark-mode .dll-notice code { color: #eee; }
-body.dark-mode .dll-notice-alert-body p,
-body.dark-mode .dll-steps p { color: #9aa3b2; }
-body.dark-mode .dll-notice-alert-body b { color: #eee; }
-body.dark-mode .dll-steps code,
-body.dark-mode .dll-notice code { background: #2a2a2a; }
-
-/* ---------- 卡片上的 PC ONLY 角标 ---------- */
-.card-pc-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
-    border-radius: 50px;
-    background: rgba(17, 17, 17, 0.8);
-    color: #fff;
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
-    line-height: 1.4;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    pointer-events: none;
-}
-
-.card-pc-badge svg { width: 11px; height: 11px; }
-
-/* ---------- DLL 进入闸门弹窗 ---------- */
-.dll-gate-box { max-width: 470px; }
-
-.dll-gate-text { text-align: center; }
-.dll-gate-text strong { color: #111; }
-
-.dll-gate-field {
-    text-align: left;
-    margin: 18px 0 20px;
-    padding: 16px;
-    background: #fafafa;
-    border: 1px solid #e8e8e8;
-    border-radius: 14px;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-.dll-gate-label { display: block; font-size: 0.8rem; color: #666; margin-bottom: 9px; }
-
-/* 确认语句必须手动输入：禁止选中 / 复制 / 拖拽 */
-.dll-gate-phrase {
-    display: block;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #111;
-    background: #fff;
-    border: 1px dashed #c9c9c9;
-    border-radius: 9px;
-    padding: 9px 12px;
-    margin-bottom: 10px;
-    word-break: break-all;
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-user-drag: none;
-}
-
-.dll-gate-input {
-    width: 100%;
-    padding: 11px 13px;
-    background: #fff;
-    color: #111;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-family: inherit;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    user-select: text;
-    -webkit-user-select: text;
-}
-
-.dll-gate-input:focus {
-    outline: none;
-    border-color: var(--site-accent, #111);
-    box-shadow: 0 0 0 3px var(--site-accent-soft, rgba(17, 17, 17, 0.1));
-}
-
-.dll-gate-error { display: block; margin-top: 9px; font-size: 0.78rem; color: #b91c1c; font-weight: 600; }
-.dll-gate-error[hidden] { display: none !important; }
-
-.dll-gate-blocked { text-align: center; }
-.dll-gate-blocked-tip {
-    margin-top: 14px;
-    padding: 14px 16px;
-    text-align: left;
-    background: #fafafa;
-    border: 1px solid #e8e8e8;
-    border-radius: 12px;
-    font-size: 0.83rem;
-    color: #5b6476;
-    line-height: 1.7;
-}
-.dll-gate-blocked-tip strong { color: #111; }
-
-.dll-gate-buttons { margin-top: 4px; }
-
-/* 「永久关闭」：仅 PC 端出现，做成低调的次级操作，避免误点 */
-.dll-gate-permanent {
-    margin-top: 12px;
-    text-align: center;
-}
-.dll-gate-permanent[hidden] { display: none; }
-.dll-gate-permanent-btn {
-    background: none;
-    border: none;
-    padding: 6px 8px;
-    font-size: 0.78rem;
-    color: #8a8a8a;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: color 0.2s ease, background 0.2s ease;
-}
-.dll-gate-permanent-btn:hover { color: #444; background: #f2f2f2; }
-body.dark-mode .dll-gate-permanent-btn { color: #8b8b8b; }
-body.dark-mode .dll-gate-permanent-btn:hover { color: #ddd; background: #222; }
-
-.dll-gate-box .modal-btn:disabled {
-    opacity: 0.42;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-body.dark-mode .dll-gate-text strong { color: #eee; }
-body.dark-mode .dll-gate-field { background: #202020; border-color: #2f2f2f; }
-body.dark-mode .dll-gate-label { color: #999; }
-body.dark-mode .dll-gate-phrase { background: #111; color: #eee; border-color: #3a3a3a; }
-body.dark-mode .dll-gate-input { background: #111; color: #eee; border-color: #333; }
-body.dark-mode .dll-gate-blocked-tip { background: #202020; border-color: #2f2f2f; color: #9aa3b2; }
-body.dark-mode .dll-gate-blocked-tip strong { color: #eee; }
-
 /* ---------- 分类组件移动端适配 ---------- */
 @media (max-width: 640px) {
     .category-nav {
@@ -4623,34 +4389,13 @@ body.dark-mode .dll-gate-blocked-tip strong { color: #eee; }
 
     .category-tab { flex: 0 0 auto; padding: 8px 12px; font-size: 0.78rem; gap: 5px; }
     .category-tab svg { width: 14px; height: 14px; }
-    .category-tab-flag { font-size: 0.55rem; padding: 1px 5px; }
 
     .category-head { flex-direction: column; gap: 12px; padding: 16px; border-radius: 14px; }
     .category-head h2 { font-size: 1.2rem; }
     .category-head p { font-size: 0.83rem; }
     .category-head-icon { display: none; }
 
-    .dll-notice { padding: 16px; border-radius: 14px; }
-    .dll-notice-alert-icon { width: 32px; height: 32px; border-radius: 10px; }
-    .dll-notice-alert-icon svg { width: 18px; height: 18px; }
-    .dll-notice-alert-body strong { font-size: 0.92rem; }
 
-    .dll-gate-box { padding: 26px 18px 22px; }
-    .dll-gate-field { padding: 13px; }
-    .dll-gate-buttons { flex-direction: column-reverse; }
-    .dll-gate-buttons .modal-btn { width: 100%; }
-}
-
-/* ============================================
-   DLL 防呆：移动端把 DLL 卡片的下载入口置灰
-   真正的拦截在 handleModDownload / openModDetail 里完成，
-   这里只负责让用户一眼看出「手机上点了也没用」。
-   ============================================ */
-body.is-mobile-device .btn-download[data-dll="1"],
-body.is-mobile-device .sug-btn[data-dll="1"] {
-    opacity: 0.5;
-    filter: grayscale(0.65);
-    cursor: not-allowed;
 }
 
 /* ============================================

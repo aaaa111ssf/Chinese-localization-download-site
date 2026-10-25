@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v14-blueprint-fix';
+const CACHE_VERSION = 'sfs-v15-mod-deps';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',

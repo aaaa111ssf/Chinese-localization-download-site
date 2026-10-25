@@ -25,16 +25,24 @@ export async function onRequestGet(context) {
     try { slug = decodeURIComponent(slug); } catch (e) {}
     const origin = new URL(context.request.url).origin;
 
-    // 读取模组数据
+    // 读取模组数据（兼容数组与 { config, files } 对象两种格式）
     let data = [];
+    let config = {};
     try {
         const resp = await fetch(origin + '/data/data.json');
         if (resp.ok) data = await resp.json();
     } catch (e) {
         return new Response('数据加载失败', { status: 500 });
     }
+    let allFiles = [];
+    if (Array.isArray(data)) {
+        allFiles = data;
+    } else if (data && typeof data === 'object' && Array.isArray(data.files)) {
+        allFiles = data.files;
+        config = (data.config && typeof data.config === 'object') ? data.config : {};
+    }
 
-    const file = (Array.isArray(data) ? data : []).find(f => toSlug(f.name) === slug);
+    const file = allFiles.find(f => toSlug(f.name) === slug);
     if (!file) {
         return new Response('模组不存在', {
             status: 404,
@@ -52,6 +60,25 @@ export async function onRequestGet(context) {
     const galleryHtml = images.length > 0
         ? `<div class="mod-gallery">${images.map((img, i) =>
             `<img src="${esc(img)}" alt="${esc(file.name)}预览图${i + 1}" loading="lazy" decoding="async">`).join('')}</div>`
+        : '';
+
+    // 依赖模组区块：与主站一致，受 config.depsEnabled 总开关与模组 depsEnabled 控制
+    const depsEnabled = config.depsEnabled !== false && file.depsEnabled !== false;
+    const requirements = Array.isArray(file.requirements)
+        ? file.requirements
+            .map(item => {
+                if (typeof item === 'string') return { name: item.trim(), note: '' };
+                if (item && typeof item === 'object' && item.name) {
+                    return { name: String(item.name).trim(), note: String(item.note || '').trim() };
+                }
+                return null;
+            })
+            .filter(item => item && item.name)
+            .map(item => ({ name: item.name, note: item.note || '需先下载并安装该模组' }))
+        : [];
+    const depsHtml = depsEnabled && requirements.length > 0
+        ? `<div class="section"><h2>依赖模组</h2><div class="dep-list">${requirements.map(dep =>
+            `<div class="dep-row"><div><strong>${esc(dep.name)}</strong><span>${esc(dep.note)}</span></div><a class="dep-link" href="${esc(mainUrl)}">去下载</a></div>`).join('')}</div><p class="dep-tip">未安装依赖模组时，模组可能加载失败或部件缺失。</p></div>`
         : '';
 
     const jsonLd = JSON.stringify({
@@ -123,6 +150,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .star-fill{position:absolute;inset:0;overflow:hidden;display:block}
 .star-svg-fill{fill:#111}
 .avatar-set-btn{display:none}
+.dep-list{display:grid;gap:10px}
+.dep-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border:1px solid #eee;border-radius:10px;background:#fafafa}
+.dep-row strong{display:block;color:#111;font-size:14px}
+.dep-row span{display:block;margin-top:3px;color:#777;font-size:12px}
+.dep-link{flex:0 0 auto;display:inline-block;padding:7px 12px;border-radius:8px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:600}
+.dep-link:hover{background:#333}
+.dep-tip{margin-top:12px;color:#999;font-size:12px}
 @media(max-width:600px){.hero h1{font-size:20px}.btn{width:100%}.hero{padding:20px}}
 </style>
 </head>
@@ -151,6 +185,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
     </div>
 
     ${galleryHtml ? `<div class="section"><h2>预览图</h2>${galleryHtml}</div>` : ''}
+
+    ${depsHtml}
 
     <div class="section">
         <h2>评分</h2>
