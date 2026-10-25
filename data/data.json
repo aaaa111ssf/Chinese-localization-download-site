@@ -3,6 +3,28 @@
     "depsEnabled": true
   },
   "files": [
+  {
+    "name": "阿尔忒弥斯计划",
+    "type": "zip",
+    "size": "3.8MB",
+    "date": "2026-10-25",
+    "desc": "制作整个阿尔忒弥斯计划所需的一切 甚至更多",
+    "link": "https://wwaqu.lanzoub.com/i1Iz14db9mlg",
+    "pwd": 1,
+    "tags": [
+      "汉化"
+    ],
+    "category": "function",
+    "images": [
+      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/240.webp"
+    ],
+    "version": "v1.0",
+    "author": "Cryptowave2112",
+    "compat": "1.6.00.3+",
+    "installType": "parts",
+    "installUrl": "http://207.57.124.92:5244/sd/KfzDYMwW",
+    "sha256": ""
+    },
     {
       "name": "双子座",
       "type": "zip",
@@ -207,8 +229,8 @@
       "size": "692KB",
       "date": "2026-10-03",
       "desc": "它们是旧版发动机 在之前的版本中被移除或取消",
-      "link": "https://wwaqu.lanzoub.com/iJDSW4asal3c",
-      "pwd": 0,
+      "link": "https://wwaqu.lanzoub.com/inpwR4db9mgb",
+      "pwd": 1,
       "tags": [
         "汉化"
       ],
@@ -220,7 +242,7 @@
       "author": "Mickey/Axcel ",
       "compat": "1.6.00.3+",
       "installType": "parts",
-      "installUrl": "http://207.57.124.92:5244/sd/oXtNkOoI",
+      "installUrl": "http://207.57.124.92:5244/sd/xljJDJ4W",
       "sha256": ""
     },
     {
@@ -405,8 +427,8 @@
       "size": "821KB",
       "date": "2026-10-03",
       "desc": "提前制作 SFS1.6 版本",
-      "link": "https://wwaqu.lanzoub.com/iRIh64asbaji",
-      "pwd": 0,
+      "link": "https://wwaqu.lanzoub.com/ijXQc4db9mhc",
+      "pwd": 1,
       "tags": [
         "汉化"
       ],
@@ -418,7 +440,7 @@
       "author": "sfs凤PC探索星辰 ",
       "compat": "1.6.00.3+",
       "installType": "parts",
-      "installUrl": "http://207.57.124.92:5244/sd/w0gfOlGK",
+      "installUrl": "http://207.57.124.92:5244/sd/idNo1USm",
       "sha256": ""
     },
     {

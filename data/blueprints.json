@@ -1,6 +1,27 @@
 {
   "schemaVersion": 1,
   "blueprints": [
+     {
+      "id": "blueprint-20",
+      "name": "阿尔忒弥斯计划配套蓝图",
+      "desc": "阿尔忒弥斯计划配套蓝图 下载密码afs",
+      "link": "https://wwaqu.lanzoub.com/i4bS74dbb7kh",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/240.webp"
+      ],
+      "tags": [
+        "配套蓝图"
+      ],
+      "format": "蓝图 ZIP",
+      "size": "2.5KB",
+      "date": "2026-10-25",
+      "requirements": [
+        {
+          "name": "阿尔忒弥斯计划",
+          "note": "需下载安装此模组"
+        }
+      ]
+    },
     {
       "id": "bp-225",
       "name": "猎9-2 配套蓝图",
