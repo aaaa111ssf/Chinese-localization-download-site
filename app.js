@@ -12,6 +12,7 @@
             let fileSearchIndex = new WeakMap();
             let dateSortedFiles = null;
             let searchRenderTimer = 0;
+            let renderSeq = 0;
             const typeIconNames = {
                 pdf: 'file', zip: 'archive', doc: 'file-text', img: 'image',
                 video: 'video', code: 'code', default: 'file'
@@ -900,6 +901,26 @@
                 `;
             }
 
+            // summary: 只给前 8 张卡片加入场动画，其余直接显示，少一点重绘
+            function applyEnterAnim(container, offset) {
+                const lite = document.documentElement.classList.contains('lite');
+                container.querySelectorAll('.file-card').forEach(function (card, i) {
+                    const idx = offset + i;
+                    if (idx < 8 && !lite) {
+                        card.style.setProperty('--card-enter-delay', (idx * 0.03) + 's');
+                    } else {
+                        card.style.setProperty('--card-enter-delay', '0s');
+                        card.style.animation = 'none';
+                        card.style.opacity = '1';
+                    }
+                });
+            }
+
+            // summary: 等下一帧再渲染下一批卡片，别让主线程一口气干到底
+            const scheduleChunk = window.requestAnimationFrame
+                ? function (fn) { window.requestAnimationFrame(fn); }
+                : function (fn) { window.setTimeout(fn, 16); };
+
             /* ---------- 主渲染 ---------- */
             function renderFiles() {
                 const grid = document.getElementById('fileGrid');
@@ -962,30 +983,34 @@
                     }
                 });
 
-                /* 一次性写入 DOM */
+                /* 先渲染一屏，剩下的分帧补上，老手机不会一次性卡住 */
+                renderSeq++;
+                const mySeq = renderSeq;
+                const isLite = document.documentElement.classList.contains('lite');
+                const chunkSize = isLite ? 12 : 24;
+
                 if (cardsHtml.length) {
-                    grid.innerHTML = cardsHtml.join('');
                     grid.style.display = 'grid';
+                    grid.innerHTML = cardsHtml.slice(0, chunkSize).join('');
                     armAllImgTimeouts();
+                    applyEnterAnim(grid, 0);
+                    observeLazyImages();
+
+                    let cursor = chunkSize;
+                    const appendChunk = function () {
+                        if (mySeq !== renderSeq || cursor >= cardsHtml.length) return;
+                        const next = cardsHtml.slice(cursor, cursor + chunkSize);
+                        cursor += chunkSize;
+                        grid.insertAdjacentHTML('beforeend', next.join(''));
+                        armAllImgTimeouts();
+                        applyEnterAnim(grid, cursor - next.length);
+                        observeLazyImages();
+                        scheduleChunk(appendChunk);
+                    };
+                    if (cursor < cardsHtml.length) scheduleChunk(appendChunk);
                 } else {
                     grid.innerHTML = '';
                     grid.style.display = 'none';
-                }
-
-                // 入场动画仅前8张卡片，其余直接显示
-                if (visibleCount > 0) {
-                    const cards = grid.querySelectorAll('.file-card');
-                    const baseDelay = 0.03;
-                    cards.forEach((card, i) => {
-                        if (i < 8) {
-                            const delay = i * baseDelay;
-                            card.style.setProperty('--card-enter-delay', delay + 's');
-                        } else {
-                            card.style.setProperty('--card-enter-delay', '0s');
-                            card.style.animation = 'none';
-                            card.style.opacity = '1';
-                        }
-                    });
                 }
 
                 document.getElementById('totalCount').textContent = visibleCount;
@@ -1518,21 +1543,138 @@
             };
 
             /* ---------- 赞助 ---------- */
+            const SPONSOR_CACHE_KEY = 'sfs_sponsor_cache';
+            const NUDGE_KEY = 'sfs_nudge_state';
             const sponsorImageList = [
                 "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/5.png"
             ];
+            // 网络挂了也要能打开赞助窗口，用这份兜底内容
+            const FALLBACK_SPONSOR = {
+                headline: '如果这里帮到了你',
+                intro: '站里的模组都是业余时间挑、翻、打包的，全部免费提供。觉得这里省了时间，可以扫码支持一下，金额随意。',
+                tiers: [
+                    { amount: 0.01, title: '一分钱' },
+                    { amount: 0.1, title: '一毛' },
+                    { amount: 0.5, title: '五毛' },
+                    { amount: 1, title: '一块' },
+                    { amount: 2, title: '两块' },
+                    { amount: 5, title: '五块' }
+                ],
+                tierNote: '扫码后自己填金额，多少都是心意。',
+                links: [],
+                qrcodes: [{ label: '微信扫码 · 金额自填', img: sponsorImageList[0] }],
+                wall: [],
+                wallEmptyText: '还没有赞助者，你可以是第一个。',
+                note: '目前仅支持微信扫码。赞助完全自愿，不影响任何下载与更新。'
+            };
+            let sponsorData = null;
+
+            // 统计点击次数，用来看赞助入口到底有没有人点（失败也不影响页面）
+            function sendEvent(name) {
+                try {
+                    const payload = JSON.stringify({ name: name });
+                    if (navigator.sendBeacon) {
+                        navigator.sendBeacon('/api/event', new Blob([payload], { type: 'application/json' }));
+                        return;
+                    }
+                    fetch('/api/event', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: payload,
+                        keepalive: true
+                    }).catch(function () {});
+                } catch (e) {}
+            }
+
+            function renderSponsor() {
+                const box = document.getElementById('sponsorBody');
+                if (!box) return;
+                const cfg = sponsorData || FALLBACK_SPONSOR;
+                const goal = cfg.goal || {};
+                const target = Number(goal.target) || 0;
+                const current = Number(goal.current) || 0;
+                const percent = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
+                const tiers = Array.isArray(cfg.tiers) ? cfg.tiers : [];
+                const links = (Array.isArray(cfg.links) ? cfg.links : []).filter(l => l && l.url);
+                const qrs = Array.isArray(cfg.qrcodes) ? cfg.qrcodes : [];
+                const wall = Array.isArray(cfg.wall) ? cfg.wall : [];
+
+                // summary: 金额都很小的档位用六宫格排，别整成一长串卡片
+                const compactTiers = tiers.length > 0 && tiers.every(t => Number(t.amount) < 10);
+                const tiersHtml = !tiers.length ? '' : (compactTiers
+                    ? `<div class="sponsor-tiers chips">${tiers.map(t => `
+                        <div class="sponsor-chip"><b>¥${escapeHtml(t.amount)}</b><span>${escapeHtml(t.title || '')}</span></div>`).join('')}</div>`
+                    : `<div class="sponsor-tiers">${tiers.map(t => `
+                        <div class="sponsor-tier">
+                            <div class="sponsor-tier-amount">¥${escapeHtml(t.amount)}</div>
+                            <div>
+                                <div class="sponsor-tier-title">${escapeHtml(t.title)}</div>
+                                <div class="sponsor-tier-desc">${escapeHtml(t.desc)}</div>
+                            </div>
+                        </div>`).join('')}</div>`);
+
+                box.innerHTML = `
+                    <div class="sponsor-head">
+                        <svg class="sponsor-heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <div class="sponsor-title" id="sponsorTitle">${escapeHtml(cfg.headline)}</div>
+                        <p class="sponsor-intro">${escapeHtml(cfg.intro)}</p>
+                    </div>
+                    ${target > 0 ? `
+                    <div class="sponsor-goal">
+                        <div class="sponsor-goal-top">
+                            <span>${escapeHtml(goal.label || '本月目标')}</span>
+                            <span class="sponsor-goal-num">¥${current} / ¥${target}</span>
+                        </div>
+                        <div class="sponsor-goal-bar"><div class="sponsor-goal-fill" style="width:${percent}%"></div></div>
+                    </div>` : ''}
+                    ${tiersHtml}
+                    ${cfg.tierNote ? `<p class="sponsor-tier-note">${escapeHtml(cfg.tierNote)}</p>` : ''}
+                    ${links.length ? `<div class="sponsor-actions">${links.map(l => `
+                        <a class="sponsor-btn ${l.primary ? 'primary' : ''}" href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" data-sponsor-link>${escapeHtml(l.label)}</a>`).join('')}</div>` : ''}
+                    ${qrs.length ? `<div class="sponsor-qrs">${qrs.map(q => `
+                        <div class="sponsor-qr">
+                            <img src="${escapeHtml(q.img)}" alt="${escapeHtml(q.label || '赞助码')}" loading="lazy" decoding="async" data-qr="${escapeHtml(q.img)}">
+                            <span>${escapeHtml(q.label || '')}</span>
+                        </div>`).join('')}</div>` : ''}
+                    <div class="sponsor-wall">
+                        <div class="sponsor-wall-title">赞助者名单</div>
+                        ${wall.length
+                            ? `<div class="sponsor-wall-list">${wall.map(w => `<span class="sponsor-wall-item">${escapeHtml(w.name)}${w.amount ? ' · ¥' + escapeHtml(w.amount) : ''}</span>`).join('')}</div>`
+                            : `<div class="sponsor-wall-empty">${escapeHtml(cfg.wallEmptyText || '')}</div>`}
+                    </div>
+                    <p class="sponsor-note">${escapeHtml(cfg.note || '')}</p>
+                `;
+
+                box.querySelectorAll('[data-sponsor-link]').forEach(el => {
+                    el.addEventListener('click', function () { sendEvent('sponsor_click'); });
+                });
+                box.querySelectorAll('[data-qr]').forEach(el => {
+                    el.style.cursor = 'zoom-in';
+                    el.addEventListener('click', function () {
+                        sendEvent('sponsor_qr');
+                        try { window.open(el.getAttribute('data-qr'), '_blank', 'noopener'); } catch (e) {}
+                    });
+                });
+            }
+
+            function loadSponsor() {
+                fetch('data/sponsor.json?v=20261101-perf1', { cache: 'no-cache' })
+                    .then(r => r.ok ? r.json() : null)
+                    .then(data => {
+                        if (!data || data.enabled === false) return;
+                        sponsorData = data;
+                        try { localStorage.setItem(SPONSOR_CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+                        // 窗口开着就顺手刷新一下内容
+                        if (document.getElementById('sponsorModalOverlay').classList.contains('active')) renderSponsor();
+                    })
+                    .catch(function () {});
+            }
 
             function openSponsorModal() {
-                const grid = document.getElementById('sponsorImagesGrid');
-                grid.innerHTML = sponsorImageList.map(url => `
-                    <div class="sponsor-image-item">
-                        <img data-src="${escapeHtml(url)}" alt="赞助码" class="lazy-img">
-                        <span class="img-label">感谢支持</span>
-                    </div>
-                `).join('');
+                renderSponsor();
                 document.getElementById('sponsorModalOverlay').classList.add('active');
                 document.body.classList.add('modal-open');
-                observeLazyImages();
+                sendEvent('sponsor_open');
             }
 
             function closeSponsorModal() {
@@ -1542,6 +1684,42 @@
 
             document.getElementById('sponsorFloatBtn').addEventListener('click', openSponsorModal);
             window.closeSponsorModal = closeSponsorModal;
+            loadSponsor();
+
+            // 下载过几次后，右下角轻提示一次，不做弹窗轰炸
+            function showSponsorNudge() {
+                if (document.getElementById('sponsorNudge')) return;
+                const el = document.createElement('div');
+                el.id = 'sponsorNudge';
+                el.className = 'sponsor-nudge';
+                el.innerHTML = '<div class="sponsor-nudge-text">下载还顺利吗？站里的模组全部免费，觉得有用可以扫码支持一下。</div>' +
+                    '<button class="sponsor-nudge-btn" type="button">支持一下</button>' +
+                    '<button class="sponsor-nudge-close" type="button" aria-label="关闭">&times;</button>';
+                document.body.appendChild(el);
+                el.querySelector('.sponsor-nudge-btn').addEventListener('click', function () {
+                    el.remove();
+                    openSponsorModal();
+                });
+                el.querySelector('.sponsor-nudge-close').addEventListener('click', function () {
+                    document.getElementById('sponsorNudge').remove();
+                });
+                setTimeout(function () {
+                    const cur = document.getElementById('sponsorNudge');
+                    if (cur) cur.remove();
+                }, 12000);
+            }
+
+            function maybeSponsorNudge() {
+                let st = {};
+                try { st = JSON.parse(localStorage.getItem(NUDGE_KEY) || '{}') || {}; } catch (e) {}
+                if (st.off) return;
+                st.count = (st.count || 0) + 1;
+                // 每 8 次下载、且距上次提示超过 5 天才提示一次
+                const due = st.count % 8 === 0 && Date.now() - (st.lastAt || 0) > 5 * 864e5;
+                if (due) st.lastAt = Date.now();
+                try { localStorage.setItem(NUDGE_KEY, JSON.stringify(st)); } catch (e) {}
+                if (due) showSponsorNudge();
+            }
 
             /* ---------- 初始化 ---------- */
             function setFiles(data) {
@@ -1658,6 +1836,8 @@
                     keepalive: true,
                     cache: 'no-store'
                 }).catch(() => {});
+                // 下载完顺手判断要不要出一次赞助轻提示
+                maybeSponsorNudge();
             }
 
             /* ---------- 下载记录弹窗 ---------- */
@@ -1781,30 +1961,56 @@
 
             let settings = loadSettings();
 
-            /* ---------- 公告栏 ---------- */
+            /* ---------- 公告栏 + 吸顶横幅 ---------- */
             const ANNOUNCE_KEY = 'sfs_announcements';
+            const ANNOUNCE_CACHE_KEY = 'sfs_announce_cache';
+            const BANNER_CLOSED_KEY = 'sfs_banner_closed';
+            let announceData = { banner: null, items: [] };
 
+            // summary: 这段代码单独在一个作用域里，自己带一个转义函数
+            function escText(s) {
+                if (s == null) return '';
+                return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+            }
+
+            // summary: 上报一次点击，失败就算了，不影响页面
+            function trackBanner(name) {
+                try {
+                    const payload = JSON.stringify({ name: name });
+                    if (navigator.sendBeacon) {
+                        navigator.sendBeacon('/api/event', new Blob([payload], { type: 'application/json' }));
+                    } else {
+                        fetch('/api/event', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function () {});
+                    }
+                } catch (e) {}
+            }
+
+            // summary: 兼容两种公告格式——老格式是数组，新格式是 { banner, items }
+            function normalizeAnnounce(raw) {
+                if (Array.isArray(raw)) return { banner: null, items: raw };
+                if (raw && typeof raw === 'object') {
+                    return { banner: raw.banner || null, items: Array.isArray(raw.items) ? raw.items : [] };
+                }
+                return { banner: null, items: [] };
+            }
+
+            // summary: 渲染右侧公告面板里的列表
             function renderAnnouncements(announcements) {
                 const list = document.getElementById('announceList');
                 if (!announcements || !announcements.length) {
                     list.innerHTML = '<div class="announce-empty">暂无公告</div>';
                     return;
                 }
-                list.innerHTML = announcements.map(a => {
-                    const esc = (s) => {
-                        if (s == null) return '';
-                        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-                    };
-                    return `
+                const typeLabel = (t) => t === 'info' ? '通知' : t === 'warn' ? '警告' : t === 'success' ? '更新' : t === 'error' ? '紧急' : t === 'sponsor' ? '赞助' : '通知';
+                list.innerHTML = announcements.map(a => `
                     <div class="announce-item">
                         <div class="announce-item-header">
-                            <span class="announce-item-type ${a.type || 'info'}">${a.type === 'info' ? '通知' : a.type === 'warn' ? '警告' : a.type === 'success' ? '更新' : a.type === 'error' ? '紧急' : '通知'}</span>
-                            <span class="announce-item-date">${esc(a.date || '')}</span>
+                            <span class="announce-item-type ${escText(a.type || 'info')}">${typeLabel(a.type)}</span>
+                            <span class="announce-item-date">${escText(a.date || '')}</span>
                         </div>
-                        <div class="announce-item-title">${esc(a.title || '')}</div>
-                        <div class="announce-item-content">${esc(a.content || '')}</div>
-                    </div>`;
-                }).join('');
+                        <div class="announce-item-title">${escText(a.title || '')}</div>
+                        <div class="announce-item-content">${escText(a.content || '')}</div>
+                    </div>`).join('');
 
                 // 检查是否有未读公告
                 const readIds = JSON.parse(localStorage.getItem(ANNOUNCE_KEY) || '[]');
@@ -1813,15 +2019,90 @@
                 if (hasUnread) badge.classList.add('show');
             }
 
-            // 单独加载公告（在 renderAnnouncements 定义后调用，避免作用域问题）
-            fetch('data/announce.json?v=20260824-recovery1', { cache: 'force-cache' })
-                .then(r => r.ok ? r.json() : [])
-                .then(data => {
-                    if (Array.isArray(data) && data.length) renderAnnouncements(data);
-                })
-                .catch(() => {});
+            // summary: 判断横幅现在该不该显示（开关、时间窗口、用户关过没有）
+            function isBannerActive(b) {
+                if (!b || b.enabled === false) return false;
+                const now = Date.now();
+                if (b.startAt && now < Date.parse(b.startAt)) return false;
+                if (b.endAt && now > Date.parse(b.endAt)) return false;
+                try {
+                    if (localStorage.getItem(BANNER_CLOSED_KEY) === String(b.id || '')) return false;
+                } catch (e) {}
+                return true;
+            }
 
-            // 初始化默认公告（会被 data.json 中的数据覆盖）
+            // summary: 收起横幅，并把页面顶部让出来
+            function hideBanner() {
+                const bar = document.getElementById('announceBar');
+                if (bar) {
+                    bar.hidden = true;
+                    bar.innerHTML = '';
+                }
+                document.body.classList.remove('has-announce-bar');
+            }
+
+            // summary: 按 announce.json 的 banner 配置渲染吸顶横幅
+            function renderBanner() {
+                const bar = document.getElementById('announceBar');
+                if (!bar) return;
+                const b = announceData.banner;
+                if (!isBannerActive(b)) {
+                    hideBanner();
+                    return;
+                }
+
+                bar.className = 'announce-bar type-' + (b.type || 'info');
+                bar.innerHTML = '<span class="abar-tag">' + escText(b.tag || '公告') + '</span>' +
+                    '<span class="abar-text">' + escText(b.text || '') + '</span>' +
+                    (b.linkText ? '<span class="abar-action">' + escText(b.linkText) + '</span>' : '') +
+                    '<button class="abar-close" type="button" aria-label="关闭公告">&times;</button>';
+                bar.hidden = false;
+                document.body.classList.add('has-announce-bar');
+
+                // 点正文或按钮：按 action 决定打开赞助窗口、外链还是公告面板
+                const openTarget = function () {
+                    trackBanner('banner_click');
+                    const action = b.action || '';
+                    if (action === 'sponsor') {
+                        // 赞助弹窗在主脚本里，点那个按钮让它的监听器去开
+                        const btn = document.getElementById('sponsorFloatBtn');
+                        if (btn) btn.click();
+                    } else if (action === 'url' && b.url) {
+                        window.open(b.url, '_blank', 'noopener');
+                    } else {
+                        openAnnouncePanel();
+                    }
+                };
+                const textEl = bar.querySelector('.abar-text');
+                if (textEl && b.linkText) {
+                    textEl.style.cursor = 'pointer';
+                    textEl.addEventListener('click', openTarget);
+                }
+                const actionEl = bar.querySelector('.abar-action');
+                if (actionEl) actionEl.addEventListener('click', openTarget);
+                const closeEl = bar.querySelector('.abar-close');
+                if (closeEl) closeEl.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    try { localStorage.setItem(BANNER_CLOSED_KEY, String(b.id || '')); } catch (err) {}
+                    hideBanner();
+                });
+            }
+
+            // summary: 拉公告数据，同步更新横幅和面板，并缓存一份给下次首屏用
+            function loadAnnounce() {
+                fetch('data/announce.json?v=20261101-perf1', { cache: 'no-cache' })
+                    .then(r => r.ok ? r.json() : null)
+                    .then(data => {
+                        if (!data) return;
+                        announceData = normalizeAnnounce(data);
+                        try { localStorage.setItem(ANNOUNCE_CACHE_KEY, JSON.stringify(announceData)); } catch (e) {}
+                        renderAnnouncements(announceData.items);
+                        renderBanner();
+                    })
+                    .catch(function () {});
+            }
+
+            // 先放一条默认公告，网络回来后再被真实数据覆盖
             renderAnnouncements([
                 {
                     type: 'info',
@@ -1830,6 +2111,7 @@
                     date: '2026-07-11'
                 }
             ]);
+            loadAnnounce();
 
             function openAnnouncePanel() {
                 document.getElementById('announcePanel').classList.add('active');

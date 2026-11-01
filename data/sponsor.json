@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "headline": "如果这里帮到了你",
+  "intro": "站里的模组都是我业余时间挑、翻、打包的，全部免费提供。如果你觉得这里帮你省了时间，可以扫码支持一下，金额随意。",
+  "tiers": [
+    { "amount": 0.01, "title": "一分钱" },
+    { "amount": 0.1, "title": "一毛" },
+    { "amount": 0.5, "title": "五毛" },
+    { "amount": 1, "title": "一块" },
+    { "amount": 2, "title": "两块" },
+    { "amount": 5, "title": "五块" }
+  ],
+  "tierNote": "扫码后自己填金额，多少都是心意。",
+  "links": [],
+  "qrcodes": [
+    {
+      "label": "微信扫码 · 金额自填",
+      "img": "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/5.png"
+    }
+  ],
+  "wall": [],
+  "wallEmptyText": "还没有赞助者，你可以是第一个。",
+  "note": "目前仅支持微信扫码。赞助完全自愿，不影响任何下载与更新。"
+}

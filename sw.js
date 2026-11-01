@@ -1,20 +1,17 @@
-const CACHE_VERSION = 'sfs-v15-mod-deps';
+const CACHE_VERSION = 'sfs-v16-banner-perf';
+// 只预缓存必须离线可用的两样，JSON 由运行时缓存，装 SW 更快、省流量
 const PRECACHE_ASSETS = [
   '/',
-  '/index.html',
-  '/data/data.json',
-  '/data/blueprints.json',
-  '/data/announce.json',
-  '/android-chrome-192x192.png',
-  '/android-chrome-512x512.png',
-  '/apple-touch-icon.png'
+  '/android-chrome-192x192.png'
 ];
 
-// 安装事件：预缓存静态资源
+// 安装事件：预缓存静态资源（单个失败不拖垮整个安装）
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS);
+      return Promise.all(
+        PRECACHE_ASSETS.map((url) => cache.add(url).catch(() => null))
+      );
     })
   );
   self.skipWaiting();
@@ -51,6 +48,10 @@ function getRequestType(url) {
     url.pathname.match(/\.(css|js|png|jpg|jpeg|gif|webp|svg|ico|woff|woff2|ttf|eot|otf)$/)
   ) {
     return 'static';
+  }
+  // 公告/赞助配置要的就是新鲜，直接走网络，失败再退回缓存
+  if (url.pathname === '/data/announce.json' || url.pathname === '/data/sponsor.json') {
+    return 'json-live';
   }
   if (url.pathname.endsWith('.json')) {
     return 'json';
@@ -108,6 +109,21 @@ function jsonStrategy(event) {
   );
 }
 
+// 必须新鲜的 JSON（公告/赞助）：先网络，失败才用缓存
+function jsonLiveStrategy(event) {
+  return event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
+  );
+}
+
 // Fetch 事件：根据请求类型选择缓存策略
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
@@ -126,6 +142,9 @@ self.addEventListener('fetch', (event) => {
   switch (type) {
     case 'html':
       htmlStrategy(event);
+      break;
+    case 'json-live':
+      jsonLiveStrategy(event);
       break;
     case 'json':
       jsonStrategy(event);
