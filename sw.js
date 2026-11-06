@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v16-banner-perf';
+const CACHE_VERSION = 'sfs-v17-sponsor-qr2';
 // 只预缓存必须离线可用的两样，JSON 由运行时缓存，装 SW 更快、省流量
 const PRECACHE_ASSETS = [
   '/',

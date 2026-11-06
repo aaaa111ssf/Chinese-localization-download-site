@@ -165,7 +165,7 @@
 
             /* ---------- 图片CDN回退列表（国内优先，base含完整路径前缀） ---------- */
             const CDN_MIRRORS = [
-                'https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main',      // 国内jsDelivr镜像(主)
+                'https://cdn.jsdmirror.cn/gh/aaaa111ssf/images@main',      // 国内jsDelivr镜像(主)
                 'https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main', // jsDelivr国内节点
                 'https://gh-proxy.com/https://raw.githubusercontent.com/aaaa111ssf/images/main',  // GitHub代理
                 'https://ghfast.top/https://raw.githubusercontent.com/aaaa111ssf/images/main',    // GitHub代理
@@ -1546,7 +1546,7 @@
             const SPONSOR_CACHE_KEY = 'sfs_sponsor_cache';
             const NUDGE_KEY = 'sfs_nudge_state';
             const sponsorImageList = [
-                "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/5.png"
+                "/sponsor-qr-v2.png"
             ];
             // 网络挂了也要能打开赞助窗口，用这份兜底内容
             const FALLBACK_SPONSOR = {
@@ -1658,7 +1658,7 @@
             }
 
             function loadSponsor() {
-                fetch('data/sponsor.json?v=20261101-perf1', { cache: 'no-cache' })
+                fetch('data/sponsor.json?v=20261106-qr2', { cache: 'no-cache' })
                     .then(r => r.ok ? r.json() : null)
                     .then(data => {
                         if (!data || data.enabled === false) return;
