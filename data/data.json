@@ -3,27 +3,262 @@
     "depsEnabled": true
   },
   "files": [
-  {
-    "name": "阿尔忒弥斯计划-修复",
-    "type": "zip",
-    "size": "3.8MB",
-    "date": "2026-10-25",
-    "desc": "制作整个阿尔忒弥斯计划所需的一切 甚至更多",
-    "link": "https://wwaqu.lanzoub.com/isV0l4e64ibi",
-    "pwd": 1,
-    "tags": [
-      "汉化"
-    ],
-    "category": "function",
-    "images": [
-      "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/240.webp"
-    ],
-    "version": "v1.0",
-    "author": "Cryptowave2112",
-    "compat": "1.6.00.3+",
-    "installType": "parts",
-    "installUrl": "http://207.57.124.92:5244/sd/jmNEZde3",
-    "sha256": ""
+    {
+      "name": "Dah-KSP Parts",
+      "desc": "本模组是 Heroix 宇航员模组的一个组件 或者说是一项依赖 它主要添加了一些灵感来自 KSP 的部件 例如钻机 转换器等",
+      "link": "https://wwaqu.lanzoub.com/i41Pp4f4am6h",
+      "size": "1.8MB",
+      "date": "2026-11-07",
+      "tags": [],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "Dahzito  |-|  HeroiX",
+      "installType": "parts",
+      "pwd": 0,
+      "installUrl": "http://207.57.124.92:5244/sd/nnZdrjvT",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/249.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "美丽的马赫环",
+      "desc": "美丽的马赫环",
+      "link": "https://wwaqu.lanzoub.com/ig3v84f4aj3g",
+      "size": "0.3MB",
+      "date": "2026-11-07",
+      "tags": [],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "SFS凤PC探索星辰",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/UoiAKfSU",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/248.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "PAAEP",
+      "desc": "一款老旧模组 作者和简介均损坏",
+      "link": "https://wwaqu.lanzoub.com/ihzuH4f4afod",
+      "size": "0.6MB",
+      "date": "2026-11-07",
+      "tags": [],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "未知",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/r0DU8wpE",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/247.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "PACE",
+      "desc": "一款老旧模组 作者和简介均损坏",
+      "link": "https://wwaqu.lanzoub.com/iG0UO4f4a1di",
+      "size": "14MB",
+      "date": "2026-11-07",
+      "tags": [],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "未知",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/Xi3dCHDw",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/246.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "PAMR",
+      "desc": "一款老旧模组 作者和简介均损坏",
+      "link": "https://wwaqu.lanzoub.com/iaHUZ4f48tde",
+      "size": "4.8MB",
+      "date": "2026-11-07",
+      "tags": [
+        "汉化"
+      ],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "未知",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/RzMyTUv1",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/245.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "PARS",
+      "desc": "一款老旧模组 作者和简介均损坏",
+      "link": "https://wwaqu.lanzoub.com/iaimr4f4807e",
+      "size": "1.7MB",
+      "date": "2026-11-07",
+      "tags": [
+        "汉化"
+      ],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "未知",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/j499AnpJ",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/244.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "Prime Aerospace Engines Pack",
+      "desc": "一个悠久的模组 作者和简介均损坏",
+      "link": "https://wwaqu.lanzoub.com/i0l4t4f43hyd",
+      "size": "1MB",
+      "date": "2026-11-07",
+      "tags": [
+        "汉化"
+      ],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "未知",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/uRDa8K6d",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/243.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "QMSP的机械",
+      "type": "zip",
+      "size": "0.1MB",
+      "desc": "铰链等机械部件",
+      "link": "https://wwaqu.lanzoub.com/ihjsS4f42k4f",
+      "pwd": 1,
+      "tags": [
+        "机械"
+      ],
+      "category": "function",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/49.webp"
+      ],
+      "version": "v1.1",
+      "author": "QMSP",
+      "heat": "6.7万",
+      "compat": "1.6.00.3+",
+      "installType": "parts",
+      "installUrl": "http://207.57.124.92:5244/sd/wXlF9ZjC",
+      "requirements": [],
+      "date": "2026-11-07"
+    },
+    {
+      "name": "SDSA",
+      "type": "zip",
+      "size": "0.58MB",
+      "desc": "暂无",
+      "link": "https://wwaqu.lanzoub.com/i2p1q4f41h3a",
+      "pwd": 1,
+      "tags": [
+        "引擎"
+      ],
+      "category": "engine",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/50.webp"
+      ],
+      "version": "v1.0",
+      "author": "SDSA",
+      "heat": "4.8万",
+      "compat": "1.6.00.3+",
+      "installType": "parts",
+      "installUrl": "http://207.57.124.92:5244/sd/mTysxgUk",
+      "requirements": []
+    },
+    {
+      "name": "香料包",
+      "desc": "本包包含香料产品 例如发动机和储存装置 更多内容即将推出！这是太阳耀斑疯狂发动机的续作！",
+      "link": "https://wwaqu.lanzoub.com/ivhiz4f3zp6j",
+      "size": "0.7MB",
+      "date": "2026-11-07",
+      "tags": [
+        "汉化"
+      ],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "Solar Flare",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/RF8UyovW",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/242.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "AXEL",
+      "desc": "一款远古模组 作者和简介均损失",
+      "link": "https://wwaqu.lanzoub.com/iPw1B4f3w9gf",
+      "size": "3.1MB",
+      "date": "2026-11-07",
+      "tags": [
+        "汉化"
+      ],
+      "type": "zip",
+      "category": "function",
+      "version": "v1.0",
+      "author": "未知",
+      "installType": "parts",
+      "pwd": 1,
+      "installUrl": "http://207.57.124.92:5244/sd/erN6mAW7",
+      "compat": "1.6.00.3+",
+      "images": [
+        "https://testingcf.jsdelivr.net/gh/aaaa111ssf/images@main/241.webp"
+      ],
+      "requirements": []
+    },
+    {
+      "name": "阿尔忒弥斯计划-修复",
+      "type": "zip",
+      "size": "3.8MB",
+      "date": "2026-10-25",
+      "desc": "制作整个阿尔忒弥斯计划所需的一切 甚至更多",
+      "link": "https://wwaqu.lanzoub.com/isV0l4e64ibi",
+      "pwd": 1,
+      "tags": [
+        "汉化"
+      ],
+      "category": "function",
+      "images": [
+        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/240.webp"
+      ],
+      "version": "v1.0",
+      "author": "Cryptowave2112",
+      "compat": "1.6.00.3+",
+      "installType": "parts",
+      "installUrl": "http://207.57.124.92:5244/sd/jmNEZde3",
+      "sha256": ""
     },
     {
       "name": "双子座",
@@ -2293,52 +2528,6 @@
       "compat": "1.6.00.3+",
       "installType": "parts",
       "installUrl": "https://nasyt.dpdns.org/sd/XFsMoI2n/",
-      "sha256": ""
-    },
-    {
-      "name": "SDSA",
-      "type": "zip",
-      "size": "0.58MB",
-      "date": "2026-6-10",
-      "desc": "暂无",
-      "link": "https://wwaqu.lanzoub.com/i4V8Q3rjy6ni",
-      "pwd": 0,
-      "tags": [
-        "引擎"
-      ],
-      "category": "engine",
-      "images": [
-        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/50.webp"
-      ],
-      "version": "v1.0",
-      "author": "SDSA",
-      "heat": "4.8万",
-      "compat": "1.6.00.3+",
-      "installType": "parts",
-      "installUrl": "https://nasyt.dpdns.org/sd/z1BIA1Vw/",
-      "sha256": ""
-    },
-    {
-      "name": "QMSP的机械",
-      "type": "zip",
-      "size": "0.13MB",
-      "date": "2026-6-10",
-      "desc": "铰链等机械部件",
-      "link": "https://wwaqu.lanzoub.com/i2mpp3rjy6lg",
-      "pwd": 0,
-      "tags": [
-        "机械"
-      ],
-      "category": "function",
-      "images": [
-        "https://cdn.jsdmirror.com/gh/aaaa111ssf/images@main/49.webp"
-      ],
-      "version": "v1.0",
-      "author": "QMSP",
-      "heat": "6.7万",
-      "compat": "1.6.00.3+",
-      "installType": "parts",
-      "installUrl": "https://nasyt.dpdns.org/sd/dV4aqMCh/",
       "sha256": ""
     },
     {
