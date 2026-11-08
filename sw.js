@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v17-sponsor-qr2';
+const CACHE_VERSION = 'sfs-v18-fresh-cache';
 // 只预缓存必须离线可用的两样，JSON 由运行时缓存，装 SW 更快、省流量
 const PRECACHE_ASSETS = [
   '/',
@@ -44,14 +44,12 @@ function getRequestType(url) {
   if (url.pathname.endsWith('.html') || url.pathname === '/' || url.pathname === '/index.html') {
     return 'html';
   }
-  if (
-    url.pathname.match(/\.(css|js|png|jpg|jpeg|gif|webp|svg|ico|woff|woff2|ttf|eot|otf)$/)
-  ) {
-    return 'static';
+  // 代码文件单独走「先网络」，否则改了 js/css 用户要等很久
+  if (/\.(css|js)$/.test(url.pathname)) {
+    return 'code';
   }
-  // 公告/赞助配置要的就是新鲜，直接走网络，失败再退回缓存
-  if (url.pathname === '/data/announce.json' || url.pathname === '/data/sponsor.json') {
-    return 'json-live';
+  if (url.pathname.match(/\.(png|jpg|jpeg|gif|webp|svg|ico|woff|woff2|ttf|eot|otf)$/)) {
+    return 'static';
   }
   if (url.pathname.endsWith('.json')) {
     return 'json';
@@ -90,27 +88,8 @@ function staticStrategy(event) {
   );
 }
 
-// JSON 数据缓存策略：StaleWhileRevalidate
-function jsonStrategy(event) {
-  return event.respondWith(
-    caches.open(CACHE_VERSION).then((cache) => {
-      return cache.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request)
-          .then((networkResponse) => {
-            if (networkResponse.ok) {
-              cache.put(event.request, networkResponse.clone());
-            }
-            return networkResponse;
-          })
-          .catch(() => cachedResponse);
-        return cachedResponse || fetchPromise;
-      });
-    })
-  );
-}
-
-// 必须新鲜的 JSON（公告/赞助）：先网络，失败才用缓存
-function jsonLiveStrategy(event) {
+// 先网络、失败退回缓存：代码和 JSON 都走这套，改完刷新就能看到
+function networkFirst(event) {
   return event.respondWith(
     fetch(event.request)
       .then((response) => {
@@ -120,7 +99,7 @@ function jsonLiveStrategy(event) {
         }
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => caches.match(event.request).then((cached) => cached || Response.error()))
   );
 }
 
@@ -144,10 +123,9 @@ self.addEventListener('fetch', (event) => {
       htmlStrategy(event);
       break;
     case 'json-live':
-      jsonLiveStrategy(event);
-      break;
+    case 'code':
     case 'json':
-      jsonStrategy(event);
+      networkFirst(event);
       break;
     default:
       staticStrategy(event);

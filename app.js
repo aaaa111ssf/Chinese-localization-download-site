@@ -1,5 +1,7 @@
 (function() {
             'use strict';
+            // summary: 控制台打个版本号，出问题先看线上是不是最新版
+            console.info('%c[sfs] 前端版本 20261108-cache1', 'color:#888');
 
             let files = [];
             let blueprints = [];
@@ -261,12 +263,27 @@
             }
 
             /* ---------- 工具 ---------- */
+            // summary: 弹窗全关掉后解除整页锁定
             function checkAndRemoveModalOpen() {
                 const anyActive = document.querySelector(
-                    '.modal-overlay.active, .img-viewer-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active, .dl-history-overlay.active, .blueprint-dependency-overlay.active'
+                    '.modal-overlay.active, .img-viewer-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active, .dl-history-overlay.active, .blueprint-dependency-overlay.active, .settings-panel.active, .settings-panel-overlay.active, .announce-panel.active, .announce-panel-overlay.active'
                 );
                 if (!anyActive) document.body.classList.remove('modal-open');
             }
+
+            // summary: 兜底——锁定状态卡住时整页点不动，这里自动松开
+            function clearStuckModalOpen() {
+                if (!document.body.classList.contains('modal-open')) return;
+                const active = document.querySelector(
+                    '.modal-overlay.active, .img-viewer-overlay.active, .mod-detail-overlay.active, .sponsor-modal-overlay.active, .dl-history-overlay.active, .blueprint-dependency-overlay.active, .settings-panel.active, .announce-panel.active'
+                );
+                if (!active) document.body.classList.remove('modal-open');
+            }
+            document.addEventListener('visibilitychange', function () {
+                if (!document.hidden) setTimeout(clearStuckModalOpen, 120);
+            });
+            window.addEventListener('pageshow', function () { setTimeout(clearStuckModalOpen, 120); });
+            window.addEventListener('load', function () { setTimeout(clearStuckModalOpen, 1500); });
 
             /* ---------- 图片懒加载 ---------- */
             let imgObserver;
@@ -1226,8 +1243,11 @@
                 if (entryModalShown || localStorage.getItem('hideEntryModal') === 'true' || sessionStorage.getItem(ENTRY_SEEN_KEY) === 'true') return;
                 const modal = document.getElementById('entryModal');
                 if (!modal) return;
-                document.body.classList.add('modal-open');
-                setTimeout(() => modal.classList.add('active'), 650);
+                // 等弹窗真的要显示时才锁页面，避免这段空窗期整页点不动
+                setTimeout(() => {
+                    modal.classList.add('active');
+                    document.body.classList.add('modal-open');
+                }, 650);
                 entryModalShown = true;
             }
 
@@ -1780,7 +1800,7 @@
                 console.warn('缓存读取失败:', e);
             }
 
-            fetch('data/data.json?v=20261025-deps1', { cache: 'force-cache' })
+            fetch('data/data.json?v=20261108-cache1', { cache: 'no-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
@@ -1806,7 +1826,7 @@
                     }
                 });
 
-            fetch('data/blueprints.json?v=20261005-bp1', { cache: 'force-cache' })
+            fetch('data/blueprints.json?v=20261108-cache1', { cache: 'no-cache' })
                 .then(response => {
                     if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
