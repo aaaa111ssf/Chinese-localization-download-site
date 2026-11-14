@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'sfs-v18-fresh-cache';
+const CACHE_VERSION = 'sfs-v19-settings1';
 // 只预缓存必须离线可用的两样，JSON 由运行时缓存，装 SW 更快、省流量
 const PRECACHE_ASSETS = [
   '/',

@@ -1,7 +1,7 @@
 (function() {
             'use strict';
             // summary: 控制台打个版本号，出问题先看线上是不是最新版
-            console.info('%c[sfs] 前端版本 20261108-cache1', 'color:#888');
+            console.info('%c[sfs] 前端版本 20261114-settings1', 'color:#888');
 
             let files = [];
             let blueprints = [];
@@ -1973,10 +1973,14 @@
             }
 
             // 保存设置
+            // summary: 保存失败要出声，多半是背景图太大把本地存储撑爆了
             function saveSettings(settings) {
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-                } catch(e) {}
+                } catch (e) {
+                    console.warn('[sfs] 设置保存失败：' + (e && e.name) + ' / ' + (e && e.message));
+                    if (window.sfsToast) window.sfsToast('设置保存失败，可能是背景图太大，换张小图试试');
+                }
             }
 
             let settings = loadSettings();
@@ -2412,7 +2416,8 @@
             // 应用设置到 UI
             function applySettings() {
                 // 自定义主题与背景
-                applyCustomStyle();
+                // summary: 这里出错只影响配色，不能拖垮后面的开关和布局
+                try { applyCustomStyle(); } catch (e) { console.warn('[sfs] 自定义样式应用失败', e); }
 
                 // 黑夜模式
                 document.body.classList.toggle('dark-mode', settings.darkMode);
