@@ -5,7 +5,17 @@ import { consumeRateLimit, getIpHash, isSameOriginWrite, isValidModName, json } 
 const LOG_WINDOW_SECONDS = 30;
 const LOG_LIMIT_PER_WINDOW = 8;
 
+// summary: 统计出错也不能影响用户下载，更不能在控制台刷 500
 export async function onRequestPost(context) {
+    try {
+        return await handle(context);
+    } catch (error) {
+        console.error('[api/log] 记录失败: ' + (error && error.message));
+        return json({ ok: false }, { status: 200, 'Cache-Control': 'no-store' }, context.request);
+    }
+}
+
+async function handle(context) {
     if (!isSameOriginWrite(context.request)) {
         return json({ error: '仅允许由本站页面提交下载记录' }, { status: 403 }, context.request);
     }

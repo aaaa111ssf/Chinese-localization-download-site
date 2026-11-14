@@ -1,7 +1,7 @@
 (function() {
             'use strict';
             // summary: 控制台打个版本号，出问题先看线上是不是最新版
-            console.info('%c[sfs] 前端版本 20261114-settings1', 'color:#888');
+            console.info('%c[sfs] 前端版本 20261114-direct1', 'color:#888');
 
             let files = [];
             let blueprints = [];
@@ -331,14 +331,8 @@
             /* ---------- 下载方式与 Android 安装助手 ---------- */
             const SITE_SETTINGS_KEY = 'sfs_site_settings';
             const INSTALLER_SCHEME = 'sfsmodinstaller://install';
-            const INSTALLER_DIRECT_HOSTS = ['sfszhmod.pages.dev', 'sfs-cn-mod.pages.dev', 'nasyt.dpdns.org'];
-            // 临时直链源：http://<IP>:5244（AList/OpenList，/sd/<id>/ 结构与 nasyt 相同）。
-            // 这些源为 http + 裸 IP，单独放行；nasyt 恢复后可从这里移除。
-            // ⚠️ 2026-10-04：data.json 里的 25 条实际指向 207.57.124.92，
-            //    而这里原来只写了 220.205.16.24 → isAllowedInstallerSource() 判否 →
-            //    getAutoInstallPayload() 返回 null → 按钮标签回退成"蓝奏云下载"，
-            //    用户表现为「切了直链下载但还是显示蓝奏云」。两个 IP 都保留（数组）。
-            const INSTALLER_TEMP_HOSTS = ['220.205.16.24', '207.57.124.92'];
+            // 2026-11-14 起取消直链域名白名单：数据里的直链换成 alist.nasyt.top，
+            // 旧白名单（nasyt.dpdns.org / 两个 IP）全部判否，导致每条都退回蓝奏云。
             let downloadNavigationLockedUntil = 0;
 
             /* ---------- 蓝奏云提取码（2026-10-04 起） ----------
@@ -435,14 +429,9 @@
                 }
             }
 
+            // summary: 直链放行任意 http/https 地址，不再限制域名
             function isAllowedInstallerSource(parsed) {
-                const host = parsed.hostname.toLowerCase();
-                // 临时 IP 源：允许 http + /sd/<id>/ 直链路径。
-                if (INSTALLER_TEMP_HOSTS.includes(host)) {
-                    return parsed.protocol === 'http:' && /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
-                }
-                if (parsed.protocol !== 'https:' || !INSTALLER_DIRECT_HOSTS.includes(host)) return false;
-                return host !== 'nasyt.dpdns.org' || /^\/sd\/[A-Za-z0-9_-]+\/?$/.test(parsed.pathname);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
             }
 
             function getAutoInstallPayload(file) {

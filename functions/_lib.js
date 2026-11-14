@@ -74,7 +74,8 @@ export async function consumeRateLimit(context, bucket, windowSeconds, maxReques
 
     if (used >= maxRequests) return { allowed: false, retryAfter };
 
-    await store.put(key, String(used + 1), { expirationTtl: windowSeconds + 10 });
+    // KV 的 expirationTtl 最短 60 秒，写小于 60 会直接抛错（/api/log 的 1101 就是这个）
+    await store.put(key, String(used + 1), { expirationTtl: Math.max(60, windowSeconds + 10) });
     return { allowed: true, retryAfter };
 }
 
